@@ -17,7 +17,7 @@
  
  ## Spring Boot Cheatsheet
  
- ### Add Dependencies:
+ ### Add Dependencies
  
  **pom.xml:**
  ```
@@ -54,4 +54,5 @@ d:ticketguru
 ```
 
 ### End points (localhost:8080)
- - / & index - index.html
+
+ - `/` & `/index` - index.html
