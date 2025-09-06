@@ -1,4 +1,4 @@
-cd # Spring boot notes
+# Spring boot notes
 
 ## Project
 
