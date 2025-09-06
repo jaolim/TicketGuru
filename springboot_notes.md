@@ -1,4 +1,4 @@
-# Spring boot notes
+cd # Spring boot notes
 
 ## Project
 
@@ -7,7 +7,7 @@
  - Group Id: spagetti.tiimi
  - Artifact Id: ticketguru
  - Package type: Jar
- - Java version: 24
+ - Java version: 21
  
 ## Dependencies
 
