@@ -31,9 +31,7 @@ tietoa ja keskittyä siihen.
 
 ## Käyttöliittymä
 
-Esitetään käyttöliittymän tärkeimmät (vain ne!) näkymät sekä niiden väliset siirtymät käyttöliittymäkaaviona. 
-
-Jos näkymän tarkoitus ei ole itsestään selvä, se pitää kuvata lyhyesti.
+![TicketGuru käyttöliittymäkaavio](Kayttoliittyma_Ticketguru.drawio.png)
 
 ## Tietokanta
 
