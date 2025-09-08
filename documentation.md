@@ -23,3 +23,31 @@
 > #### US4
 > 
 > Maija works as a ticket inspector at today’s event. She receives the unsold tickets from the pre-sale, which are sold directly at the door. She scans/reads the codes of pre-sold tickets and sells remaining tickets to customers who do not yet have one. 
+
+
+
+
+
+
+
+Ja sama suomeksi
+# Dokumentaatio
+
+## Käyttötapaukset
+### Käyttäjäroolit
+- Lipunmyyjä  
+- Lipuntarkastaja  
+- Asiakas  
+
+### Käyttäjätarinat
+>#### KT1
+>Matti haluaa mennä pienelle keikalle ystäviensä kanssa. Hän ostaa etukäteen lipputoimistosta neljä paperilippua. Tapahtumapäivänä hän jakaa liput ystävilleen, ja he kaikki käyttävät niitä sisäänpääsyyn portilla.  
+
+>#### KT2
+>Pirkko on lipunmyyjä. Hän saa päivittäin päivityksiä uusista tapahtumista, jotka pitää lisätä lipunmyyntijärjestelmään. Hän avaa järjestelmän käyttöliittymän ja syöttää tapahtuman nimen, paikan, kuvauksen, päivämäärän, ajan, kaupungin ja ostettavien lippujen määrän. Nyt tapahtuma on järjestelmässä ja liput voidaan myydä.  
+
+>#### KT3
+>Simo on lipunmyyjä, ja hän saa tapahtuman järjestäjältä pyynnön raportoida lipunmyynnistä. Hän tuottaa dokumentin, joka sisältää tietyn tapahtuman myyntitiedot, ja lähettää sen järjestäjälle.  
+
+>#### KT4
+>Maija työskentelee lipuntarkastajana tämän päivän tapahtumassa. Hän saa ennakkomyynnistä myymättä jääneet liput, joita myydään suoraan ovelta. Hän skannaa/lukee ennakkoon ostettujen lippujen koodit ja myy jäljellä olevia lippuja asiakkaille, joilla ei vielä ole lippua.  
