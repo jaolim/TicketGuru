@@ -31,7 +31,7 @@ tietoa ja keskittyä siihen.
 
 ## Käyttöliittymä
 
-![TicketGuru käyttöliittymäkaavio](Kayttoliittyma_Ticketguru.drawio.png)
+![TicketGuru käyttöliittymäkaavio](/resources/Kayttoliittyma_Ticketguru.drawio.png)
 
 ## Tietokanta
 
