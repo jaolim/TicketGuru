@@ -26,13 +26,13 @@ käyttäjäryhmät.
 Kuvauksissa kannattaa harkita, mikä on toteuttajalle ja asiakkaalle oleellista
 tietoa ja keskittyä siihen.
 
-## Käyttötapaukset
+### Käyttötapaukset
 ### Käyttäjäroolit
 - Lipunmyyjä  
 - Lipuntarkastaja  
 - Asiakas  
 
-### Käyttäjätarinat
+#### Käyttäjätarinat
 >#### KT1
 >Matti haluaa mennä pienelle keikalle ystäviensä kanssa. Hän ostaa etukäteen lipputoimistosta neljä paperilippua. Tapahtumapäivänä hän jakaa liput ystävilleen, ja he kaikki käyttävät niitä sisäänpääsyyn portilla.  
 
