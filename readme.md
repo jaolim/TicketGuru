@@ -5,15 +5,12 @@ Tiimi: Etunimi Sukunimi, Etunimi Sukunimi
 
 ## Johdanto
 
-Johdantoon kirjoitetaan lyhyt, ytimekäs kuvaus siitä, mikä on projektin aihe,
-kuka on asiakas (käyttäjä), mitä hän haluaa ja saa järjestelmältä, mitä
-tekniikoita käytetään ja mitä konkreettisesti on valmiina, kun projekti päättyy.
+Projektin tavoitteena on toteuttaa TicketGuru lipunmyyntijärjestelmä, joka on suunnattu lipputoimistolle lippujen hallintaan ja myyntiin. Järjestelmän ensisijainen käyttäjä on lipunmyyjä, joka voi myyntipisteessä myydä lippuja ja tulostaa ne asiakkaille. Toimiston täytyy voida luoda järjestelmään tapahtumat, joihin lippuja myydään. Lisäksi järjestelmä tukee ovelta myyntiä: jäljellä olevat liput voidaan tulostaa ja myydä tapahtuman yhteydessä, ja lipuissa oleva koodi mahdollistaa nopean tarkastuksen sekä käytön merkitsemisen ovella.
 
--   Järjestelmän tarkoitus ja tiivis kuvaus siitä, mistä on kyse ja kenelle järjestelmä on tarkoitettu.
--   Toteutus- ja toimintaympäristö lyhyesti:  
-    -   Palvelinpuolen ratkaisut ja teknologiat (esim. palvelinteknologia, mikä tietokantajärjestelmä on käytössä)
-    -   Käyttöliittymäratkaisut ja teknologiat (esim. päätelaitteet: puhelin,
-    täppäri, desktop)
+### (Alustava) Toteutus- ja toimintaympäristö
+
+Järjestelmä toteutetaan modernilla palvelinteknologialla hyödyntäen relaatiotietokantaa tapahtumien, lippujen ja myyntitapahtumien tallentamiseen. Käyttö tapahtuu aluksi desktop-ympäristössä lipunmyyjien työasemilla, ja käyttöliittymä toteutetaan selainpohjaisena ratkaisuna. Tämä mahdollistaa järjestelmän laajentamisen myöhemmin myös mobiililaitteille ja verkkokauppaan.
+
 
 ## Järjestelmän määrittely
 
