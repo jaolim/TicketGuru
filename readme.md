@@ -27,10 +27,15 @@ Kuvauksissa kannattaa harkita, mikä on toteuttajalle ja asiakkaalle oleellista
 tietoa ja keskittyä siihen.
 
 ### Käyttötapaukset
+#### Käyttötapauskaavio
+
+![TicketGuru käyttötapauskaavio](/resources/Kayttotapauskaavio_Ticketguru.drawio.png)
+
+
 ### Käyttäjäroolit
-- Lipunmyyjä  
-- Lipuntarkastaja  
-- Asiakas  
+- Lipunmyyjä - vastaa tapahtuman määrittelyn järjestelmässä, myy lippuja sekä tarkkailee lippujenmyyntiä.
+- Lipuntarkastaja  - lukee ostetut liput ja voi myydä jäljelle jääneitä lippuja ovilla.
+- Asiakas - ostaa lipun ja näyttää sen tapahtumaan mentäessä lipuntarkastajalle.
 
 #### Käyttäjätarinat
 >#### KT1
