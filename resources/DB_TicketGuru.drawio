@@ -43,7 +43,7 @@
         <mxCell id="eSTx0_f_eTwvLmHdHTHT-35" value="Userrole" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="640" y="280" width="160" height="124" as="geometry" />
         </mxCell>
-        <mxCell id="eSTx0_f_eTwvLmHdHTHT-36" value="&lt;div&gt;&lt;div&gt;(PK) role_id: int&lt;/div&gt;&lt;/div&gt;&lt;div&gt;(FK) user_id: int&lt;/div&gt;&lt;div&gt;(FK) role_id: string&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="eSTx0_f_eTwvLmHdHTHT-35" vertex="1">
+        <mxCell id="eSTx0_f_eTwvLmHdHTHT-36" value="&lt;div&gt;&lt;div&gt;(PK) userrole_id: int&lt;/div&gt;&lt;/div&gt;&lt;div&gt;(FK) user_id: int&lt;/div&gt;&lt;div&gt;(FK) role_id: string&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="eSTx0_f_eTwvLmHdHTHT-35" vertex="1">
           <mxGeometry y="26" width="160" height="64" as="geometry" />
         </mxCell>
         <mxCell id="eSTx0_f_eTwvLmHdHTHT-37" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="eSTx0_f_eTwvLmHdHTHT-35" vertex="1">
@@ -178,7 +178,7 @@
             <mxPoint x="610" y="611" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="eSTx0_f_eTwvLmHdHTHT-80" value="Price" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="eSTx0_f_eTwvLmHdHTHT-80" value="Cost" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="160" y="-159" width="160" height="124" as="geometry" />
         </mxCell>
         <mxCell id="eSTx0_f_eTwvLmHdHTHT-81" value="(PK) price_id: int&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;(FK) event_id: int&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;(FK) type_id: string&lt;/span&gt;&lt;/div&gt;&lt;div&gt;price: money&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="eSTx0_f_eTwvLmHdHTHT-80" vertex="1">
