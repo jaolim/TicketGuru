@@ -43,9 +43,11 @@ Järjestelmä toteutetaan modernilla palvelinteknologialla hyödyntäen relaatio
 
 ## Tietokanta
 
-### Tietotyypit
+### Relaatiomalli
 
-*Täydennetään tarpeen mukaan, tarkempi rakenne relaatiomallissa*
+![Tietokannan relaatiomalli](/resources/DB_TicketGuru.png)
+
+#### Selvitys
 
 **Ticket(PK: ticket_id, FK: sale_id, FK: event_id, FK: type_id, price, time, redeemed)**: Yksittäinen lippu tiettyyn tapahtumaan
 - redeemed: onko lippu vielä voimassa
@@ -73,10 +75,6 @@ Järjestelmä toteutetaan modernilla palvelinteknologialla hyödyntäen relaatio
 **Userrole(PK: userrole_id, FK: user_id, FK_ role_id)**: Tietyn käyttäjän roolit
 
 **Role(PK: role_id, name, note)**: Tietty rooli
-
-### Relaatiomalli
-
-![Tietokannan relaatiomalli](/resources/DB_TicketGuru.png)
 
  
 > ### _Tilit_
