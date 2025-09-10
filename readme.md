@@ -47,32 +47,32 @@ Järjestelmä toteutetaan modernilla palvelinteknologialla hyödyntäen relaatio
 
 *Täydennetään tarpeen mukaan, tarkempi rakenne relaatiomallissa*
 
-**Ticket**: Yksittäinen lippu tiettyyn tapahtumaan
+**Ticket(PK: ticket_id, FK: sale_id, FK: event_id, FK: type_id, price, time, redeemed)**: Yksittäinen lippu tiettyyn tapahtumaan
 - redeemed: onko lippu vielä voimassa
 - price: snapshot hinnasta **Price** taulusta
 
-**Sale**: Myyntitapahtuma
+**Sale(PK: sale_id, FK: user_id)**: Myyntitapahtuma
 
-**Event**: Tietty tapahtuma
+**Event(PK: event_id, FK: venue_id, name, date)**: Tietty tapahtuma
 
-**Venue**: Tietty tapahtumapaikka
+**Venue(PK: venue_id, FK: address_id, name, note)**: Tietty tapahtumapaikka
 
-**Address**: Tapahtumapaikan osoite
+**Address(PK: address_id, FK: postalcode, streeet, number, note)**: Tapahtumapaikan osoite
 
-**Postalcode**: Postiosoitteet
+**Postalcode(PK: postalcode, FK: city_id)**: Postiosoitteet
 
-**City**: Kaupungit
+**City(PK: city_id, name, note)**: Kaupungit
 
-**Price**: Tietyn tapahtuman lippuhinnnat
+**Cost(PK: cost_id, FK: event_id, FK: type_id, price)**: Tietyn tapahtuman lippuhinnnat
 
-**Type**: Lipun tyyppi (Aikuinen, Lapsi etc...)
+**Type(PK: type_id, name, note)**: Lipun tyyppi (Aikuinen, Lapsi etc...)
 
-**User**: Viittaa lipputoimiston henkilökuntaan
+**User(PK: user_id, firstname, lastname)**: Viittaa lipputoimiston henkilökuntaan
 - Laajennettavissa sisältämään muita käyttäjätyyppeja
 
-**Userrole**: Tietyn käyttäjän roolit
+**Userrole(PK: userrole_id, FK: user_id, FK_ role_id)**: Tietyn käyttäjän roolit
 
-**Role**: Tietty rooli
+**Role(PK: role_id, name, note)**: Tietty rooli
 
 ### Relaatiomalli
 
