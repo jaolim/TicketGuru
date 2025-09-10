@@ -53,7 +53,7 @@ Järjestelmä toteutetaan modernilla palvelinteknologialla hyödyntäen relaatio
 - redeemed: onko lippu vielä voimassa
 - price: snapshot hinnasta **Price** taulusta
 
-**Sale(PK: sale_id, FK: user_id)**: Myyntitapahtuma
+**Sale(PK: sale_id, FK: user_id, price, time)**: Myyntitapahtuma
 
 **Event(PK: event_id, FK: venue_id, name, date)**: Tietty tapahtuma
 
