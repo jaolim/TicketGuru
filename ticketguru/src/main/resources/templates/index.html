@@ -15,5 +15,9 @@
     <div>
         <h2>Testilippu:</h2>
         <p th:text="${ticket}"></p>
+        <h2>Database list all:</h2>
+      <tr th:each = "ticket : ${tickets}">
+        <p><td th:text="${ticket.toString()}"></td></p>
+      </tr>
     </div>
 </body>
