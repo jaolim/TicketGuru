@@ -43,6 +43,52 @@ Järjestelmä toteutetaan modernilla palvelinteknologialla hyödyntäen relaatio
 
 ## Tietokanta
 
+### Tietotyypit
+
+*Täydennetään tarpeen mukaan, tarkempi rakenne relaatiomallissa*
+
+**Ticket**: Yksittäinen lippu tiettyyn tapahtumaan
+- redeemed: onko lippu vielä voimassa
+- price: snapshot hinnasta **Price** taulusta
+
+**Sale**: Myyntitapahtuma
+
+**Event**: Tietty tapahtuma
+
+**Venue**: Tietty tapahtumapaikka
+
+**Address**: Tapahtumapaikan osoite
+
+**Postalcode**: Postiosoitteet
+
+**City**: Kaupungit
+
+**Price**: Tietyn tapahtuman lippuhinnnat
+
+**Type**: Lipun tyyppi (Aikuinen, Lapsi etc...)
+
+**User**: Viittaa lipputoimiston henkilökuntaan
+- Laajennettavissa sisältämään muita käyttäjätyyppeja
+
+**Userrole**: Tietyn käyttäjän roolit
+
+**Role**: Tietty rooli
+
+### Relaatiomalli
+
+![Tietokannan relaatiomalli](/resources/DB_TicketGuru.png)
+
+ 
+> ### _Tilit_
+> _Tilit-taulu sisältää käyttäjätilit. Käyttäjällä voi olla monta tiliä. Tili kuuluu aina vain yhdelle käyttäjälle._
+>
+> Kenttä | Tyyppi | Kuvaus
+> ------ | ------ | ------
+> id | int PK | Tilin id
+> nimimerkki | varchar(30) |  Tilin nimimerkki
+> avatar | int FK | Tilin avatar, viittaus [avatar](#Avatar)-tauluun
+> kayttaja | int FK | Viittaus käyttäjään [käyttäjä](#Kayttaja)-taulussa
+
 Järjestelmään säilöttävä ja siinä käsiteltävät tiedot ja niiden väliset suhteet
 kuvataan käsitekaaviolla. Käsitemalliin sisältyy myös taulujen välisten viiteyhteyksien ja avainten
 määritykset. Tietokanta kuvataan käyttäen jotain kuvausmenetelmää, joko ER-kaaviota ja UML-luokkakaaviota.
