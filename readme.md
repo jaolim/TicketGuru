@@ -49,7 +49,7 @@ Järjestelmä toteutetaan modernilla palvelinteknologialla hyödyntäen relaatio
 
 #### Selvitys
 
-**Ticket(PK: ticket_id, FK: sale_id, FK: event_id, FK: type_id, price, time, redeemed)**: Yksittäinen lippu tiettyyn tapahtumaan
+**Ticket(PK: ticket_id, FK: sale_id, FK: cost_id, price, time, redeemed)**: Yksittäinen lippu tiettyyn tapahtumaan
 - redeemed: onko lippu vielä voimassa
 - price: snapshot hinnasta **Price** taulusta
 
