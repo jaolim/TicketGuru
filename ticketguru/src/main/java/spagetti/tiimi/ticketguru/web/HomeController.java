@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 
 import spagetti.tiimi.ticketguru.domain.EventRepository;
 import spagetti.tiimi.ticketguru.domain.Ticket;
+import spagetti.tiimi.ticketguru.domain.Cost;
+import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
 
@@ -21,16 +23,22 @@ public class HomeController {
     @Autowired
     private EventRepository erepository;
 
+    @Autowired
+    private CostRepository crepository;
 
-    public static Ticket testTicket = new Ticket("Testi");
+
+    public static Cost testCost = new Cost("Lapsi", 9.99);
+    public static Ticket testTicket = new Ticket("Testi", testCost);
     public static Event testEvent = new Event("Testitapahtuma", "Testipaikka", LocalDateTime.now());
 
     @GetMapping(value = {"/", "/index"})
     public String getIndex(Model model) {
         model.addAttribute("ticket", testTicket);
         model.addAttribute("event", testEvent);
+        model.addAttribute("cost", testCost);
         model.addAttribute("tickets", repository.findAll());
         model.addAttribute("events", erepository.findAll());
+        model.addAttribute("costs", crepository.findAll());
         return "index";
     }
 
