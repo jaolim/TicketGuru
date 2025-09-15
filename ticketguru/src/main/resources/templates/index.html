@@ -15,9 +15,17 @@
     <div>
         <h2>Testilippu:</h2>
         <p th:text="${ticket}"></p>
-        <h2>Database list all:</h2>
+        <h2>Ticket DB list all:</h2>
       <tr th:each = "ticket : ${tickets}">
-        <p><td th:text="${ticket.toString()}"></td></p>
+        <p><td th:text="${ticket}"></td></p>
+      </tr>
+    </div>
+        <div>
+        <h2>Testitapahtuma:</h2>
+        <p th:text="${event}"></p>
+        <h2>Event DB list all:</h2>
+      <tr th:each = "event : ${events}">
+        <p><td th:text="${event}"></td></p>
       </tr>
     </div>
 </body>
