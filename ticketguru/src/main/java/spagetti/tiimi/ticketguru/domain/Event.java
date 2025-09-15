@@ -30,9 +30,29 @@ public class Event {
         this.eventid = eventid;
     }
 
+    public Long getEventid(){
+        return eventid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setVenue(String venue){
+        this.venue = venue;
+    }
+
+    public String getVenue(){
+        return venue;
+    }
+
     @Override
     public String toString(){
-        return "Event: " + name + " Venue: " + venue + " Start: " + start;
+        return "Event: " + name + ", Venue: " + venue + ", Start: " + start;
     }
 
 }
