@@ -28,4 +28,12 @@
         <p><td th:text="${event}"></td></p>
       </tr>
     </div>
+    <div>
+      <h2>Testikäyttäjä:</h2>
+      <p th:text="${user}"></p>
+      <h2>User DB list all:</h2>
+      <tr th:each = "user : ${users}">
+      <p><td th:text="${user}"></td></p>
+      </tr>
+  </div>
 </body>

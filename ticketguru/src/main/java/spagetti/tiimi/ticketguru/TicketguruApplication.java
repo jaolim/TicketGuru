@@ -13,6 +13,8 @@ import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
 import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
+import spagetti.tiimi.ticketguru.domain.User;
+import spagetti.tiimi.ticketguru.domain.UserRepository;
 
 @SpringBootApplication
 public class TicketguruApplication {
@@ -24,7 +26,7 @@ public class TicketguruApplication {
 	}
 
 	@Bean
-	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository) {
+	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository, UserRepository urepository) {
 		return (args) -> {
 			log.info("Adding some test books");
 
@@ -36,6 +38,9 @@ public class TicketguruApplication {
 			repository.save(new Ticket("Test 2"));
 			repository.save(new Ticket("Test 3"));
 			repository.save(new Ticket("Test 3"));
+
+			urepository.save(new User("Testi", "Esimerkki"));
+
 			log.info("fetch tickets");
 			for (Ticket ticket : repository.findAll()) {
 				log.info(ticket.toString());
