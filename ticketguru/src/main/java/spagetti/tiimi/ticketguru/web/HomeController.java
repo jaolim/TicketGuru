@@ -27,9 +27,9 @@ public class HomeController {
     private CostRepository crepository;
 
 
-    public static Cost testCost = new Cost("Lapsi", 9.99);
-    public static Ticket testTicket = new Ticket("Testi", testCost);
     public static Event testEvent = new Event("Testitapahtuma", "Testipaikka", LocalDateTime.now());
+    public static Cost testCost = new Cost("Lapsi", 9.99, testEvent);
+    public static Ticket testTicket = new Ticket("Testi", testCost);
 
     @GetMapping(value = {"/", "/index"})
     public String getIndex(Model model) {

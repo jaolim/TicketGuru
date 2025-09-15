@@ -33,16 +33,23 @@ public class TicketguruApplication {
 			LocalDateTime testTimeNow = LocalDateTime.now();
 			LocalDateTime testTimeStatic = LocalDateTime.of(1999, 1, 31, 20, 00);
 
-			erepository.save(new Event("Event1", "Venue1", testTimeNow));
-			erepository.save(new Event("Event2", "Venue2", testTimeStatic));
+			Event event1 = new Event("Event1", "Venue1", testTimeNow);
+			Event event2 = new Event("Event2", "Venue2", testTimeStatic);
+			Cost cost1 = new Cost("Aikuinen", 20.50, event1);
+			Cost cost2 = new Cost("Eläkeläinen", 7.99, event2);
+			Ticket ticket1 = new Ticket("test1", cost1);
+			Ticket ticket2 = new Ticket("test2", cost2);
+			Ticket ticket3 = new Ticket("test3");
 
-			crepository.save(new Cost("Aikuinen", 20.50));
-			crepository.save(new Cost("Eläkeläinen", 7.99));
+			erepository.save(event1);
+			erepository.save(event2);
 
-			repository.save(new Ticket("test1"));
-			repository.save(new Ticket("Test 2"));
-			repository.save(new Ticket("Test 3"));
-			repository.save(new Ticket("Test 3"));
+			crepository.save(cost1);
+			crepository.save(cost2);
+
+			repository.save(ticket1);
+			repository.save(ticket2);
+			repository.save(ticket3);
 			log.info("fetch tickets");
 			for (Ticket ticket : repository.findAll()) {
 				log.info(ticket.toString());

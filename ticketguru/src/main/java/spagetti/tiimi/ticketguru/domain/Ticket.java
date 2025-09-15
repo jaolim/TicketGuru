@@ -16,8 +16,7 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "costid")
     private Cost cost;
-    private Double price;
-    private String type;
+    private Boolean redeemed;
     private String name;
 
     public Ticket() {
@@ -30,9 +29,8 @@ public class Ticket {
 
     public Ticket(String name, Cost cost) {
         this.cost = cost;
-        this.price = cost.getPrice();
-        this.type = cost.getType();
         this.name = name;
+        this.redeemed = false;
     }
 
     public String getName() {
@@ -61,7 +59,7 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket: [name: " + name + ", type: " + type +", price: " + price +  "]";
+        return "Ticket: [name: " + name + ", " + cost  + ", Redeemed: " + redeemed +"]";
     }
 
 }

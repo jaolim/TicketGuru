@@ -15,6 +15,7 @@
     <div>
         <h2>Testilippu:</h2>
         <p th:text="${ticket}"></p>
+        <p th:text="${ticket.getCost().getEvent().getName()}"></p>
         <h2>Ticket DB list all:</h2>
       <tr th:each = "ticket : ${tickets}">
         <p><td th:text="${ticket}"></td></p>
