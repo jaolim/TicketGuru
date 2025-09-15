@@ -29,6 +29,14 @@ public class Ticket {
         this.name = name;
     }
 
+    public void setTicketid(Long ticketid) {
+        this.ticketid = ticketid;
+    }
+
+    public Long getTicketid() {
+        return ticketid;
+    }
+
     @Override
     public String toString() {
         return "Ticket: [name: " + name + "]";
