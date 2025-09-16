@@ -22,26 +22,79 @@ Järjestelmä toteutetaan modernilla palvelinteknologialla hyödyntäen relaatio
 ### Käyttäjäroolit
 - Lipunmyyjä - vastaa tapahtuman määrittelyn järjestelmässä, myy lippuja sekä tarkkailee lippujenmyyntiä.
 - Lipuntarkastaja  - lukee ostetut liput ja voi myydä jäljelle jääneitä lippuja ovilla.
-- Asiakas - ostaa lipun ja näyttää sen tapahtumaan mentäessä lipuntarkastajalle.
 
 #### Käyttäjätarinat
->#### KT1
->Matti haluaa mennä pienelle keikalle ystäviensä kanssa. Hän ostaa etukäteen lipputoimistosta neljä paperilippua. Tapahtumapäivänä hän jakaa liput ystävilleen, ja he kaikki käyttävät niitä sisäänpääsyyn portilla.  
 
->#### KT2
->Pirkko on lipunmyyjä. Hän saa päivittäin päivityksiä uusista tapahtumista, jotka pitää lisätä lipunmyyntijärjestelmään. Hän avaa järjestelmän käyttöliittymän ja syöttää tapahtuman nimen, paikan, kuvauksen, päivämäärän, ajan, kaupungin ja ostettavien lippujen määrän. Nyt tapahtuma on järjestelmässä ja liput voidaan myydä.  
+#### KT1
+Lipunmyyjänä haluan lisätä järjestelmään uuden tapahtuman, jotta voin myydä siihen lippuja.
 
->#### KT3
->Simo on lipunmyyjä, ja hän saa tapahtuman järjestäjältä pyynnön raportoida lipunmyynnistä. Hän tuottaa dokumentin, joka sisältää tietyn tapahtuman myyntitiedot, ja lähettää sen järjestäjälle.  
+#### KT2
+Lipunmyyjänä haluan muokata olemassa olevan tapahtuman tietoja, jotta voin korjata virheet tai päivittää tiedot.
 
->#### KT4
->Maija työskentelee lipuntarkastajana tämän päivän tapahtumassa. Hän saa ennakkomyynnistä myymättä jääneet liput, joita myydään suoraan ovelta. Hän skannaa/lukee ennakkoon ostettujen lippujen koodit ja myy jäljellä olevia lippuja asiakkaille, joilla ei vielä ole lippua.  
+#### KT3
+Lipunmyyjänä haluan poistaa tapahtuman järjestelmästä, jotta virheellisiä tai peruttuja tapahtumia ei voi myydä asiakkaille.
+
+#### KT4
+Lipunmyyjänä haluan myydä ja tulostaa lipun asiakkaalle, jotta asiakas saa pääsylipun tapahtumaan.
+
+#### KT5
+Lipunmyyjänä haluan tarkastella myynnin tilannetta, jotta voin seurata tapahtuman myyntiä.
+
+#### KT6
+Lipuntarkastajana haluan skannata asiakkaan lipussa olevan koodin, jotta voin merkitä sen käytetyksi.
+
+#### KT7
+Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jotta asiakkaat voivat ostaa lipun vielä sisäänpääsyä varten.
 
 ## Käyttöliittymä
 
 ![TicketGuru käyttöliittymäkaavio](/resources/Kayttoliittyma_Ticketguru.drawio.png)
 
 ## Tietokanta
+
+### Relaatiomalli
+
+![Tietokannan relaatiomalli](/resources/DB_TicketGuru.png)
+
+#### Selvitys
+
+**Ticket(PK: ticket_id, FK: sale_id, FK: cost_id, price, time, redeemed)**: Yksittäinen lippu tiettyyn tapahtumaan
+- redeemed: onko lippu vielä voimassa
+- price: snapshot hinnasta **Price** taulusta
+
+**Sale(PK: sale_id, FK: user_id, price, time)**: Myyntitapahtuma
+
+**Event(PK: event_id, FK: venue_id, name, date)**: Tietty tapahtuma
+
+**Venue(PK: venue_id, FK: address_id, name, note)**: Tietty tapahtumapaikka
+
+**Address(PK: address_id, FK: postalcode, streeet, number, note)**: Tapahtumapaikan osoite
+
+**Postalcode(PK: postalcode, FK: city_id)**: Postiosoitteet
+
+**City(PK: city_id, name, note)**: Kaupungit
+
+**Cost(PK: cost_id, FK: event_id, FK: type_id, price)**: Tietyn tapahtuman lippuhinnnat
+
+**Type(PK: type_id, name, note)**: Lipun tyyppi (Aikuinen, Lapsi etc...)
+
+**User(PK: user_id, firstname, lastname)**: Viittaa lipputoimiston henkilökuntaan
+- Laajennettavissa sisältämään muita käyttäjätyyppeja
+
+**Userrole(PK: userrole_id, FK: user_id, FK_ role_id)**: Tietyn käyttäjän roolit
+
+**Role(PK: role_id, name, note)**: Tietty rooli
+
+ 
+> ### _Tilit_
+> _Tilit-taulu sisältää käyttäjätilit. Käyttäjällä voi olla monta tiliä. Tili kuuluu aina vain yhdelle käyttäjälle._
+>
+> Kenttä | Tyyppi | Kuvaus
+> ------ | ------ | ------
+> id | int PK | Tilin id
+> nimimerkki | varchar(30) |  Tilin nimimerkki
+> avatar | int FK | Tilin avatar, viittaus [avatar](#Avatar)-tauluun
+> kayttaja | int FK | Viittaus käyttäjään [käyttäjä](#Kayttaja)-taulussa
 
 Järjestelmään säilöttävä ja siinä käsiteltävät tiedot ja niiden väliset suhteet
 kuvataan käsitekaaviolla. Käsitemalliin sisältyy myös taulujen välisten viiteyhteyksien ja avainten
