@@ -17,17 +17,16 @@ public class Sale {
     private Long saleid;
     @ManyToOne
     @JoinColumn(name = "ticketid")
-    private Ticket ticket;
-    // private User user;
-    private int price; // myytyjen lippujen kokonaishinta
+    private User user;
+    private int price;
     private LocalDateTime time;
 
     public Sale() {
     
     }
 
-    public Sale(Ticket ticket, LocalDateTime time) {
-        this.ticket = ticket;
+    public Sale(User user, LocalDateTime time) {
+        this.user = user;
         this.time = time;
     }
 
@@ -39,12 +38,12 @@ public class Sale {
         this.saleid = saleid;
     }
 
-    public Ticket getTicket() {
-        return ticket;
+    public User getUser() {
+        return user;
     }
 
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getTime() {

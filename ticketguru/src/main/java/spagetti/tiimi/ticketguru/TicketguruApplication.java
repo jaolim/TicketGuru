@@ -45,8 +45,10 @@ public class TicketguruApplication {
 			Ticket ticket1 = new Ticket("test1", cost1);
 			Ticket ticket2 = new Ticket("test2", cost2);
 			Ticket ticket3 = new Ticket("test3");
-			Sale sale1 = new Sale(ticket1, testTimeNow);
-			Sale sale2 = new Sale(ticket2, testTimeNow);
+			User user1 = new User("firstname1", "lastname1");
+			User user2 = new User("firstname2", "lastname2");
+			Sale sale1 = new Sale(user1, testTimeNow);
+			Sale sale2 = new Sale(user2, testTimeNow);
 
 			repository.save(new Ticket("test1"));
 			repository.save(new Ticket("Test 2"));
@@ -54,6 +56,8 @@ public class TicketguruApplication {
 			repository.save(new Ticket("Test 3"));
 
 			urepository.save(new User("Testi", "Esimerkki"));
+			urepository.save(user1);
+			urepository.save(user2);
 
 			erepository.save(event1);
 			erepository.save(event2);
