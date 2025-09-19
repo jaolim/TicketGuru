@@ -97,8 +97,6 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 **Methods:** Get, Post
 
-**URL:**`{baseurl}/events`
-
 **Post body:**
 
 ```
