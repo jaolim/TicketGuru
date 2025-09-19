@@ -87,6 +87,20 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 ## Tekninen kuvaus
 
+### Rest päätepisteet(endpoints)
+
+**Dev base url:** `http://locahost:8080`
+
+#### Get events
+
+**Method:** Get
+
+**URL:**`{baseurl}/events`
+
+**Body:** tyhjä
+
+
+
 Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
 ratkaisut, esim.
 

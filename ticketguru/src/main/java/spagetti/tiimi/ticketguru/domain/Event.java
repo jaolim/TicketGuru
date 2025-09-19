@@ -50,6 +50,14 @@ public class Event {
         return venue;
     }
 
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
     @Override
     public String toString(){
         return "Event: " + name + ", Venue: " + venue + ", Start: " + start;
