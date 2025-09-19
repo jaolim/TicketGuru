@@ -91,15 +91,23 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 **Dev base url:** `http://locahost:8080`
 
-#### Get events
-
-**Method:** Get
+#### Endpoint: Events
 
 **URL:**`{baseurl}/events`
 
-**Body:** tyhjä
+**Methods:** Get, Post
 
+**URL:**`{baseurl}/events`
 
+**Post body:**
+
+```
+{
+    "name": "event name",
+    "venue": "venue name",
+    "start": "YYYY-MM-DD HH:mm"
+}
+```
 
 Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
 ratkaisut, esim.
