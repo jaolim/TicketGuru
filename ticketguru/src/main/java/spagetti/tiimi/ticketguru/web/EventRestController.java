@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 public class EventRestController {
@@ -21,6 +24,12 @@ public class EventRestController {
     public List<Event> eventsRest() {
         return (List<Event>) erepository.findAll();
     }
+
+    @PostMapping("/events")
+    public Event newEvent(@RequestBody Event event) {
+        return erepository.save(event);
+    }
+    
 
 
 }
