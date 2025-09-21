@@ -106,6 +106,15 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
     "start": "YYYY-MM-DD HH:mm"
 }
 ```
+#### Endpoint: Delete Event
+
+**URL:** `{baseurl}/events/{id}`
+
+**Method:** DELETE
+
+**Path variable:** 
+id = poistettavan tapahtuman tunniste (Long)
+
 
 Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
 ratkaisut, esim.
