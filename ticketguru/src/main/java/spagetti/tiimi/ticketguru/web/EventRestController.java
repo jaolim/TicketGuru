@@ -2,7 +2,9 @@ package spagetti.tiimi.ticketguru.web;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import spagetti.tiimi.ticketguru.domain.Event;
@@ -30,6 +32,9 @@ public class EventRestController {
         return erepository.save(event);
     }
     
-
+    @DeleteMapping("events/{id}")
+    public void deleteEvent(@PathVariable Long id) {
+        erepository.deleteById(id);
+    }
 
 }
