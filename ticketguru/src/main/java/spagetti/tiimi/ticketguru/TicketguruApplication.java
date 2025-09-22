@@ -42,6 +42,7 @@ public class TicketguruApplication {
 			Event event2 = new Event("Event2", "Venue2", testTimeStatic);
 			Cost cost1 = new Cost("Aikuinen", 20.50, event1);
 			Cost cost2 = new Cost("Eläkeläinen", 7.99, event2);
+			Cost cost3 = new Cost("Aikuinen", 25.50, event2);
 			Ticket ticket1 = new Ticket("test1", cost1);
 			Ticket ticket2 = new Ticket("test2", cost2);
 			Ticket ticket3 = new Ticket("test3");
@@ -64,6 +65,7 @@ public class TicketguruApplication {
 
 			crepository.save(cost1);
 			crepository.save(cost2);
+			crepository.save(cost3);
 
 			repository.save(ticket1);
 			repository.save(ticket2);
