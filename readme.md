@@ -103,7 +103,7 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 {
     "name": "event name",
     "venue": "venue name",
-    "start": "YYYY-MM-DD HH:mm"
+    "start": "YYYY-MM-DDTHH:mm"
 }
 ```
 #### Endpoint: Delete Event
