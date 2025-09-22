@@ -87,25 +87,67 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 ## Tekninen kuvaus
 
-### Rest päätepisteet(endpoints)
+### Rest päätepisteet (endpoints)
 
 **Dev base url:** `http://locahost:8080`
 
-#### Endpoint: Events
+| Metodi | URL | Kuvaus |
+| -------- | ------- | --------- |
+| GET | {baseurl}/events | Listaa kaikki tapahtumat |
+| POST | {baseurl}/events | Luo uuden tapahtuman |
+| DELETE | {baseurl}/events/{id} | Poistaa tietyn tapahtuman |
 
-**URL:**`{baseurl}/events`
 
-**Methods:** Get, Post
 
-**Post body:**
+### Get Events
+
+**URL:** `{baseurl}/events`
+
+**Metodi:** `GET`
+
+**Esimerkkituloste:**
+
+```
+[
+    {
+        "eventid": 1,
+        "name": "Event1",
+        "venue": "Venue1",
+        "start": "2025-09-22T17:46:44.847199"
+    },
+    {
+        "eventid": 2,
+        "name": "Event2",
+        "venue": "Venue2",
+        "start": "1999-01-31T20:00:00"
+    }
+]
+```
+
+### Post Event
+
+**URL:** `{baseurl}/events`
+
+**Metodi:** `POST`
+
+**Esimerkkipyyntö:**
 
 ```
 {
     "name": "event name",
     "venue": "venue name",
-    "start": "YYYY-MM-DD HH:mm"
+    "start": "YYYY-MM-DDTHH:mm"
 }
 ```
+#### Endpoint: Delete Event
+
+**URL:** `{baseurl}/events/{id}`
+
+**Method:** DELETE
+
+**Path variable:** 
+id = poistettavan tapahtuman tunniste (Long)
+
 
 Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
 ratkaisut, esim.
