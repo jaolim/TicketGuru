@@ -41,7 +41,7 @@ public class EventRestController {
     }
 
     @PutMapping("events/{id}")
-    public Optional<Event> ediEvent(@PathVariable Long id, @RequestBody Event updatedEvent) {
+    public Optional<Event> editEvent(@PathVariable Long id, @RequestBody Event updatedEvent) {
         return erepository.findById(id)
             .map(event -> {
                 event.setName(updatedEvent.getName());
