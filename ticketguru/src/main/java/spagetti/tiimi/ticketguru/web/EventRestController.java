@@ -40,7 +40,7 @@ public class EventRestController {
         erepository.deleteById(id);
     }
 
-    @PutMapping("event/{id}")
+    @PutMapping("events/{id}")
     public Optional<Event> ediEvent(@PathVariable Long id, @RequestBody Event updatedEvent) {
         return erepository.findById(id)
             .map(event -> {

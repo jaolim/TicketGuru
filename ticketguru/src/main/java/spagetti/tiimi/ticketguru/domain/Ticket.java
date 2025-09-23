@@ -1,11 +1,17 @@
 package spagetti.tiimi.ticketguru.domain;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Ticket {
@@ -16,6 +22,15 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "costid")
     private Cost cost;
+
+    @ManyToOne
+    @JoinColumn(name = "saleid")
+    private Sale sale;
+
+    //@JsonIgnoreProperties("ticket")
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
+    //private List<Sale> sales;
+
     private Boolean redeemed;
     private String name;
 
@@ -60,6 +75,14 @@ public class Ticket {
     @Override
     public String toString() {
         return "Ticket: [name: " + name + ", " + cost  + ", Redeemed: " + redeemed +"]";
+    }
+
+    public void setSale(Sale sale) {
+        this.sale = sale;
+    }
+
+    public Sale getSale() {
+        return sale;
     }
 
 }

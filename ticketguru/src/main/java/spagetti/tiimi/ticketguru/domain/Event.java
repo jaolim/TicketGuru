@@ -23,7 +23,7 @@ public class Event {
     private LocalDateTime start;
 
     @JsonIgnoreProperties("event")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "event")
     private List<Cost> costs;
 
     public Event () {
