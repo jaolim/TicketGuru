@@ -87,7 +87,7 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 ## Tekninen kuvaus
 
-### Rest päätepisteet (endpoints)
+### REST päätepisteet (endpoints)
 
 **Dev base url:** `http://locahost:8080`
 
@@ -95,6 +95,7 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 | -------- | ------- | --------- |
 | GET | {baseurl}/events | Listaa kaikki tapahtumat |
 | POST | {baseurl}/events | Luo uuden tapahtuman |
+| PUT | {baseurl}/events/{id} | Muokkaa olemassa olevaa tapahtumaa |
 | DELETE | {baseurl}/events/{id} | Poistaa tietyn tapahtuman |
 
 
@@ -139,11 +140,28 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
     "start": "YYYY-MM-DDTHH:mm"
 }
 ```
-#### Endpoint: Delete Event
+
+### Put Event
 
 **URL:** `{baseurl}/events/{id}`
 
-**Method:** DELETE
+**Metodi:** `PUT`
+
+**Esimerkkipyyntö:**
+
+```
+{
+    "name": "event name",
+    "venue": "edited venue",
+    "start": "YYYY-MM-DDTHH:mm"
+}
+```
+
+### Delete Event
+
+**URL:** `{baseurl}/events/{id}`
+
+**Metodi:** `DELETE`
 
 **Path variable:** 
 id = poistettavan tapahtuman tunniste (Long)
