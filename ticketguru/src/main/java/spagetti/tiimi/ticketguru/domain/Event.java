@@ -1,10 +1,16 @@
 package spagetti.tiimi.ticketguru.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Event {
@@ -15,6 +21,10 @@ public class Event {
     private String name;
     private String venue;
     private LocalDateTime start;
+
+    @JsonIgnoreProperties("event")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "event")
+    private List<Cost> costs;
 
     public Event () {
 
@@ -48,6 +58,22 @@ public class Event {
 
     public String getVenue(){
         return venue;
+    }
+
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public List<Cost> getCosts() {
+        return costs;
+    }
+
+    public void setCosts(List<Cost> costs) {
+        this.costs = costs;
     }
 
     @Override

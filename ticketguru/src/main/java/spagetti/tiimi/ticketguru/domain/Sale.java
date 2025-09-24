@@ -15,11 +15,13 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long saleid;
+
     @ManyToOne
-    @JoinColumn(name = "ticketid")
+    @JoinColumn(name = "userid")
     private User user;
     private int price;
     private LocalDateTime time;
+
 
     public Sale() {
     

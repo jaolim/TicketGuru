@@ -16,6 +16,15 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "costid")
     private Cost cost;
+
+    @ManyToOne
+    @JoinColumn(name = "saleid")
+    private Sale sale;
+
+    //@JsonIgnoreProperties("ticket")
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
+    //private List<Sale> sales;
+
     private Boolean redeemed;
     private String name;
 
@@ -60,6 +69,14 @@ public class Ticket {
     @Override
     public String toString() {
         return "Ticket: [name: " + name + ", " + cost  + ", Redeemed: " + redeemed +"]";
+    }
+
+    public void setSale(Sale sale) {
+        this.sale = sale;
+    }
+
+    public Sale getSale() {
+        return sale;
     }
 
 }
