@@ -94,6 +94,7 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 | Metodi | URL | Kuvaus |
 | -------- | ------- | --------- |
 | GET | {baseurl}/events | Listaa kaikki tapahtumat |
+| GET | {baseurl}/events/{id} | Palauttaa tietyn tapahtuman|
 | POST | {baseurl}/events | Luo uuden tapahtuman |
 | PUT | {baseurl}/events/{id} | Muokkaa olemassa olevaa tapahtumaa |
 | DELETE | {baseurl}/events/{id} | Poistaa tietyn tapahtuman |

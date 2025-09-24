@@ -63,7 +63,6 @@ public class Sale {
     public void setPrice(int price) {
         this.price = price;
     }
-
     
     @Override
     public String toString() {
