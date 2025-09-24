@@ -30,6 +30,11 @@ public class EventRestController {
         return (List<Event>) erepository.findAll();
     }
 
+    @GetMapping("/events/{id}")
+    public Optional<Event> getEventRest(@PathVariable Long id) {
+        return erepository.findById(id);
+    }
+
     @PostMapping("/events")
     public Event newEvent(@RequestBody Event event) {
         return erepository.save(event);
