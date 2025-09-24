@@ -167,6 +167,38 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 **Path variable:** 
 id = poistettavan tapahtuman tunniste (Long)
 
+### TicketTypes
+
+**Dev base url:** `http://locahost:8080`
+
+| Metodi | URL | Kuvaus |
+| -------- | ------- | --------- |
+| GET | {baseurl}/tickettypes | Listaa kaikki lipputytyypit |
+| GET | {baseurl}/tickettypes/{id} | Palauttaa tietyn tapahtuman|
+| POST | {baseurl}/tickettypes | Luo uuden lipputyypin|
+| PUT | {baseurl}/tickettypes/{id} | Muokkaa olemassa olevaa lipputyyppiä tai luo uuden |
+| DELETE | {baseurl}/tickettypes/{id} | Poistaa tietyn lipputyypin |
+
+#### Post - {baseurl}/tickettypes
+
+body:
+
+```
+{
+    "name": "type name",
+    "note": "type note"
+}
+```
+
+#### Put - {baseurl}/tickettypes/{id}
+
+body:
+
+```
+{
+    "name": "type name",
+    "note": "type note"
+}
 
 Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
 ratkaisut, esim.
