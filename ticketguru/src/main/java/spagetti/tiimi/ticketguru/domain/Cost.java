@@ -3,7 +3,7 @@ package spagetti.tiimi.ticketguru.domain;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -24,29 +24,32 @@ public class Cost {
     @JoinColumn(name = "eventid")
     private Event event;
 
-    @JsonIgnoreProperties("cost")
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cost")
     private List<Ticket> tickets;
 
-    private String type;
+    @ManyToOne
+    @JoinColumn(name = "tickettypeid")
+    private TicketType tickettype;
+
     private Double price;
 
     public Cost() {
 
     }
 
-    public Cost(String type, Double price, Event event) {
-        this.type = type;
+    public Cost(TicketType tickettype, Double price, Event event) {
+        this.tickettype = tickettype;
         this.price = price;
         this.event = event;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(TicketType tickettype) {
+        this.tickettype = tickettype;
     }
 
-    public String getType() {
-        return type;
+    public TicketType getType() {
+        return tickettype;
     }
 
     public void setPrice(Double price) {
@@ -75,7 +78,7 @@ public class Cost {
 
     @Override
     public String toString() {
-        return "Type: " + type + ", Price: " + price + ", " + event;
+        return "Type: " + tickettype + ", Price: " + price + ", " + event;
     }
 
 }
