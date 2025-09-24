@@ -244,9 +244,10 @@ body:
 
 ```
 {
-    "name": "type name",
-    "note": "type note"
+    "name": "new type name",
+    "note": "new type note"
 }
+```
 
 Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
 ratkaisut, esim.
