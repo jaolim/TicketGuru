@@ -29,8 +29,8 @@ public class Cost {
     private List<Ticket> tickets;
 
     @ManyToOne
-    @JoinColumn(name = "tickettypeid")
-    private TicketType tickettype;
+    @JoinColumn(name = "ticketTypeid")
+    private TicketType ticketType;
 
     private Double price;
 
@@ -38,18 +38,18 @@ public class Cost {
 
     }
 
-    public Cost(TicketType tickettype, Double price, Event event) {
-        this.tickettype = tickettype;
+    public Cost(TicketType ticketType, Double price, Event event) {
+        this.ticketType = ticketType;
         this.price = price;
         this.event = event;
     }
 
-    public void setType(TicketType tickettype) {
-        this.tickettype = tickettype;
+    public void setType(TicketType ticketType) {
+        this.ticketType = ticketType;
     }
 
     public TicketType getType() {
-        return tickettype;
+        return ticketType;
     }
 
     public void setPrice(Double price) {
@@ -78,7 +78,7 @@ public class Cost {
 
     @Override
     public String toString() {
-        return "Type: " + tickettype + ", Price: " + price + ", " + event;
+        return "Type: " + ticketType + ", Price: " + price + ", " + event;
     }
 
 }

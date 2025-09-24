@@ -3,7 +3,6 @@ package spagetti.tiimi.ticketguru.domain;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,10 +16,10 @@ public class TicketType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long tickettypeid;
+    private Long ticketTypeid;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tickettype")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketType")
     private List<Cost> costs;
 
     private String name, note;
@@ -33,12 +32,12 @@ public class TicketType {
         this.name = name;
     }
 
-    public void setTypeid(Long tickettypeid) {
-        this.tickettypeid = tickettypeid;
+    public void setTypeid(Long ticketTypeid) {
+        this.ticketTypeid = ticketTypeid;
     }
 
     public Long getTypeid() {
-        return tickettypeid;
+        return ticketTypeid;
     }
 
     public void setName(String name) {
