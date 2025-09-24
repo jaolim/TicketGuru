@@ -209,6 +209,7 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 **Vaadittu:**
 
 Cost: ei null ja costid:tä vastaava Cost löytyy
+
 Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 
