@@ -14,6 +14,8 @@ import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.User;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
+import spagetti.tiimi.ticketguru.domain.TicketType;
+import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
 import spagetti.tiimi.ticketguru.domain.UserRepository;
 
 
@@ -22,20 +24,21 @@ public class HomeController {
 
     @Autowired
     private TicketRepository repository;
-
     @Autowired
     private EventRepository erepository;
-
     @Autowired
     private UserRepository urepository;
     @Autowired
     private CostRepository crepository;
+    @Autowired
+    private TicketTypeRepository trepository;
 
 
 
     public static Event testEvent = new Event("Testitapahtuma", "Testipaikka", LocalDateTime.now());
     public static User testUser = new User("Testi", "Esimerkki");
-    public static Cost testCost = new Cost("Lapsi", 9.99, testEvent);
+    public static TicketType testType = new TicketType("Lapsi");
+    public static Cost testCost = new Cost(testType, 9.99, testEvent);
     public static Ticket testTicket = new Ticket("Testi", testCost);
 
     @GetMapping(value = {"/", "/index"})
