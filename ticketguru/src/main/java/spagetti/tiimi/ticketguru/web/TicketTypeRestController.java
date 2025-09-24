@@ -34,8 +34,8 @@ public class TicketTypeRestController {
     }
 
     @PostMapping("/tickettypes")
-    public TicketType newTicketTypeRest(@RequestBody TicketType TicketType) {
-        return trepository.save(TicketType);
+    public TicketType newTicketTypeRest(@RequestBody TicketType ticketType) {
+        return trepository.save(ticketType);
     }
     
     @DeleteMapping("tickettypes/{id}")
@@ -46,10 +46,10 @@ public class TicketTypeRestController {
     @PutMapping("tickettypes/{id}")
     public Optional<TicketType> editTicketTypeRest(@PathVariable Long id, @RequestBody TicketType updatedTicketType) {
         return trepository.findById(id)
-            .map(TicketType -> {
-                TicketType.setName(updatedTicketType.getName());
-                TicketType.setNote(updatedTicketType.getNote());
-                return trepository.save(TicketType);
+            .map(ticketType -> {
+                ticketType.setName(updatedTicketType.getName());
+                ticketType.setNote(updatedTicketType.getNote());
+                return trepository.save(ticketType);
             });
     }
 }

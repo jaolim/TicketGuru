@@ -70,6 +70,14 @@ public class Ticket {
         return sale;
     }
 
+    public void setRedeemed(Boolean redeemed) {
+        this.redeemed = redeemed;
+    }
+
+    public Boolean getRedeemed() {
+        return redeemed;
+    }
+
     @Override
     public String toString() {
         return "Ticket: [name: " + name + ", " + cost  + ", Redeemed: " + redeemed +"]";

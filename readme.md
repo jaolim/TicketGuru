@@ -167,6 +167,52 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 **Path variable:** 
 id = poistettavan tapahtuman tunniste (Long)
 
+### Tickets
+
+**Dev base url:** `http://locahost:8080`
+
+| Metodi | URL | Kuvaus |
+| -------- | ------- | --------- |
+| GET | {baseurl}/tickets | Listaa kaikki liput |
+| GET | {baseurl}/tickets/{id} | Palauttaa tietyn lipun|
+| POST | {baseurl}/tickets | Luo uuden lipun|
+| PUT | {baseurl}/tickets/{id} | Muokkaa olemassa olevaa lippua tai luo uuden |
+| DELETE | {baseurl}/tickets/{id} | Poistaa tietyn lipun|
+
+#### Post
+
+```
+{
+    "name": "ticket name",
+    "redeemed": "false",
+    "cost": {"costid": 2},
+    "sale": {"saleid": 2}
+}
+```
+**Vaadittu:**
+
+Cost: ei null ja costid:tä vastaava Cost löytyy
+Sale: ei null ja saleid:tä vastaava Sale löytyy
+
+#### Put
+
+```
+{
+    "name": "new name",
+    "redeemed": "false",
+    "cost": {"costid": 2},
+    "sale": {"saleid": 2}
+}
+```
+
+**Vaadittu:**
+
+Cost: ei null ja costid:tä vastaava Cost löytyy
+Sale: ei null ja saleid:tä vastaava Sale löytyy
+
+
+
+
 ### TicketTypes
 
 **Dev base url:** `http://locahost:8080`
@@ -174,7 +220,7 @@ id = poistettavan tapahtuman tunniste (Long)
 | Metodi | URL | Kuvaus |
 | -------- | ------- | --------- |
 | GET | {baseurl}/tickettypes | Listaa kaikki lipputytyypit |
-| GET | {baseurl}/tickettypes/{id} | Palauttaa tietyn tapahtuman|
+| GET | {baseurl}/tickettypes/{id} | Palauttaa tietyn lipputyypin|
 | POST | {baseurl}/tickettypes | Luo uuden lipputyypin|
 | PUT | {baseurl}/tickettypes/{id} | Muokkaa olemassa olevaa lipputyyppiä tai luo uuden |
 | DELETE | {baseurl}/tickettypes/{id} | Poistaa tietyn lipputyypin |
