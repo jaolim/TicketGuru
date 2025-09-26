@@ -249,6 +249,8 @@ body:
 }
 ```
 
+Lisätietoa REST API -päätepisteistä: [katso dokumentaatio](rest.md)
+
 Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
 ratkaisut, esim.
 
