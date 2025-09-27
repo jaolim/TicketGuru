@@ -19,8 +19,8 @@ import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.domain.TicketType;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
-import spagetti.tiimi.ticketguru.domain.User;
-import spagetti.tiimi.ticketguru.domain.UserRepository;
+import spagetti.tiimi.ticketguru.domain.AppUser;
+import spagetti.tiimi.ticketguru.domain.AppUserRepository;
 
 @SpringBootApplication
 public class TicketguruApplication {
@@ -32,7 +32,7 @@ public class TicketguruApplication {
 	}
 
 	@Bean
-	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository, UserRepository urepository, CostRepository crepository, SaleRepository srepository, TicketTypeRepository trepository) {
+	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository, AppUserRepository urepository, CostRepository crepository, SaleRepository srepository, TicketTypeRepository trepository) {
 
 		return (args) -> {
 			log.info("Adding some test books");
@@ -51,8 +51,8 @@ public class TicketguruApplication {
 			Ticket ticket1 = new Ticket("test1", cost1);
 			Ticket ticket2 = new Ticket("test2", cost2);
 			Ticket ticket3 = new Ticket("test3");
-			User user1 = new User("firstname1", "lastname1");
-			User user2 = new User("firstname2", "lastname2");
+			AppUser user1 = new AppUser("firstname1", "lastname1");
+			AppUser user2 = new AppUser("firstname2", "lastname2");
 			Sale sale1 = new Sale(user1, testTimeNow);
 			Sale sale2 = new Sale(user2, testTimeNow);
 			trepository.save(type1);
@@ -63,7 +63,7 @@ public class TicketguruApplication {
 			repository.save(new Ticket("Test 3"));
 			repository.save(new Ticket("Test 3"));
 
-			urepository.save(new User("Testi", "Esimerkki"));
+			urepository.save(new AppUser("Testi", "Esimerkki"));
 			urepository.save(user1);
 			urepository.save(user2);
 
