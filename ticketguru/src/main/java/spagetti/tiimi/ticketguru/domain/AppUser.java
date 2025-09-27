@@ -8,17 +8,18 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user_tb")
-public class User {
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userid;
     private String firstname;
     private String lastname;
 
-    public User () {
+    public AppUser() {
 
     }
-    public User(String firstname, String lastname) {
+
+    public AppUser(String firstname, String lastname) {
         this.firstname = firstname;
         this.lastname = lastname;
     }
@@ -31,8 +32,16 @@ public class User {
         return userid;
     }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
     public String getFirstname() {
         return firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getLastname() {

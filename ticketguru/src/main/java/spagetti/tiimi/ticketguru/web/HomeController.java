@@ -12,11 +12,11 @@ import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.Cost;
 import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
-import spagetti.tiimi.ticketguru.domain.User;
+import spagetti.tiimi.ticketguru.domain.AppUser;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.domain.TicketType;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
-import spagetti.tiimi.ticketguru.domain.UserRepository;
+import spagetti.tiimi.ticketguru.domain.AppUserRepository;
 
 
 @Controller
@@ -27,7 +27,7 @@ public class HomeController {
     @Autowired
     private EventRepository erepository;
     @Autowired
-    private UserRepository urepository;
+    private AppUserRepository urepository;
     @Autowired
     private CostRepository crepository;
     @Autowired
@@ -36,7 +36,7 @@ public class HomeController {
 
 
     public static Event testEvent = new Event("Testitapahtuma", "Testipaikka", LocalDateTime.now());
-    public static User testUser = new User("Testi", "Esimerkki");
+    public static AppUser testUser = new AppUser("Testi", "Esimerkki");
     public static TicketType testType = new TicketType("Lapsi");
     public static Cost testCost = new Cost(testType, 9.99, testEvent);
     public static Ticket testTicket = new Ticket("Testi", testCost);
