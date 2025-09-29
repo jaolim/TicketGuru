@@ -257,3 +257,50 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Path variable:** 
 id = poistettavan käyttäjän tunniste (Long)
+
+## Sale
+
+**Dev base url:** `http://locahost:8080`
+
+| Metodi | URL | Kuvaus |
+| ------- | --- | ------ |
+| GET | {baseurl}/sales | Listaa kaikki myynnit |
+| GET | {baseurl}/sales/{id} | Palauttaa tietyn myynnin |
+| POST | {baseurl}/sales | Luo uuden myynnin |
+| PUT | {baseurl}/sales/{id} | Muokkaa olemassa olevaa myyntiä (päivittää hinnan) |
+| DELETE | {baseurl}/sales/{id} | Poistaa tietyn myynnin |
+
+### Post Sale
+
+**URL:** `{baseurl}/sales``
+
+**Metodi:** `POST``
+
+**Esimerkkipyyntö:**
+
+```
+{
+    "saleid": 3,
+    "user": {
+        "id": 5,
+        "username": "username"
+    },
+    "price": 30,
+    "time": "YYYY-MM-DDTHH:mm"
+}
+```
+
+### Put Sale
+
+**URL:** `{baseurl}/sales/{id}
+
+**Metodi:** PUT
+
+**Esimerkkipyyntö:**
+
+```
+{
+    "price": 35
+}
+```
+
