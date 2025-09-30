@@ -18,7 +18,7 @@ public class Sale {
 
     @ManyToOne
     @JoinColumn(name = "userid")
-    private User user;
+    private AppUser user;
     private int price;
     private LocalDateTime time;
 
@@ -27,7 +27,7 @@ public class Sale {
     
     }
 
-    public Sale(User user, LocalDateTime time) {
+    public Sale(AppUser user, LocalDateTime time) {
         this.user = user;
         this.time = time;
     }
@@ -40,11 +40,11 @@ public class Sale {
         this.saleid = saleid;
     }
 
-    public User getUser() {
+    public AppUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(AppUser user) {
         this.user = user;
     }
 

@@ -17,8 +17,10 @@ import spagetti.tiimi.ticketguru.domain.Sale;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
 import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
-import spagetti.tiimi.ticketguru.domain.User;
-import spagetti.tiimi.ticketguru.domain.UserRepository;
+import spagetti.tiimi.ticketguru.domain.TicketType;
+import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
+import spagetti.tiimi.ticketguru.domain.AppUser;
+import spagetti.tiimi.ticketguru.domain.AppUserRepository;
 
 @SpringBootApplication
 public class TicketguruApplication {
@@ -30,7 +32,7 @@ public class TicketguruApplication {
 	}
 
 	@Bean
-	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository, UserRepository urepository, CostRepository crepository, SaleRepository srepository) {
+	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository, AppUserRepository urepository, CostRepository crepository, SaleRepository srepository, TicketTypeRepository trepository) {
 
 		return (args) -> {
 			log.info("Adding some test books");
@@ -40,23 +42,23 @@ public class TicketguruApplication {
 
 			Event event1 = new Event("Event1", "Venue1", testTimeNow);
 			Event event2 = new Event("Event2", "Venue2", testTimeStatic);
-			Cost cost1 = new Cost("Aikuinen", 20.50, event1);
-			Cost cost2 = new Cost("Eläkeläinen", 7.99, event2);
-			Cost cost3 = new Cost("Aikuinen", 25.50, event2);
+			TicketType type1 = new TicketType("Aikuinen");
+			TicketType type2 = new TicketType("Eläkeläinen");
+
+			Cost cost1 = new Cost(type1, 20.50, event1);
+			Cost cost2 = new Cost(type2, 7.99, event2);
+			Cost cost3 = new Cost(type1, 25.50, event2);
 			Ticket ticket1 = new Ticket("test1", cost1);
 			Ticket ticket2 = new Ticket("test2", cost2);
 			Ticket ticket3 = new Ticket("test3");
-			User user1 = new User("firstname1", "lastname1");
-			User user2 = new User("firstname2", "lastname2");
+			AppUser user1 = new AppUser("firstname1", "lastname1");
+			AppUser user2 = new AppUser("firstname2", "lastname2");
 			Sale sale1 = new Sale(user1, testTimeNow);
 			Sale sale2 = new Sale(user2, testTimeNow);
+			trepository.save(type1);
+			trepository.save(type2);
 
-			repository.save(new Ticket("test1"));
-			repository.save(new Ticket("Test 2"));
-			repository.save(new Ticket("Test 3"));
-			repository.save(new Ticket("Test 3"));
-
-			urepository.save(new User("Testi", "Esimerkki"));
+			urepository.save(new AppUser("Testi", "Esimerkki"));
 			urepository.save(user1);
 			urepository.save(user2);
 
@@ -70,6 +72,10 @@ public class TicketguruApplication {
 			repository.save(ticket1);
 			repository.save(ticket2);
 			repository.save(ticket3);
+			repository.save(new Ticket("test4"));
+			repository.save(new Ticket("Test 5"));
+			repository.save(new Ticket("Test 6"));
+			repository.save(new Ticket("Test 7"));
 
 			srepository.save(sale1);
 			srepository.save(sale2);

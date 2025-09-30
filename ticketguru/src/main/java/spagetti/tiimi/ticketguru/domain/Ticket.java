@@ -21,10 +21,6 @@ public class Ticket {
     @JoinColumn(name = "saleid")
     private Sale sale;
 
-    //@JsonIgnoreProperties("ticket")
-    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
-    //private List<Sale> sales;
-
     private Boolean redeemed;
     private String name;
 
@@ -66,17 +62,25 @@ public class Ticket {
         this.cost = cost;
     }
 
-    @Override
-    public String toString() {
-        return "Ticket: [name: " + name + ", " + cost  + ", Redeemed: " + redeemed +"]";
-    }
-
     public void setSale(Sale sale) {
         this.sale = sale;
     }
 
     public Sale getSale() {
         return sale;
+    }
+
+    public void setRedeemed(Boolean redeemed) {
+        this.redeemed = redeemed;
+    }
+
+    public Boolean getRedeemed() {
+        return redeemed;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket: [name: " + name + ", " + cost  + ", Redeemed: " + redeemed +"]";
     }
 
 }
