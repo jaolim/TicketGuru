@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Event {
@@ -24,6 +25,7 @@ public class Event {
 
     @JsonIgnoreProperties("event")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "event")
+    @JsonManagedReference
     private List<Cost> costs;
 
     public Event () {

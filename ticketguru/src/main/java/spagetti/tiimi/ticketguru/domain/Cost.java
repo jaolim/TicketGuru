@@ -3,6 +3,7 @@ package spagetti.tiimi.ticketguru.domain;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -22,6 +23,7 @@ public class Cost {
     private Long costid;
     @ManyToOne
     @JoinColumn(name = "eventid")
+    @JsonBackReference   
     private Event event;
 
     @JsonIgnore
