@@ -58,11 +58,6 @@ public class TicketguruApplication {
 			trepository.save(type1);
 			trepository.save(type2);
 
-			repository.save(new Ticket("test1"));
-			repository.save(new Ticket("Test 2"));
-			repository.save(new Ticket("Test 3"));
-			repository.save(new Ticket("Test 3"));
-
 			urepository.save(new AppUser("Testi", "Esimerkki"));
 			urepository.save(user1);
 			urepository.save(user2);
@@ -77,6 +72,10 @@ public class TicketguruApplication {
 			repository.save(ticket1);
 			repository.save(ticket2);
 			repository.save(ticket3);
+			repository.save(new Ticket("test4"));
+			repository.save(new Ticket("Test 5"));
+			repository.save(new Ticket("Test 6"));
+			repository.save(new Ticket("Test 7"));
 
 			srepository.save(sale1);
 			srepository.save(sale2);
