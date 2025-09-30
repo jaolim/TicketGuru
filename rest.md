@@ -304,3 +304,83 @@ id = poistettavan käyttäjän tunniste (Long)
 }
 ```
 
+## Cost
+
+**Dev base url:** `http://locahost:8080`
+
+| Metodi | URL | Kuvaus |
+| -------- | ------- | --------- |
+| GET | {baseurl}/costs | Listaa kaikki hinnat |
+| GET | {baseurl}/costs/{id} | Palauttaa tietyn hinnan |
+| POST | {baseurl}/costs | Luo uuden hinnan |
+| PUT | {baseurl}/costs/{id} | Muokkaa olemassa olevaa hintaa |
+| DELETE | {baseurl}/costs/{id} | Poistaa tietyn hinnan |
+
+## Get Cost
+
+**URL:** `{baseurl}/costs`
+
+**Metodi:** `GET`
+
+**Esimerkkituloste:**
+
+```
+[
+    {
+        "costid": 1,
+        "price": 20.5,
+        "type": {
+            "name": "testi",
+            "note": null,
+            "typeid": 1
+        }
+    },
+    {
+        "costid": 2,
+        "price": 7.99,
+        "type": {
+            "name": "testi 2",
+            "note": null,
+            "typeid": 2
+        }
+    }
+]
+```
+
+### Post Cost
+
+**URL:** `{baseurl}/costs`
+
+**Metodi:** `POST`
+
+**Esimerkkipyyntö:**
+
+```
+{
+    "price": 27.5,
+    "type": {
+        "name": "Aikuinen",
+        "note": null,
+        "typeid": 1
+    }
+}
+```
+
+### Put AppUser
+
+**URL:** `{baseurl}/costs/{id}`
+
+**Metodi:** `PUT`
+
+**Esimerkkipyyntö:**
+
+```
+{
+    "price"; 22.0
+}
+```
+### Delete AppUser
+
+**URL:** `{baseurl}/costs/{id}`
+
+**Metodi:** `DELETE`
