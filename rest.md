@@ -94,6 +94,49 @@ id = poistettavan tapahtuman tunniste (Long)
 | PUT | {baseurl}/tickets/{id} | Muokkaa olemassa olevaa lippua tai luo uuden |
 | DELETE | {baseurl}/tickets/{id} | Poistaa tietyn lipun|
 
+### Get Ticket
+
+**URL:** `{baseurl}/tickets`
+
+**Metodi:** `GET`
+
+**Esimerkkituloste:**
+
+```
+[
+    {
+        "ticketid": 1,
+        "cost": {
+            "costid": 1,
+            "price": 20.5,
+            "type": {
+                "name": "Aikuinen",
+                "note": null,
+                "typeid": 1
+            }
+        },
+        "sale": null,
+        "redeemed": false,
+        "name": "test1"
+    },
+    {
+        "ticketid": 2,
+        "cost": {
+            "costid": 2,
+            "price": 7.99,
+            "type": {
+                "name": "Eläkeläinen",
+                "note": null,
+                "typeid": 2
+            }
+        },
+        "sale": null,
+        "redeemed": false,
+        "name": "test2"
+    }
+]
+```
+
 ### Post Ticket
 
 **URL:** `{baseurl}/tickets`
@@ -153,6 +196,29 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 | POST | {baseurl}/tickettypes | Luo uuden lipputyypin|
 | PUT | {baseurl}/tickettypes/{id} | Muokkaa olemassa olevaa lipputyyppiä tai luo uuden |
 | DELETE | {baseurl}/tickettypes/{id} | Poistaa tietyn lipputyypin |
+
+### Get TicketType
+
+**URL:** `{baseurl}/tickettypes`
+
+**Metodi:** `GET`
+
+**Esimerkkituloste:**
+
+```
+[
+    {
+        "name": "Aikuinen",
+        "note": null,
+        "typeid": 1
+    },
+    {
+        "name": "Eläkeläinen",
+        "note": null,
+        "typeid": 2
+    }
+]
+```
 
 ### Post TicketType
 
@@ -270,31 +336,65 @@ id = poistettavan käyttäjän tunniste (Long)
 | PUT | {baseurl}/sales/{id} | Muokkaa olemassa olevaa myyntiä (päivittää hinnan) |
 | DELETE | {baseurl}/sales/{id} | Poistaa tietyn myynnin |
 
+### Get Sales
+
+**URL:** `{baseurl}/sales`
+
+**Metodi:** `GET`
+
+**Esimerkkituloste:**
+
+```
+[
+    {
+        "saleid": 1,
+        "user": {
+            "userid": 2,
+            "firstname": "firstname1",
+            "lastname": "lastname1"
+        },
+        "price": 0,
+        "time": "2025-09-30T18:23:07.018202"
+    },
+    {
+        "saleid": 2,
+        "user": {
+            "userid": 3,
+            "firstname": "firstname2",
+            "lastname": "lastname2"
+        },
+        "price": 0,
+        "time": "2025-09-30T18:23:07.018202"
+    }
+]
+```
+
 ### Post Sale
 
-**URL:** `{baseurl}/sales``
+**URL:** `{baseurl}/sales`
 
-**Metodi:** `POST``
+**Metodi:** `POST`
 
 **Esimerkkipyyntö:**
 
 ```
 {
-    "saleid": 3,
+    "saleid": 1,
     "user": {
-        "id": 5,
-        "username": "username"
+        "userid": 2,
+        "firstname": "firstname1",
+        "lastname": "lastname1"
     },
-    "price": 30,
-    "time": "YYYY-MM-DDTHH:mm"
+    "price": 10,
+    "time": "2025-09-30T17:06:31.077351"
 }
 ```
 
 ### Put Sale
 
-**URL:** `{baseurl}/sales/{id}
+**URL:** `{baseurl}/sales/{id}`
 
-**Metodi:** PUT
+**Metodi:** `PUT`
 
 **Esimerkkipyyntö:**
 
@@ -366,7 +466,7 @@ id = poistettavan käyttäjän tunniste (Long)
 }
 ```
 
-### Put AppUser
+### Put Cost
 
 **URL:** `{baseurl}/costs/{id}`
 
@@ -379,7 +479,7 @@ id = poistettavan käyttäjän tunniste (Long)
     "price"; 22.0
 }
 ```
-### Delete AppUser
+### Delete Cost
 
 **URL:** `{baseurl}/costs/{id}`
 
