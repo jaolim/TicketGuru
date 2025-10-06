@@ -177,7 +177,7 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Vastaukset:**
 
-- `201` - Lippu luotu tai muokattu
+- `201` - Lippua muokattu
 - `400` - Puuttuvaa tai väärää dataa
 - `404` - Lippua ei ole olemassa
 
