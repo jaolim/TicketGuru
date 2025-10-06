@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -20,14 +21,17 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
     private Long eventid;
     
-    @NotNull
-    @Size(min= 3, max=100)
+    @NotBlank
+    @Size(max = 100)
     private String name;
     
+    @NotBlank
+    @Size(max = 200)
     private String venue;
+
+    @NotNull
     private LocalDateTime start;
 
     @JsonIgnoreProperties("event")
