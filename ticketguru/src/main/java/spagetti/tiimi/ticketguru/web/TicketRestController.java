@@ -53,7 +53,9 @@ public class TicketRestController {
     @PostMapping("/tickets")
     @ResponseStatus(HttpStatus.CREATED)
     public Ticket newTicketTypeRest(@RequestBody Ticket ticket) {
-        if (ticket.getCost() == null || !crepository.findById(ticket.getCost().getCostid()).isPresent()) {
+        if (ticket.getTicketid() != null) {
+            throw new BadRequestException("Do not include ticketid");
+        } else if (ticket.getCost() == null || !crepository.findById(ticket.getCost().getCostid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing Cost ID");
         } else if (ticket.getSale() == null || !srepository.findById(ticket.getSale().getSaleid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing Sale ID");
