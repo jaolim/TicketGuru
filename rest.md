@@ -362,11 +362,15 @@ id = poistettavan käyttäjän tunniste (Long)
 | PUT | {baseurl}/sales/{id} | Muokkaa olemassa olevaa myyntiä (päivittää hinnan) |
 | DELETE | {baseurl}/sales/{id} | Poistaa tietyn myynnin |
 
-### Get Sales
+### Get Sale
 
-**URL:** `{baseurl}/sales`
+**URL:** `{baseurl}/sales` & `{baseurl}/sales/{id}`
 
 **Metodi:** `GET`
+
+**Vastaukset:**
+
+- `200`- Myyntien haku onnistui
 
 **Esimerkkituloste:**
 
@@ -401,6 +405,15 @@ id = poistettavan käyttäjän tunniste (Long)
 
 **Metodi:** `POST`
 
+**Vastaukset:** 
+
+- `201` - Myynti luotu
+- `400`- Puuttuvaa tai virheellistä dataa
+
+**Vaadittu:**
+
+User: ei null ja userid:tä vastaava User löytyy
+
 **Esimerkkipyyntö:**
 
 ```
@@ -422,6 +435,17 @@ id = poistettavan käyttäjän tunniste (Long)
 
 **Metodi:** `PUT`
 
+**Vastaukset:**
+
+- `200`- Myyntiä muokattu
+- `400`- Puuttuvaa tai virheellistä dataa
+- `404`- Myyntiä ei ole olemassa
+
+**Vaadittu:**
+
+{id}: tällä id:llä oleva Sale on olemassa
+User: ei null ja userid:tä vastaava User löytyy
+
 **Esimerkkipyyntö:**
 
 ```
@@ -429,6 +453,17 @@ id = poistettavan käyttäjän tunniste (Long)
     "price": 35
 }
 ```
+
+### Delete Sale
+
+**URL:** `{baseurl}/sales/{id}``
+
+**Metodi:** `DELETE``
+
+**Vastaukset:**
+
+- `204`- Myynti poistettu
+- `404`- Myyntiä ei ole olemassa
 
 ## Cost
 
