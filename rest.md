@@ -96,9 +96,14 @@ id = poistettavan tapahtuman tunniste (Long)
 
 ### Get Ticket
 
-**URL:** `{baseurl}/tickets`
+**URL:** `{baseurl}/tickets` & `{baseurl}/tickets/{id}`
 
 **Metodi:** `GET`
+
+**Vastaukset:**
+
+- `200` - Lippu tai liput haettu
+- `404` - Lippua ei löydy (vain id:llä haku)
 
 **Esimerkkituloste:**
 
@@ -143,6 +148,11 @@ id = poistettavan tapahtuman tunniste (Long)
 
 **Metodi:** `POST`
 
+**Vastaukset:**
+
+- `201` - Lippu luotu
+- `400` - Puuttuvaa tai väärää dataa
+
 **Esimerkkipyyntö:**
 
 ```
@@ -165,6 +175,12 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Metodi:** `PUT`
 
+**Vastaukset:**
+
+- `201` - Lippu luotu tai muokattu
+- `400` - Puuttuvaa tai väärää dataa
+- `404` - Lippua ei ole olemassa
+
 **Esimerkkipyyntö:**
 
 ```
@@ -182,8 +198,18 @@ Cost: ei null ja costid:tä vastaava Cost löytyy
 
 Sale: ei null ja saleid:tä vastaava Sale löytyy
 
+{id}: tällä id:llä oleva lippu on olemassa
 
+### Delete Ticket
 
+**URL:** `{baseurl}/tickets/{id}`
+
+**Metodi:** `DELETE`
+
+**Vastaukset:**
+
+- `200` - Lippu tuhottu
+- `404` - Lippua ei ole olemassa
 
 ## TicketType
 
