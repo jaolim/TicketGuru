@@ -96,9 +96,14 @@ id = poistettavan tapahtuman tunniste (Long)
 
 ### Get Ticket
 
-**URL:** `{baseurl}/tickets`
+**URL:** `{baseurl}/tickets` & `{baseurl}/tickets/{id}`
 
 **Metodi:** `GET`
+
+**Vastaukset:**
+
+- `200` - Lippu tai liput haettu
+- `404` - Lippua ei löydy (vain id:llä haku)
 
 **Esimerkkituloste:**
 
@@ -143,6 +148,11 @@ id = poistettavan tapahtuman tunniste (Long)
 
 **Metodi:** `POST`
 
+**Vastaukset:**
+
+- `201` - Lippu luotu
+- `400` - Puuttuvaa tai väärää dataa
+
 **Esimerkkipyyntö:**
 
 ```
@@ -165,6 +175,12 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Metodi:** `PUT`
 
+**Vastaukset:**
+
+- `201` - Lippua muokattu
+- `400` - Puuttuvaa tai väärää dataa
+- `404` - Lippua ei ole olemassa
+
 **Esimerkkipyyntö:**
 
 ```
@@ -182,8 +198,18 @@ Cost: ei null ja costid:tä vastaava Cost löytyy
 
 Sale: ei null ja saleid:tä vastaava Sale löytyy
 
+{id}: tällä id:llä oleva lippu on olemassa
 
+### Delete Ticket
 
+**URL:** `{baseurl}/tickets/{id}`
+
+**Metodi:** `DELETE`
+
+**Vastaukset:**
+
+- `200` - Lippu tuhottu
+- `404` - Lippua ei ole olemassa
 
 ## TicketType
 
@@ -202,6 +228,11 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 **URL:** `{baseurl}/tickettypes`
 
 **Metodi:** `GET`
+
+**Vastaukset:**
+
+- `200` - Lipputyyppi tai lipputyypit haettu
+- `404` - Lipputyyppiä ei ole (vain id:llä haku)
 
 **Esimerkkituloste:**
 
@@ -226,6 +257,15 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Metodi:** `POST`
 
+**Vastaukset:**
+
+- `201` - Lipputyyppi lisätty
+- `400` - Puuttuvaa tai väärää dataa
+
+**Vaadittu:**
+
+name: ei tyhjä
+
 **Esimerkkipyyntö:**
 
 ```
@@ -235,11 +275,30 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 }
 ```
 
+### Delete TicketType
+
+**URL:** `{baseurl}/tickettypes/{id}`
+
+**Metodi:** `DELETE`
+
+**Vastaukset:**
+
+- `200` - Lipputyyppi tuhottu
+- `404` - Lipputyyppiä ei ole olemassa
+
+
+
 ### Put TicketType
 
 **URL:** `{baseurl}/tickettypes/{id}`
 
 **Metodi:** `PUT`
+
+**Vastaukset:**
+
+- `201` - Lipputyyppiä muokattu
+- `400` - Puuttuvaa tai väärää dataa
+- `404` - Lippua ei ole olemassa
 
 **Esimerkkipyyntö:**
 
@@ -249,6 +308,9 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
     "note": "new type note"
 }
 ```
+**Vaadittu:**
+
+name: ei tyhjä
 
 ## AppUser
 
@@ -336,11 +398,15 @@ id = poistettavan käyttäjän tunniste (Long)
 | PUT | {baseurl}/sales/{id} | Muokkaa olemassa olevaa myyntiä (päivittää hinnan) |
 | DELETE | {baseurl}/sales/{id} | Poistaa tietyn myynnin |
 
-### Get Sales
+### Get Sale
 
-**URL:** `{baseurl}/sales`
+**URL:** `{baseurl}/sales` & `{baseurl}/sales/{id}`
 
 **Metodi:** `GET`
+
+**Vastaukset:**
+
+- `200`- Myyntien haku onnistui
 
 **Esimerkkituloste:**
 
@@ -375,6 +441,15 @@ id = poistettavan käyttäjän tunniste (Long)
 
 **Metodi:** `POST`
 
+**Vastaukset:** 
+
+- `201` - Myynti luotu
+- `400`- Puuttuvaa tai virheellistä dataa
+
+**Vaadittu:**
+
+User: ei null ja userid:tä vastaava User löytyy
+
 **Esimerkkipyyntö:**
 
 ```
@@ -396,6 +471,17 @@ id = poistettavan käyttäjän tunniste (Long)
 
 **Metodi:** `PUT`
 
+**Vastaukset:**
+
+- `200`- Myyntiä muokattu
+- `400`- Puuttuvaa tai virheellistä dataa
+- `404`- Myyntiä ei ole olemassa
+
+**Vaadittu:**
+
+{id}: tällä id:llä oleva Sale on olemassa
+User: ei null ja userid:tä vastaava User löytyy
+
 **Esimerkkipyyntö:**
 
 ```
@@ -403,6 +489,17 @@ id = poistettavan käyttäjän tunniste (Long)
     "price": 35
 }
 ```
+
+### Delete Sale
+
+**URL:** `{baseurl}/sales/{id}``
+
+**Metodi:** `DELETE``
+
+**Vastaukset:**
+
+- `204`- Myynti poistettu
+- `404`- Myyntiä ei ole olemassa
 
 ## Cost
 
@@ -422,6 +519,11 @@ id = poistettavan käyttäjän tunniste (Long)
 
 **Metodi:** `GET`
 
+**Vastaukset:**
+
+- `200` - haku onnistui
+- `400` - hintaa ei ole olemassa (vain id:llä haettaessa)
+
 **Esimerkkituloste:**
 
 ```
@@ -430,19 +532,34 @@ id = poistettavan käyttäjän tunniste (Long)
         "costid": 1,
         "price": 20.5,
         "type": {
-            "name": "testi",
+            "name": "Aikuinen",
             "note": null,
             "typeid": 1
-        }
+        },
+        "eventId": null,
+        "ticketTypeId": null
     },
     {
         "costid": 2,
         "price": 7.99,
         "type": {
-            "name": "testi 2",
+            "name": "Eläkeläinen",
             "note": null,
             "typeid": 2
-        }
+        },
+        "eventId": null,
+        "ticketTypeId": null
+    },
+    {
+        "costid": 3,
+        "price": 25.5,
+        "type": {
+            "name": "Aikuinen",
+            "note": null,
+            "typeid": 1
+        },
+        "eventId": null,
+        "ticketTypeId": null
     }
 ]
 ```
@@ -453,16 +570,18 @@ id = poistettavan käyttäjän tunniste (Long)
 
 **Metodi:** `POST`
 
+**Vastaukset:**
+
+- `201` - luonti onnistui
+- `400` - puuttuvaa tai virheellistä dataa
+
 **Esimerkkipyyntö:**
 
 ```
 {
-    "price": 27.5,
-    "type": {
-        "name": "Aikuinen",
-        "note": null,
-        "typeid": 1
-    }
+  "price": 30.0,
+  "eventId": 2,
+  "ticketTypeId": 1
 }
 ```
 
@@ -472,11 +591,19 @@ id = poistettavan käyttäjän tunniste (Long)
 
 **Metodi:** `PUT`
 
+**Vastaukset:**
+
+- `201` - muokkaus onnistui
+- `400` - puuttuvaa tai virheellistä dataa (eventId tai ticketTypeId)
+- `404` - muokattavaa hintaa ei löytynyt
+
 **Esimerkkipyyntö:**
 
 ```
 {
-    "price"; 22.0
+  "price": 42.0,
+  "eventId": 2,
+  "ticketTypeId": 2
 }
 ```
 ### Delete Cost
@@ -484,3 +611,8 @@ id = poistettavan käyttäjän tunniste (Long)
 **URL:** `{baseurl}/costs/{id}`
 
 **Metodi:** `DELETE`
+
+**Vastaukset:**
+
+- `200` - hinta poistettu
+- `404` - hintaa ei löytynyt

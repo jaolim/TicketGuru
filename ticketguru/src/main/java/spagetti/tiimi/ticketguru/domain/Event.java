@@ -6,21 +6,34 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long eventid;
+    
+    @NotBlank(message = "Event name is required")
+    @Size(max = 200)
     private String name;
+    
+    @NotBlank(message = "Venue is required")
+    @Size(max = 200)
     private String venue;
+
+    @NotNull(message = "Start time is required")
     private LocalDateTime start;
 
     @JsonIgnoreProperties("event")

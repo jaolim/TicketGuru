@@ -32,7 +32,9 @@ public class TicketguruApplication {
 	}
 
 	@Bean
-	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository, AppUserRepository urepository, CostRepository crepository, SaleRepository srepository, TicketTypeRepository trepository) {
+	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository,
+			AppUserRepository urepository, CostRepository crepository, SaleRepository srepository,
+			TicketTypeRepository trepository) {
 
 		return (args) -> {
 			log.info("Adding some test books");
@@ -43,18 +45,22 @@ public class TicketguruApplication {
 			Event event1 = new Event("Event1", "Venue1", testTimeNow);
 			Event event2 = new Event("Event2", "Venue2", testTimeStatic);
 			TicketType type1 = new TicketType("Aikuinen");
-			TicketType type2 = new TicketType("Eläkeläinen");
+			TicketType type2 = new TicketType("Eläkeläinen", "Tarkista eläkeläisyys tarvittaessa");
 
+			AppUser user1 = new AppUser("firstname1", "lastname1");
+			AppUser user2 = new AppUser("firstname2", "lastname2");
 			Cost cost1 = new Cost(type1, 20.50, event1);
 			Cost cost2 = new Cost(type2, 7.99, event2);
 			Cost cost3 = new Cost(type1, 25.50, event2);
-			Ticket ticket1 = new Ticket("test1", cost1);
-			Ticket ticket2 = new Ticket("test2", cost2);
-			Ticket ticket3 = new Ticket("test3");
-			AppUser user1 = new AppUser("firstname1", "lastname1");
-			AppUser user2 = new AppUser("firstname2", "lastname2");
-			Sale sale1 = new Sale(user1, testTimeNow);
-			Sale sale2 = new Sale(user2, testTimeNow);
+			Sale sale1 = new Sale(user1, testTimeNow, (cost1.getPrice() + cost2.getPrice()));
+			Sale sale2 = new Sale(user2, testTimeStatic, cost3.getPrice()*2 + cost1.getPrice()*3);
+			Ticket ticket1 = new Ticket("test1", cost1, sale1);
+			Ticket ticket2 = new Ticket("test2", cost2, sale1);
+			Ticket ticket3 = new Ticket("test3", cost1, sale2);
+			Ticket ticket4 = new Ticket("test3", cost3, sale2);
+			Ticket ticket5 = new Ticket("test3", cost3, sale2);
+			Ticket ticket6 = new Ticket("test3", cost1, sale2);
+			Ticket ticket7 = new Ticket("test3", cost1, sale2);
 			trepository.save(type1);
 			trepository.save(type2);
 
@@ -69,17 +75,17 @@ public class TicketguruApplication {
 			crepository.save(cost2);
 			crepository.save(cost3);
 
+			srepository.save(sale1);
+			srepository.save(sale2);
+
 			repository.save(ticket1);
 			repository.save(ticket2);
 			repository.save(ticket3);
-			repository.save(new Ticket("test4"));
-			repository.save(new Ticket("Test 5"));
-			repository.save(new Ticket("Test 6"));
-			repository.save(new Ticket("Test 7"));
+			repository.save(ticket4);
+			repository.save(ticket5);
+			repository.save(ticket6);
+			repository.save(ticket7);
 
-			srepository.save(sale1);
-			srepository.save(sale2);
-			
 			log.info("fetch tickets");
 			for (Ticket ticket : repository.findAll()) {
 				log.info(ticket.toString());

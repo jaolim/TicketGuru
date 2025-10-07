@@ -38,6 +38,13 @@ public class Ticket {
         this.redeemed = false;
     }
 
+        public Ticket(String name, Cost cost, Sale sale) {
+        this.cost = cost;
+        this.name = name;
+        this.sale = sale;
+        this.redeemed = false;
+    }
+
     public String getName() {
         return name;
     }

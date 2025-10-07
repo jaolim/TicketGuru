@@ -1,8 +1,9 @@
 package spagetti.tiimi.ticketguru.domain;
 
-
 import java.util.List;
 
+import jakarta.persistence.Transient;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,7 +24,7 @@ public class Cost {
     private Long costid;
     @ManyToOne
     @JoinColumn(name = "eventid")
-    @JsonBackReference   
+    @JsonBackReference
     private Event event;
 
     @JsonIgnore
@@ -32,6 +33,7 @@ public class Cost {
 
     @ManyToOne
     @JoinColumn(name = "ticketTypeid")
+    @JsonIgnore
     private TicketType ticketType;
 
     private Double price;
@@ -81,6 +83,30 @@ public class Cost {
     @Override
     public String toString() {
         return "Type: " + ticketType + ", Price: " + price + ", " + event;
+    }
+
+    @Transient
+    @JsonProperty("eventId")
+    private Long eventId;
+
+    @Transient
+    @JsonProperty("ticketTypeId")
+    private Long ticketTypeId;
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public Long getTicketTypeId() {
+        return ticketTypeId;
+    }
+
+    public void setTicketTypeId(Long ticketTypeId) {
+        this.ticketTypeId = ticketTypeId;
     }
 
 }
