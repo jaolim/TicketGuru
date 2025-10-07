@@ -23,7 +23,7 @@ public class Sale {
 
     @ManyToOne
     @JoinColumn(name = "userid")
-    @JsonIgnore
+    //@JsonIgnore
     private AppUser user;
     private double price;
     private LocalDateTime time;
