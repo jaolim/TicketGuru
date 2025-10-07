@@ -483,6 +483,11 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Metodi:** `GET`
 
+**Vastaukset:**
+
+- `200` - haku onnistui
+- `400` - hintaa ei ole olemassa (vain id:llä haettaessa)
+
 **Esimerkkituloste:**
 
 ```
@@ -491,19 +496,34 @@ User: ei null ja userid:tä vastaava User löytyy
         "costid": 1,
         "price": 20.5,
         "type": {
-            "name": "testi",
+            "name": "Aikuinen",
             "note": null,
             "typeid": 1
-        }
+        },
+        "eventId": null,
+        "ticketTypeId": null
     },
     {
         "costid": 2,
         "price": 7.99,
         "type": {
-            "name": "testi 2",
+            "name": "Eläkeläinen",
             "note": null,
             "typeid": 2
-        }
+        },
+        "eventId": null,
+        "ticketTypeId": null
+    },
+    {
+        "costid": 3,
+        "price": 25.5,
+        "type": {
+            "name": "Aikuinen",
+            "note": null,
+            "typeid": 1
+        },
+        "eventId": null,
+        "ticketTypeId": null
     }
 ]
 ```
@@ -514,16 +534,18 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Metodi:** `POST`
 
+**Vastaukset:**
+
+- `201` - luonti onnistui
+- `400` - puuttuvaa tai virheellistä dataa
+
 **Esimerkkipyyntö:**
 
 ```
 {
-    "price": 27.5,
-    "type": {
-        "name": "Aikuinen",
-        "note": null,
-        "typeid": 1
-    }
+  "price": 30.0,
+  "eventId": 2,
+  "ticketTypeId": 1
 }
 ```
 
@@ -533,11 +555,19 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Metodi:** `PUT`
 
+**Vastaukset:**
+
+- `201` - muokkaus onnistui
+- `400` - puuttuvaa tai virheellistä dataa (eventId tai ticketTypeId)
+- `404` - muokattavaa hintaa ei löytynyt
+
 **Esimerkkipyyntö:**
 
 ```
 {
-    "price"; 22.0
+  "price": 42.0,
+  "eventId": 2,
+  "ticketTypeId": 2
 }
 ```
 ### Delete Cost
@@ -545,3 +575,8 @@ User: ei null ja userid:tä vastaava User löytyy
 **URL:** `{baseurl}/costs/{id}`
 
 **Metodi:** `DELETE`
+
+**Vastaukset:**
+
+- `200` - hinta poistettu
+- `404` - hintaa ei löytynyt
