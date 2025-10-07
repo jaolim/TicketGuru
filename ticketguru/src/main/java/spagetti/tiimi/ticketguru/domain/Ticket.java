@@ -1,5 +1,7 @@
 package spagetti.tiimi.ticketguru.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +19,7 @@ public class Ticket {
     @JoinColumn(name = "costid")
     private Cost cost;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "saleid")
     private Sale sale;
@@ -35,6 +38,13 @@ public class Ticket {
     public Ticket(String name, Cost cost) {
         this.cost = cost;
         this.name = name;
+        this.redeemed = false;
+    }
+
+        public Ticket(String name, Cost cost, Sale sale) {
+        this.cost = cost;
+        this.name = name;
+        this.sale = sale;
         this.redeemed = false;
     }
 

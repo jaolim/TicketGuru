@@ -1,6 +1,5 @@
 package spagetti.tiimi.ticketguru.domain;
 
-
 import java.util.List;
 
 import jakarta.persistence.Transient;
@@ -25,7 +24,7 @@ public class Cost {
     private Long costid;
     @ManyToOne
     @JoinColumn(name = "eventid")
-    @JsonBackReference   
+    //@JsonBackReference
     private Event event;
 
     @JsonIgnore
@@ -34,6 +33,7 @@ public class Cost {
 
     @ManyToOne
     @JoinColumn(name = "ticketTypeid")
+    @JsonIgnore
     private TicketType ticketType;
 
     private Double price;
@@ -108,6 +108,5 @@ public class Cost {
     public void setTicketTypeId(Long ticketTypeId) {
         this.ticketTypeId = ticketTypeId;
     }
-
 
 }
