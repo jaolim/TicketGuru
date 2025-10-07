@@ -23,11 +23,13 @@ public class Sale {
 
     @ManyToOne
     @JoinColumn(name = "userid")
+    @JsonIgnore
     private AppUser user;
     private double price;
     private LocalDateTime time;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sale")
+    @JsonIgnore
     private List<Ticket> tickets;
 
 

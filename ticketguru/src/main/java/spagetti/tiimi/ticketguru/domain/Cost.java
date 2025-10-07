@@ -24,7 +24,7 @@ public class Cost {
     private Long costid;
     @ManyToOne
     @JoinColumn(name = "eventid")
-    //@JsonBackReference
+    @JsonBackReference
     private Event event;
 
     @JsonIgnore

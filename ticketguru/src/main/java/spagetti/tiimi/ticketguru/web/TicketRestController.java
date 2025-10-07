@@ -57,9 +57,10 @@ public class TicketRestController {
             throw new BadRequestException("Do not include ticketid");
         } else if (ticket.getCost() == null || !crepository.findById(ticket.getCost().getCostid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing Cost ID");
-        } else if (ticket.getSale() == null || !srepository.findById(ticket.getSale().getSaleid()).isPresent()) {
+         } else if (ticket.getSale() == null || !srepository.findById(ticket.getSale().getSaleid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing Sale ID");
         }
+        
         return repository.save(ticket);
     }
 

@@ -19,7 +19,6 @@ public class Ticket {
     @JoinColumn(name = "costid")
     private Cost cost;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "saleid")
     private Sale sale;

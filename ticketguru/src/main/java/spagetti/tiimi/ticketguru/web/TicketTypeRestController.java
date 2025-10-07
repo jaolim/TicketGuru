@@ -48,7 +48,7 @@ public class TicketTypeRestController {
         if (ticketType.getTypeid() != null) {
             throw new BadRequestException("Do not include typeid");
         }
-        if (ticketType.getName().isEmpty()) {
+        if (ticketType.getName() == null || ticketType.getName().isEmpty()) {
             throw new BadRequestException("TicketType name is missing");
         }
         return trepository.save(ticketType);
