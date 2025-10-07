@@ -7,16 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 public class EventRestController {
@@ -55,9 +55,11 @@ public class EventRestController {
     @PutMapping("events/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Event> editEvent(@PathVariable Long id, @Valid @RequestBody Event updatedEvent) {
+
         if (!erepository.findById(id).isPresent()) {
-            throw new NotFoundException("Ticket does not exist");
+            throw new NotFoundException("Event does not exist");
         }
+
         return erepository.findById(id)
                 .map(event -> {
                     event.setName(updatedEvent.getName());
