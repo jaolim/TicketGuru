@@ -229,6 +229,11 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Metodi:** `GET`
 
+**Vastaukset:**
+
+- `200` - Lipputyyppi tai lipputyypit haettu
+- `404` - Lipputyyppiä ei ole (vain id:llä haku)
+
 **Esimerkkituloste:**
 
 ```
@@ -252,6 +257,15 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Metodi:** `POST`
 
+**Vastaukset:**
+
+- `201` - Lipputyyppi lisätty
+- `400` - Puuttuvaa tai väärää dataa
+
+**Vaadittu:**
+
+name: ei tyhjä
+
 **Esimerkkipyyntö:**
 
 ```
@@ -261,11 +275,30 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 }
 ```
 
+### Delete TicketType
+
+**URL:** `{baseurl}/tickettypes/{id}`
+
+**Metodi:** `DELETE`
+
+**Vastaukset:**
+
+- `200` - Lipputyyppi tuhottu
+- `404` - Lipputyyppiä ei ole olemassa
+
+
+
 ### Put TicketType
 
 **URL:** `{baseurl}/tickettypes/{id}`
 
 **Metodi:** `PUT`
+
+**Vastaukset:**
+
+- `201` - Lipputyyppiä muokattu
+- `400` - Puuttuvaa tai väärää dataa
+- `404` - Lippua ei ole olemassa
 
 **Esimerkkipyyntö:**
 
@@ -275,6 +308,9 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
     "note": "new type note"
 }
 ```
+**Vaadittu:**
+
+name: ei tyhjä
 
 ## AppUser
 
