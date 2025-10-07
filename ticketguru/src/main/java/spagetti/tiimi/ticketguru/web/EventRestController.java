@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,32 +28,36 @@ public class EventRestController {
     }
 
     @GetMapping(value = "/events")
-    @ResponseStatus(HttpStatus.OK)
     public List<Event> eventsRest() {
         return (List<Event>) erepository.findAll();
     }
 
     @GetMapping("/events/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Optional<Event> getEventRest(@PathVariable Long id) {
-        return erepository.findById(id);
+    public Event getEvent(@PathVariable Long id) {
+        return erepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Event not found"));
     }
 
     @PostMapping("/events")
     @ResponseStatus(HttpStatus.CREATED)
-    public Event newEvent(@RequestBody Event event) {
+    public Event newEvent(@Valid @RequestBody Event event) {
         return erepository.save(event);
     }
 
     @DeleteMapping("events/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public void deleteEvent(@PathVariable Long id) {
+        if (!erepository.findById(id).isPresent()) {
+            throw new NotFoundException("Event does not exist");
+        }
         erepository.deleteById(id);
     }
 
     @PutMapping("events/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Event> editEvent(@PathVariable Long id, @RequestBody Event updatedEvent) {
+    public Optional<Event> editEvent(@PathVariable Long id, @Valid @RequestBody Event updatedEvent) {
+        if (!erepository.findById(id).isPresent()) {
+            throw new NotFoundException("Ticket does not exist");
+        }
         return erepository.findById(id)
                 .map(event -> {
                     event.setName(updatedEvent.getName());

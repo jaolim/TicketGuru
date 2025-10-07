@@ -23,15 +23,15 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long eventid;
     
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "Event name is required")
+    @Size(max = 200)
     private String name;
     
-    @NotBlank
+    @NotBlank(message = "Venue is required")
     @Size(max = 200)
     private String venue;
 
-    @NotNull
+    @NotNull(message = "Start time is required")
     private LocalDateTime start;
 
     @JsonIgnoreProperties("event")
