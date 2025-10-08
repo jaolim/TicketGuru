@@ -22,6 +22,11 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
 **Metodi:** `GET`
 
+**Vastaukset:**
+
+- `200` - Tapahtuma tai tapahtumat haettu
+- `404` - Tapahtumaa ei löydy
+
 **Esimerkkituloste:**
 
 ```
@@ -47,6 +52,11 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
 **Metodi:** `POST`
 
+**Vastaukset:**
+
+- `201` - Tapahtuma luotu
+- `400` - Puuttuvaa tai väärää dataa
+
 **Esimerkkipyyntö:**
 
 ```
@@ -63,6 +73,12 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
 **Metodi:** `PUT`
 
+**Vastaukset:**
+
+- `201` - Tapahtuma luotu
+- `400` - Puuttuvaa tai väärää dataa
+- `404` - Tapahtumaa ei ole olemassa
+
 **Esimerkkipyyntö:**
 
 ```
@@ -78,6 +94,11 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 **URL:** `{baseurl}/events/{id}`
 
 **Metodi:** `DELETE`
+
+**Vastaukset:**
+
+- `200` - Tapahtuma tuhottu
+- `404` - Tapahtumaa ei ole olemassa
 
 **Path variable:** 
 id = poistettavan tapahtuman tunniste (Long)
