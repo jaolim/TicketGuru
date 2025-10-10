@@ -3,27 +3,24 @@ package spagetti.tiimi.ticketguru.web;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.Cost;
 import spagetti.tiimi.ticketguru.domain.CostRepository;
+import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
 import spagetti.tiimi.ticketguru.domain.TicketType;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
