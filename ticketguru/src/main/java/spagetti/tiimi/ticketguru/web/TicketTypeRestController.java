@@ -45,7 +45,7 @@ public class TicketTypeRestController {
         return trepository.findById(id);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/tickettypes")
     @ResponseStatus(HttpStatus.CREATED)
     public TicketType newTicketTypeRest(@RequestBody TicketType ticketType) {

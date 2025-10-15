@@ -91,6 +91,10 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 Lisätietoa REST API -päätepisteistä: [katso dokumentaatio](rest.md)
 
+### Autentikointi
+
+#### Basic Auth
+
 Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
 ratkaisut, esim.
 

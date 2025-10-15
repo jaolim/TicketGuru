@@ -4,6 +4,12 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
 **Dev base url:** `http://locahost:8080`
 
+## Autenkikaatio
+
+**Basic Auth:**
+
+Salasana ja käyttäjätunnus luoetaan pyynnöstä käyttäen *HTTP basic access authenticatioinia*.
+
 ## Events
 
 | Metodi | URL | Kuvaus |
@@ -14,17 +20,19 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 | PUT | {baseurl}/events/{id} | Muokkaa olemassa olevaa tapahtumaa |
 | DELETE | {baseurl}/events/{id} | Poistaa tietyn tapahtuman |
 
-
-
 ### Get Events
 
 **URL:** `{baseurl}/events`
 
 **Metodi:** `GET`
 
+**Roolit:** `USER` & `ADMIN`
+
 **Vastaukset:**
 
 - `200` - Tapahtuma tai tapahtumat haettu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Tapahtumaa ei löydy
 
 **Esimerkkituloste:**
@@ -52,10 +60,14 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
 **Metodi:** `POST`
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `201` - Tapahtuma luotu
 - `400` - Puuttuvaa tai väärää dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 
 **Esimerkkipyyntö:**
 
@@ -73,10 +85,14 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
 **Metodi:** `PUT`
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `201` - Tapahtuma luotu
 - `400` - Puuttuvaa tai väärää dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Tapahtumaa ei ole olemassa
 
 **Esimerkkipyyntö:**
@@ -95,9 +111,13 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
 **Metodi:** `DELETE`
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `200` - Tapahtuma tuhottu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Tapahtumaa ei ole olemassa
 
 **Path variable:** 
@@ -121,9 +141,13 @@ id = poistettavan tapahtuman tunniste (Long)
 
 **Metodi:** `GET`
 
+**Roolit:** `USER` & `ADMIN`
+
 **Vastaukset:**
 
 - `200` - Lippu tai liput haettu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Lippua ei löydy (vain id:llä haku)
 
 **Esimerkkituloste:**
@@ -169,9 +193,13 @@ id = poistettavan tapahtuman tunniste (Long)
 
 **Metodi:** `POST`
 
+**Roolit:** `USER` & `ADMIN`
+
 **Vastaukset:**
 
 - `201` - Lippu luotu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `400` - Puuttuvaa tai väärää dataa
 
 **Esimerkkipyyntö:**
@@ -196,10 +224,14 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Metodi:** `PUT`
 
+**Roolit:** `USER` & `ADMIN`
+
 **Vastaukset:**
 
 - `201` - Lippua muokattu
 - `400` - Puuttuvaa tai väärää dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Lippua ei ole olemassa
 
 **Esimerkkipyyntö:**
@@ -227,9 +259,13 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Metodi:** `DELETE`
 
+**Roolit:** `USER` & `ADMIN`
+
 **Vastaukset:**
 
 - `200` - Lippu tuhottu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Lippua ei ole olemassa
 
 ## TicketType
@@ -250,9 +286,13 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Metodi:** `GET`
 
+**Roolit:** `USER` & `ADMIN`
+
 **Vastaukset:**
 
 - `200` - Lipputyyppi tai lipputyypit haettu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Lipputyyppiä ei ole (vain id:llä haku)
 
 **Esimerkkituloste:**
@@ -278,10 +318,14 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 **Metodi:** `POST`
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `201` - Lipputyyppi lisätty
 - `400` - Puuttuvaa tai väärää dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 
 **Vaadittu:**
 
@@ -302,9 +346,13 @@ name: ei tyhjä
 
 **Metodi:** `DELETE`
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `200` - Lipputyyppi tuhottu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Lipputyyppiä ei ole olemassa
 
 
@@ -315,10 +363,14 @@ name: ei tyhjä
 
 **Metodi:** `PUT`
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `201` - Lipputyyppiä muokattu
 - `400` - Puuttuvaa tai väärää dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Lippua ei ole olemassa
 
 **Esimerkkipyyntö:**
@@ -351,6 +403,8 @@ name: ei tyhjä
 
 **Metodi:** `GET`
 
+**Roolit:** `ADMIN`
+
 **Esimerkkituloste:**
 
 ```
@@ -374,6 +428,8 @@ name: ei tyhjä
 
 **Metodi:** `POST`
 
+**Roolit:** `ADMIN`
+
 **Esimerkkipyyntö:**
 
 ```
@@ -389,6 +445,8 @@ name: ei tyhjä
 
 **Metodi:** `PUT`
 
+**Roolit:** `ADMIN`
+
 **Esimerkkipyyntö:**
 
 ```
@@ -403,6 +461,8 @@ name: ei tyhjä
 **URL:** `{baseurl}/users/{id}`
 
 **Metodi:** `DELETE`
+
+**Roolit:** `ADMIN`
 
 **Path variable:** 
 id = poistettavan käyttäjän tunniste (Long)
@@ -425,9 +485,13 @@ id = poistettavan käyttäjän tunniste (Long)
 
 **Metodi:** `GET`
 
+**Roolit:** `User` & `ADMIN`
+
 **Vastaukset:**
 
 - `200`- Myyntien haku onnistui
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 
 **Esimerkkituloste:**
 
@@ -462,10 +526,14 @@ id = poistettavan käyttäjän tunniste (Long)
 
 **Metodi:** `POST`
 
+**Roolit:** `User` & `ADMIN`
+
 **Vastaukset:** 
 
 - `201` - Myynti luotu
 - `400`- Puuttuvaa tai virheellistä dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 
 **Vaadittu:**
 
@@ -492,10 +560,14 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Metodi:** `PUT`
 
+**Roolit:** `User` & `ADMIN`
+
 **Vastaukset:**
 
 - `200`- Myyntiä muokattu
 - `400`- Puuttuvaa tai virheellistä dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404`- Myyntiä ei ole olemassa
 
 **Vaadittu:**
@@ -517,9 +589,13 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Metodi:** `DELETE``
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `204`- Myynti poistettu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404`- Myyntiä ei ole olemassa
 
 ## Cost
@@ -540,10 +616,14 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Metodi:** `GET`
 
+**Roolit:** `User` & `ADMIN`
+
 **Vastaukset:**
 
 - `200` - haku onnistui
 - `400` - hintaa ei ole olemassa (vain id:llä haettaessa)
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 
 **Esimerkkituloste:**
 
@@ -591,10 +671,14 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Metodi:** `POST`
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `201` - luonti onnistui
 - `400` - puuttuvaa tai virheellistä dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 
 **Esimerkkipyyntö:**
 
@@ -612,10 +696,14 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Metodi:** `PUT`
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `201` - muokkaus onnistui
 - `400` - puuttuvaa tai virheellistä dataa (eventId tai ticketTypeId)
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - muokattavaa hintaa ei löytynyt
 
 **Esimerkkipyyntö:**
@@ -633,7 +721,11 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Metodi:** `DELETE`
 
+**Roolit:** `ADMIN`
+
 **Vastaukset:**
 
 - `200` - hinta poistettu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
 - `404` - hintaa ei löytynyt
