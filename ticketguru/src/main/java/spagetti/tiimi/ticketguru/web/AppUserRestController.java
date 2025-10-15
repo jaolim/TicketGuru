@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +28,14 @@ public class AppUserRestController {
         this.urepository = urepository;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public List<AppUser> usersRest() {
         return (List<AppUser>) urepository.findAll();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<AppUser> getUser(@PathVariable Long id) {
@@ -43,6 +46,7 @@ public class AppUserRestController {
         return urepository.findById(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public AppUser newUser(@RequestBody AppUser user) {
@@ -52,6 +56,7 @@ public class AppUserRestController {
         return urepository.save(user);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable Long id) {
@@ -61,6 +66,7 @@ public class AppUserRestController {
         urepository.deleteById(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("users/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<AppUser> editUser(@PathVariable Long id, @RequestBody AppUser updatedUser) {

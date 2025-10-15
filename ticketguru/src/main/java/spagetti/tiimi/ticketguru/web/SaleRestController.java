@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +31,14 @@ public class SaleRestController {
         this.arepository = arepository;
     }
     
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sales")
     @ResponseStatus(HttpStatus.OK)
     public List<Sale> salesRest() {
         return (List<Sale>) srepository.findAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Sale> getSaleRest (@PathVariable Long id) {
@@ -46,6 +49,7 @@ public class SaleRestController {
         return srepository.findById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sales")
     @ResponseStatus(HttpStatus.CREATED)
     public Sale createSale(@RequestBody Sale sale) {
@@ -55,6 +59,7 @@ public class SaleRestController {
         return srepository.save(sale);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteSale(@PathVariable Long id) {
@@ -64,6 +69,7 @@ public class SaleRestController {
         srepository.deleteById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public Optional <Sale> editSaleRest(@PathVariable Long id, @RequestBody Sale updatedSale) {

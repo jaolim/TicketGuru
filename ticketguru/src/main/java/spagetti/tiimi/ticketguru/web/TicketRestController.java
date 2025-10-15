@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,12 +35,14 @@ public class TicketRestController {
         this.srepository = srepository;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/tickets")
     @ResponseStatus(HttpStatus.OK)
     public List<Ticket> ticketTypesRest() {
         return (List<Ticket>) repository.findAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/tickets/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Ticket> getTicketTypeRest(@PathVariable Long id) {
@@ -50,6 +53,7 @@ public class TicketRestController {
         return repository.findById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/tickets")
     @ResponseStatus(HttpStatus.CREATED)
     public Ticket newTicketTypeRest(@RequestBody Ticket ticket) {
@@ -64,6 +68,7 @@ public class TicketRestController {
         return repository.save(ticket);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @DeleteMapping("tickets/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTicketTypeRest(@PathVariable Long id) {
@@ -73,6 +78,7 @@ public class TicketRestController {
         repository.deleteById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("tickets/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Ticket> editTicketTypeRest(@PathVariable Long id, @RequestBody Ticket updatedTicket) {
