@@ -70,7 +70,7 @@ public class EventRestController {
                 .map(event -> {
                     event.setName(updatedEvent.getName());
                     event.setVenue(updatedEvent.getVenue());
-                    event.setStart(updatedEvent.getStart());
+                    event.setDate(updatedEvent.getDate());
                     return erepository.save(event);
                 });
     }
