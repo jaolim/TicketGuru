@@ -1,4 +1,4 @@
-package spagetti.tiimi.ticketguru.web;
+package spagetti.tiimi.ticketguru;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

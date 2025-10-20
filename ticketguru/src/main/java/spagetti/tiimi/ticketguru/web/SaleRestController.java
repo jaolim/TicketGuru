@@ -24,11 +24,11 @@ import spagetti.tiimi.ticketguru.domain.SaleRepository;
 public class SaleRestController {
 
     private SaleRepository srepository;
-    private AppUserRepository arepository;
+    private AppUserRepository urepository;
 
-    public SaleRestController (SaleRepository srepository, AppUserRepository arepository) {
+    public SaleRestController (SaleRepository srepository, AppUserRepository urepository) {
         this.srepository = srepository;
-        this.arepository = arepository;
+        this.urepository = urepository;
     }
     
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -53,7 +53,7 @@ public class SaleRestController {
     @PostMapping("/sales")
     @ResponseStatus(HttpStatus.CREATED)
     public Sale createSale(@RequestBody Sale sale) {
-        if (sale.getUser() == null || !arepository.findById(sale.getUser().getUserid()).isPresent()) {
+        if (sale.getUser() == null || !urepository.findById(sale.getUser().getUserid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing User");
         }
         return srepository.save(sale);
@@ -73,7 +73,7 @@ public class SaleRestController {
     @PutMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public Optional <Sale> editSaleRest(@PathVariable Long id, @RequestBody Sale updatedSale) {
-        if (updatedSale.getUser() == null || !arepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
+        if (updatedSale.getUser() == null || !urepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing User");
         } else if (!srepository.findById(id).isPresent()) {
             throw new NotFoundException("Sale does not exist");
