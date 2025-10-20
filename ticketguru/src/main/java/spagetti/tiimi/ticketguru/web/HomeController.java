@@ -52,10 +52,12 @@ public class HomeController {
         model.addAttribute("event", testEvent);
         model.addAttribute("user", testUser);
         model.addAttribute("sale", testSale);
+        model.addAttribute("tickettype", testType);
         model.addAttribute("tickets", repository.findAll());
         model.addAttribute("events", erepository.findAll());
         model.addAttribute("users", urepository.findAll());
         model.addAttribute("sales", srepository.findAll());
+        model.addAttribute("tickettypes", trepository.findAll());
         model.addAttribute("cost", testCost);
         model.addAttribute("tickets", repository.findAll());
         model.addAttribute("events", erepository.findAll());
