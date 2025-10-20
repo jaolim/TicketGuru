@@ -13,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class Sale {
@@ -25,7 +27,12 @@ public class Sale {
     @JoinColumn(name = "userid")
     //@JsonIgnore
     private AppUser user;
+
+    @NotNull(message = "price is required")
+    @Positive
     private double price;
+
+    @NotNull(message = "time of sale required")
     private LocalDateTime time;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sale")

@@ -3,6 +3,9 @@ package spagetti.tiimi.ticketguru.domain;
 import java.util.List;
 
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,6 +39,8 @@ public class Cost {
     @JsonIgnore
     private TicketType ticketType;
 
+    @NotNull(message = "price is required")
+    @Positive
     private Double price;
 
     public Cost() {

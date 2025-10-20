@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class TicketType {
@@ -22,7 +23,10 @@ public class TicketType {
     @JsonIgnore
     private List<Cost> costs;
 
-    private String name, note;
+    @NotBlank(message = "Name required")
+    private String name;
+
+    private String note;
 
     public TicketType() {
 

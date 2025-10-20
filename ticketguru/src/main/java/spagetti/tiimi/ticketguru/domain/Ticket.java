@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Ticket {
@@ -22,6 +23,8 @@ public class Ticket {
     private Sale sale;
 
     private Boolean redeemed;
+
+    @NotBlank(message = "ticket name required")
     private String name;
 
     public Ticket() {
