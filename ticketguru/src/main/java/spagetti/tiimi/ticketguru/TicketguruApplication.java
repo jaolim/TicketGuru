@@ -59,10 +59,10 @@ public class TicketguruApplication {
 			Ticket ticket1 = new Ticket("test1", cost1, sale1);
 			Ticket ticket2 = new Ticket("test2", cost2, sale1);
 			Ticket ticket3 = new Ticket("test3", cost1, sale2);
-			Ticket ticket4 = new Ticket("test3", cost3, sale2);
-			Ticket ticket5 = new Ticket("test3", cost3, sale2);
-			Ticket ticket6 = new Ticket("test3", cost1, sale2);
-			Ticket ticket7 = new Ticket("test3", cost1, sale2);
+			Ticket ticket4 = new Ticket("test4", cost3, sale2);
+			Ticket ticket5 = new Ticket("test5", cost3, sale2);
+			Ticket ticket6 = new Ticket("test6", cost1, sale2);
+			Ticket ticket7 = new Ticket("test7", cost1, sale2);
 			trepository.save(type1);
 			trepository.save(type2);
 

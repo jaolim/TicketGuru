@@ -31,14 +31,14 @@ public class TicketTypeRestController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/tickettypes")
     @ResponseStatus(HttpStatus.OK)
-    public List<TicketType> ticketTypesRest() {
+    public List<TicketType> getAllTicketTypes() {
         return (List<TicketType>) trepository.findAll();
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/tickettypes/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<TicketType> getTicketTypeRest(@PathVariable Long id) {
+    public Optional<TicketType> getTicketTypeById(@PathVariable Long id) {
         if (!trepository.findById(id).isPresent()) {
             throw new NotFoundException("TicketType does not exist");
         }
@@ -48,7 +48,7 @@ public class TicketTypeRestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/tickettypes")
     @ResponseStatus(HttpStatus.CREATED)
-    public TicketType newTicketTypeRest(@RequestBody TicketType ticketType) {
+    public TicketType createTicketType(@RequestBody TicketType ticketType) {
         if (ticketType.getTypeid() != null) {
             throw new BadRequestException("Do not include typeid");
         }
@@ -61,7 +61,7 @@ public class TicketTypeRestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("tickettypes/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTicketTypeRest(@PathVariable Long id) {
+    public void deleteTicketType(@PathVariable Long id) {
         if (!trepository.findById(id).isPresent()) {
             throw new NotFoundException("TicketType does not exist");
         }
@@ -71,7 +71,7 @@ public class TicketTypeRestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("tickettypes/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional<TicketType> editTicketTypeRest(@PathVariable Long id, @RequestBody TicketType updatedTicketType) {
+    public Optional<TicketType> editTicketType(@PathVariable Long id, @RequestBody TicketType updatedTicketType) {
         if (!trepository.findById(id).isPresent()) {
             throw new NotFoundException("TicketType does not exist");
         } else if (updatedTicketType.getName().isEmpty()) {

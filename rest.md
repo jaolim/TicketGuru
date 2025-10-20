@@ -4,11 +4,11 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
 **Dev base url:** `http://locahost:8080`
 
-## Autenkikaatio
+## Autentikaatio
 
 **Basic Auth:**
 
-Salasana ja käyttäjätunnus luoetaan pyynnöstä käyttäen *HTTP basic access authenticatioinia*.
+Salasana ja käyttäjätunnus luodaan pyynnöstä käyttäen *HTTP basic access authenticationia*.
 
 ## Events
 
@@ -564,16 +564,16 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Vastaukset:**
 
-- `200`- Myyntiä muokattu
-- `400`- Puuttuvaa tai virheellistä dataa
+- `200` - Myyntiä muokattu
+- `400` - Puuttuvaa tai virheellistä dataa
 - `401` - Käyttäjää ei ole tunnistettu
 - `403` - Käyttäjällä ei ole oikeuksia
-- `404`- Myyntiä ei ole olemassa
+- `404` - Myyntiä ei ole olemassa
 
 **Vaadittu:**
 
-{id}: tällä id:llä oleva Sale on olemassa
-User: ei null ja userid:tä vastaava User löytyy
+- {id}: tällä id:llä oleva Sale on olemassa
+- User: ei null ja userid:tä vastaava User löytyy
 
 **Esimerkkipyyntö:**
 
@@ -593,10 +593,10 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Vastaukset:**
 
-- `204`- Myynti poistettu
+- `204` - Myynti poistettu
 - `401` - Käyttäjää ei ole tunnistettu
 - `403` - Käyttäjällä ei ole oikeuksia
-- `404`- Myyntiä ei ole olemassa
+- `404` - Myyntiä ei ole olemassa
 
 ## Cost
 
@@ -620,8 +620,8 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Vastaukset:**
 
-- `200` - haku onnistui
-- `400` - hintaa ei ole olemassa (vain id:llä haettaessa)
+- `200` - Haku onnistui
+- `400` - Hintaa ei ole olemassa (vain id:llä haettaessa)
 - `401` - Käyttäjää ei ole tunnistettu
 - `403` - Käyttäjällä ei ole oikeuksia
 
@@ -675,8 +675,8 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Vastaukset:**
 
-- `201` - luonti onnistui
-- `400` - puuttuvaa tai virheellistä dataa
+- `201` - Luonti onnistui
+- `400` - Puuttuvaa tai virheellistä dataa
 - `401` - Käyttäjää ei ole tunnistettu
 - `403` - Käyttäjällä ei ole oikeuksia
 
@@ -700,11 +700,11 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Vastaukset:**
 
-- `201` - muokkaus onnistui
-- `400` - puuttuvaa tai virheellistä dataa (eventId tai ticketTypeId)
+- `201` - Muokkaus onnistui
+- `400` - Puuttuvaa tai virheellistä dataa (eventId tai ticketTypeId)
 - `401` - Käyttäjää ei ole tunnistettu
 - `403` - Käyttäjällä ei ole oikeuksia
-- `404` - muokattavaa hintaa ei löytynyt
+- `404` - Muokattavaa hintaa ei löytynyt
 
 **Esimerkkipyyntö:**
 
@@ -725,7 +725,7 @@ User: ei null ja userid:tä vastaava User löytyy
 
 **Vastaukset:**
 
-- `200` - hinta poistettu
+- `200` - Hinta poistettu
 - `401` - Käyttäjää ei ole tunnistettu
 - `403` - Käyttäjällä ei ole oikeuksia
-- `404` - hintaa ei löytynyt
+- `404` - Hintaa ei löytynyt

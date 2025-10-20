@@ -24,38 +24,38 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long eventid;
-    
+
     @NotBlank(message = "Event name is required")
     @Size(max = 200)
     private String name;
-    
+
     @NotBlank(message = "Venue is required")
     @Size(max = 200)
     private String venue;
 
     @NotNull(message = "Start time is required")
-    private LocalDateTime start;
+    private LocalDateTime date;
 
     @JsonIgnoreProperties("event")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "event")
     @JsonManagedReference
     private List<Cost> costs;
 
-    public Event () {
+    public Event() {
 
     }
 
-    public Event (String name, String venue, LocalDateTime start) {
+    public Event(String name, String venue, LocalDateTime date) {
         this.name = name;
         this.venue = venue;
-        this.start = start;
+        this.date = date;
     }
 
     public void setEventid(Long eventid) {
         this.eventid = eventid;
     }
 
-    public Long getEventid(){
+    public Long getEventid() {
         return eventid;
     }
 
@@ -63,24 +63,24 @@ public class Event {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void setVenue(String venue){
+    public void setVenue(String venue) {
         this.venue = venue;
     }
 
-    public String getVenue(){
+    public String getVenue() {
         return venue;
     }
 
-    public void setStart(LocalDateTime start) {
-        this.start = start;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
-    public LocalDateTime getStart() {
-        return start;
+    public LocalDateTime getDate() {
+        return date;
     }
 
     public List<Cost> getCosts() {
@@ -92,8 +92,8 @@ public class Event {
     }
 
     @Override
-    public String toString(){
-        return "Event: " + name + ", Venue: " + venue + ", Start: " + start;
+    public String toString() {
+        return "Event: " + name + ", Venue: " + venue + ", Date: " + date;
     }
 
 }

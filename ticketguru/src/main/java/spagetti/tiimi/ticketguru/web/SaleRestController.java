@@ -34,14 +34,14 @@ public class SaleRestController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sales")
     @ResponseStatus(HttpStatus.OK)
-    public List<Sale> salesRest() {
+    public List<Sale> getAllSales() {
         return (List<Sale>) srepository.findAll();
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Sale> getSaleRest (@PathVariable Long id) {
+    public Optional<Sale> getSaleById(@PathVariable Long id) {
         Optional<Sale> sale = srepository.findById(id);
         if (!sale.isPresent()) {
             throw new NotFoundException("Sale does not exist");
@@ -72,7 +72,7 @@ public class SaleRestController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional <Sale> editSaleRest(@PathVariable Long id, @RequestBody Sale updatedSale) {
+    public Optional <Sale> editSale(@PathVariable Long id, @RequestBody Sale updatedSale) {
         if (updatedSale.getUser() == null || !urepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing User");
         } else if (!srepository.findById(id).isPresent()) {
