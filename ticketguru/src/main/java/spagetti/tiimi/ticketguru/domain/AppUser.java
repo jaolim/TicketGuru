@@ -35,7 +35,7 @@ public class AppUser {
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
-    // TO DO: päätetään tehdäänkö erilliseen tauluun vai muuttujan avulla
+    @NotBlank
     private String userRole;
 
     public AppUser() {
@@ -100,8 +100,10 @@ public class AppUser {
 
     @Override
     public String toString() {
-        return "AppUser [userid=" + userid + ", username=" + username
-                + ", firstname=" + firstname + ", lastname=" + lastname + "]";
+        return "AppUser [userid=" + userid + ", username=" + username + ", passwordHash=" + passwordHash
+                + ", firstname=" + firstname + ", lastname=" + lastname + ", userRole=" + userRole + "]";
     }
+
+   
 
 }

@@ -28,11 +28,11 @@ public class Sale {
     //@JsonIgnore
     private AppUser user;
 
-    @NotNull(message = "price is required")
+    @NotNull(message = "Price is required")
     @Positive
     private double price;
 
-    @NotNull(message = "time of sale required")
+    @NotNull(message = "Time of sale required")
     private LocalDateTime time;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sale")

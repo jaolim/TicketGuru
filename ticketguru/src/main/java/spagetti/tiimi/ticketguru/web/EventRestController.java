@@ -30,13 +30,13 @@ public class EventRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping(value = "/events")
-    public List<Event> eventsRest() {
+    public List<Event> getAllEvents() {
         return (List<Event>) erepository.findAll();
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/events/{id}")
-    public Event getEvent(@PathVariable Long id) {
+    public Event getEventById(@PathVariable Long id) {
         return erepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Event not found"));
     }
@@ -44,7 +44,7 @@ public class EventRestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/events")
     @ResponseStatus(HttpStatus.CREATED)
-    public Event newEvent(@Valid @RequestBody Event event) {
+    public Event createEvent(@Valid @RequestBody Event event) {
         return erepository.save(event);
     }
 

@@ -14,6 +14,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ticketid;
+    
     @ManyToOne
     @JoinColumn(name = "costid")
     private Cost cost;
@@ -24,7 +25,7 @@ public class Ticket {
 
     private Boolean redeemed;
 
-    @NotBlank(message = "ticket name required")
+    @NotBlank(message = "Ticket name required")
     private String name;
 
     public Ticket() {

@@ -31,14 +31,14 @@ public class AppUserRestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
-    public List<AppUser> usersRest() {
+    public List<AppUser> getAllUsers() {
         return (List<AppUser>) urepository.findAll();
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<AppUser> getUser(@PathVariable Long id) {
+    public Optional<AppUser> getUserById(@PathVariable Long id) {
         Optional<AppUser> user = urepository.findById(id);
         if (!user.isPresent()) {
             throw new NotFoundException("User does not exist");
@@ -49,7 +49,7 @@ public class AppUserRestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public AppUser newUser(@RequestBody AppUser user) {
+    public AppUser createUser(@RequestBody AppUser user) {
         if (user.getFirstname() == null || user.getLastname() == null) {
             throw new BadRequestException("Missing required fields: firstname or lastname");
         }
