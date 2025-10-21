@@ -43,13 +43,13 @@ Salasana ja käyttäjätunnus luodaan pyynnöstä käyttäen *HTTP basic access 
         "eventid": 1,
         "name": "Event1",
         "venue": "Venue1",
-        "start": "2025-09-22T17:46:44.847199"
+        "date": "2025-09-22T17:46:44.847199"
     },
     {
         "eventid": 2,
         "name": "Event2",
         "venue": "Venue2",
-        "start": "1999-01-31T20:00:00"
+        "date": "1999-01-31T20:00:00"
     }
 ]
 ```
@@ -75,7 +75,7 @@ Salasana ja käyttäjätunnus luodaan pyynnöstä käyttäen *HTTP basic access 
 {
     "name": "event name",
     "venue": "venue name",
-    "start": "YYYY-MM-DDTHH:mm"
+    "date": "YYYY-MM-DDTHH:mm:ss"
 }
 ```
 
@@ -101,7 +101,7 @@ Salasana ja käyttäjätunnus luodaan pyynnöstä käyttäen *HTTP basic access 
 {
     "name": "event name",
     "venue": "edited venue",
-    "start": "YYYY-MM-DDTHH:mm"
+    "date": "YYYY-MM-DDTHH:mm:ss"
 }
 ```
 
