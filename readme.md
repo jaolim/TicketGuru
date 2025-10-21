@@ -58,38 +58,74 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 #### Selvitys
 
-**Ticket(PK: ticket_id, FK: sale_id, FK: cost_id, price, time, redeemed)**: Yksittäinen lippu tiettyyn tapahtumaan
+Pakolliset kentät merkitty tähdellä (*)
+
+**Ticket**: Yksittäinen lippu tiettyyn tapahtumaan
+- PK: ticket_id
+- FK: sale_id *
+- FK: cost_id *
+- time
 - redeemed: onko lippu vielä voimassa
 - price: snapshot hinnasta **Price** taulusta
 
-**Sale(PK: sale_id, FK: user_id, price, time)**: Myyntitapahtuma
+**Cost**: Tietyn tapahtuman lippuhinnnat
+- PK: cost_id *
+- FK: event_id *
+- FK: type_id *
+- price
 
-**Event(PK: event_id, FK: venue_id, name, date)**: Tietty tapahtuma
+**Type**: Lipun tyyppi (Aikuinen, Lapsi etc...)
+- PK: type_id *
+- name * : lipputyypin nimi
+- note: mahdollinen lisätieto
 
-**Venue(PK: venue_id, FK: address_id, name, note)**: Tietty tapahtumapaikka
+**Sale**: Myyntitapahtuma
+- PK: sale_id *
+- FK: user_id *
+- price *
+- time *
 
-**Address(PK: address_id, FK: postalcode, streeet, number, note)**: Tapahtumapaikan osoite
+**Event**: Tietty tapahtuma
+- PK: event_id *
+- FK: venue_id *
+- name *
+- date *
+
+**User**: Viittaa lipputoimiston henkilökuntaan (Laajennettavissa sisältämään muita käyttäjätyyppeja)
+- PK: user_id *
+- username *
+- password *
+- firstname *
+- lastname *
+
+#### Mahdolliset laajennukset
+
+**Venue**: Tietty tapahtumapaikka
+- PK: venue_id
+- FK: address_id
+- name
+- note
+
+**Address**: Tapahtumapaikan osoite
+- PK: address_id
+- FK: postalcode
+- street
+- number
+- note
 
 **Postalcode(PK: postalcode, FK: city_id)**: Postiosoitteet
 
 **City(PK: city_id, name, note)**: Kaupungit
-
-**Cost(PK: cost_id, FK: event_id, FK: type_id, price)**: Tietyn tapahtuman lippuhinnnat
-
-**Type(PK: type_id, name, note)**: Lipun tyyppi (Aikuinen, Lapsi etc...)
-
-**User(PK: user_id, firstname, lastname)**: Viittaa lipputoimiston henkilökuntaan
-- Laajennettavissa sisältämään muita käyttäjätyyppeja
-
-**Userrole(PK: userrole_id, FK: user_id, FK_ role_id)**: Tietyn käyttäjän roolit
-
-**Role(PK: role_id, name, note)**: Tietty rooli
 
 ## Tekninen kuvaus
 
 ### REST päätepisteet (endpoints)
 
 Lisätietoa REST API -päätepisteistä: [katso dokumentaatio](rest.md)
+
+### Autentikointi
+
+#### Basic Auth
 
 Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
 ratkaisut, esim.

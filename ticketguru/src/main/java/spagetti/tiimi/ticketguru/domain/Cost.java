@@ -3,6 +3,9 @@ package spagetti.tiimi.ticketguru.domain;
 import java.util.List;
 
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,21 +25,24 @@ public class Cost {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long costid;
+
     @ManyToOne
     @JoinColumn(name = "eventid")
     @JsonBackReference
     private Event event;
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cost")
-    private List<Ticket> tickets;
 
     @ManyToOne
     @JoinColumn(name = "ticketTypeid")
     @JsonIgnore
     private TicketType ticketType;
 
+    @NotNull(message = "Price is required")
+    @Positive
     private Double price;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cost")
+    private List<Ticket> tickets;
 
     public Cost() {
 

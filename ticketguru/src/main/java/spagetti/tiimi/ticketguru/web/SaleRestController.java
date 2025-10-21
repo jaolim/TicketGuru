@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,22 +24,24 @@ import spagetti.tiimi.ticketguru.domain.SaleRepository;
 public class SaleRestController {
 
     private SaleRepository srepository;
-    private AppUserRepository arepository;
+    private AppUserRepository urepository;
 
-    public SaleRestController (SaleRepository srepository, AppUserRepository arepository) {
+    public SaleRestController (SaleRepository srepository, AppUserRepository urepository) {
         this.srepository = srepository;
-        this.arepository = arepository;
+        this.urepository = urepository;
     }
     
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sales")
     @ResponseStatus(HttpStatus.OK)
-    public List<Sale> salesRest() {
+    public List<Sale> getAllSales() {
         return (List<Sale>) srepository.findAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Sale> getSaleRest (@PathVariable Long id) {
+    public Optional<Sale> getSaleById(@PathVariable Long id) {
         Optional<Sale> sale = srepository.findById(id);
         if (!sale.isPresent()) {
             throw new NotFoundException("Sale does not exist");
@@ -46,15 +49,17 @@ public class SaleRestController {
         return srepository.findById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sales")
     @ResponseStatus(HttpStatus.CREATED)
     public Sale createSale(@RequestBody Sale sale) {
-        if (sale.getUser() == null || !arepository.findById(sale.getUser().getUserid()).isPresent()) {
+        if (sale.getUser() == null || !urepository.findById(sale.getUser().getUserid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing User");
         }
         return srepository.save(sale);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteSale(@PathVariable Long id) {
@@ -64,10 +69,11 @@ public class SaleRestController {
         srepository.deleteById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("/sales/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional <Sale> editSaleRest(@PathVariable Long id, @RequestBody Sale updatedSale) {
-        if (updatedSale.getUser() == null || !arepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
+    public Optional <Sale> editSale(@PathVariable Long id, @RequestBody Sale updatedSale) {
+        if (updatedSale.getUser() == null || !urepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing User");
         } else if (!srepository.findById(id).isPresent()) {
             throw new NotFoundException("Sale does not exist");

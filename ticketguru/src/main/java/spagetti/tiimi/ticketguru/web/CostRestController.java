@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class CostRestController {
         this.trepository = trepository;
     }
     
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/costs")
     @ResponseStatus(HttpStatus.OK)
     public List<Cost> getAllCosts() {
@@ -43,6 +45,7 @@ public class CostRestController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/costs/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Cost> getCostById(@PathVariable Long id) {
@@ -53,6 +56,7 @@ public class CostRestController {
         return crepository.findById(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/costs")
     @ResponseStatus(HttpStatus.CREATED)
     public Cost createCost(@RequestBody Cost cost) {
@@ -75,6 +79,7 @@ public class CostRestController {
         return crepository.save(cost);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/costs/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public Cost updateCost(@PathVariable Long id, @RequestBody Cost updatedCost) {
@@ -110,6 +115,7 @@ public class CostRestController {
 
     
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/costs/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCost(@PathVariable Long id) {

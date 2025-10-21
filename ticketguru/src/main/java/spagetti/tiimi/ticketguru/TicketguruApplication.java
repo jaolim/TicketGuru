@@ -47,26 +47,28 @@ public class TicketguruApplication {
 			TicketType type1 = new TicketType("Aikuinen");
 			TicketType type2 = new TicketType("Eläkeläinen", "Tarkista eläkeläisyys tarvittaessa");
 
-			AppUser user1 = new AppUser("firstname1", "lastname1");
-			AppUser user2 = new AppUser("firstname2", "lastname2");
+			AppUser testUser = new AppUser("user", "$2a$10$aY3WHmE3fYMoM.vxVCqv.Oe3dwUu8ha5CvkazPOk0698xq/9kxfkC",
+					"User", "Esimerkki", "USER"); // salasana user
+			AppUser testAdmin = new AppUser("admin", "$2a$10$MRsKe2lxN1M9PW1ch9KKSOCw9.BgEQXqptvwQi8TWWBSPiFtBkJza",
+					"Admin", "Esimerkki", "ADMIN"); // salasana admin
 			Cost cost1 = new Cost(type1, 20.50, event1);
 			Cost cost2 = new Cost(type2, 7.99, event2);
 			Cost cost3 = new Cost(type1, 25.50, event2);
-			Sale sale1 = new Sale(user1, testTimeNow, (cost1.getPrice() + cost2.getPrice()));
-			Sale sale2 = new Sale(user2, testTimeStatic, cost3.getPrice()*2 + cost1.getPrice()*3);
+			Sale sale1 = new Sale(testUser, testTimeNow, (cost1.getPrice() + cost2.getPrice()));
+			Sale sale2 = new Sale(testAdmin, testTimeStatic, cost3.getPrice() * 2 + cost1.getPrice() * 3);
 			Ticket ticket1 = new Ticket("test1", cost1, sale1);
 			Ticket ticket2 = new Ticket("test2", cost2, sale1);
 			Ticket ticket3 = new Ticket("test3", cost1, sale2);
-			Ticket ticket4 = new Ticket("test3", cost3, sale2);
-			Ticket ticket5 = new Ticket("test3", cost3, sale2);
-			Ticket ticket6 = new Ticket("test3", cost1, sale2);
-			Ticket ticket7 = new Ticket("test3", cost1, sale2);
+			Ticket ticket4 = new Ticket("test4", cost3, sale2);
+			Ticket ticket5 = new Ticket("test5", cost3, sale2);
+			Ticket ticket6 = new Ticket("test6", cost1, sale2);
+			Ticket ticket7 = new Ticket("test7", cost1, sale2);
 			trepository.save(type1);
 			trepository.save(type2);
 
-			urepository.save(new AppUser("Testi", "Esimerkki"));
-			urepository.save(user1);
-			urepository.save(user2);
+
+			urepository.save(testUser);
+			urepository.save(testAdmin);
 
 			erepository.save(event1);
 			erepository.save(event2);

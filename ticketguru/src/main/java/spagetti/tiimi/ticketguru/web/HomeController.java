@@ -40,7 +40,7 @@ public class HomeController {
 
 
     public static Event testEvent = new Event("Testitapahtuma", "Testipaikka", LocalDateTime.now());
-    public static AppUser testUser = new AppUser("Testi", "Esimerkki");
+    public static AppUser testUser = new AppUser("User2", "$2a$10$aY3WHmE3fYMoM.vxVCqv.Oe3dwUu8ha5CvkazPOk0698xq/9kxfkC","Testi", "Esimerkki", "USER");
     public static TicketType testType = new TicketType("Lapsi");
     public static Cost testCost = new Cost(testType, 9.99, testEvent);
     public static Ticket testTicket = new Ticket("Testi", testCost);
@@ -52,10 +52,12 @@ public class HomeController {
         model.addAttribute("event", testEvent);
         model.addAttribute("user", testUser);
         model.addAttribute("sale", testSale);
+        model.addAttribute("tickettype", testType);
         model.addAttribute("tickets", repository.findAll());
         model.addAttribute("events", erepository.findAll());
         model.addAttribute("users", urepository.findAll());
         model.addAttribute("sales", srepository.findAll());
+        model.addAttribute("tickettypes", trepository.findAll());
         model.addAttribute("cost", testCost);
         model.addAttribute("tickets", repository.findAll());
         model.addAttribute("events", erepository.findAll());
