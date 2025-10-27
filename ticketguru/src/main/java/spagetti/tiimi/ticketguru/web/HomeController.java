@@ -43,7 +43,7 @@ public class HomeController {
     public static AppUser testUser = new AppUser("User2", "$2a$10$aY3WHmE3fYMoM.vxVCqv.Oe3dwUu8ha5CvkazPOk0698xq/9kxfkC","Testi", "Esimerkki", "USER");
     public static TicketType testType = new TicketType("Lapsi");
     public static Cost testCost = new Cost(testType, 9.99, testEvent);
-    public static Ticket testTicket = new Ticket("Testi", testCost);
+    public static Ticket testTicket = new Ticket(testCost);
     public static Sale testSale = new Sale(testUser, LocalDateTime.now());
 
     @GetMapping(value = {"/", "/index"})
