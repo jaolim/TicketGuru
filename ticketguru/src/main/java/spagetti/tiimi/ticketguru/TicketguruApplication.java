@@ -57,13 +57,13 @@ public class TicketguruApplication {
 				Cost cost3 = new Cost(type1, 25.50, event2);
 				Sale sale1 = new Sale(testUser, testTimeNow, (cost1.getPrice() + cost2.getPrice()));
 				Sale sale2 = new Sale(testAdmin, testTimeStatic, cost3.getPrice() * 2 + cost1.getPrice() * 3);
-				Ticket ticket1 = new Ticket( cost1, sale1);
-				Ticket ticket2 = new Ticket( cost2, sale1);
-				Ticket ticket3 = new Ticket( cost1, sale2);
-				Ticket ticket4 = new Ticket( cost3, sale2);
-				Ticket ticket5 = new Ticket( cost3, sale2);
-				Ticket ticket6 = new Ticket( cost1, sale2);
-				Ticket ticket7 = new Ticket( cost1, sale2);
+				Ticket ticket1 = new Ticket(cost1, sale1);
+				Ticket ticket2 = new Ticket(cost2, sale1);
+				Ticket ticket3 = new Ticket(cost1, sale2);
+				Ticket ticket4 = new Ticket(cost3, sale2);
+				Ticket ticket5 = new Ticket(cost3, sale2);
+				Ticket ticket6 = new Ticket(cost1, sale2);
+				Ticket ticket7 = new Ticket(cost1, sale2);
 				trepository.save(type1);
 				trepository.save(type2);
 
