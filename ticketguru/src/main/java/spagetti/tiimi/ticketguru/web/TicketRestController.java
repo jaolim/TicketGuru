@@ -93,7 +93,7 @@ public class TicketRestController {
 
         return trepository.findById(id)
                 .map(ticket -> {
-                    ticket.setName(updatedTicket.getName());
+                    //ticket.setName(updatedTicket.getName());
                     ticket.setCost(updatedTicket.getCost());
                     ticket.setSale(updatedTicket.getSale());
                     ticket.setRedeemed(updatedTicket.getRedeemed());
