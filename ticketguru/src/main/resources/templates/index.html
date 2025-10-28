@@ -13,33 +13,18 @@
     <p>Tevetuloa TicketGuruun, pääsylippusi pääsylippuihin!</p>
 
     <div>
-        <h2>Testilippu:</h2>
-        <p th:text="${ticket}"></p>
-        <p th:text="${ticket.getCost().getEvent().getName()}"></p>
         <h2>Ticket DB list all:</h2>
       <tr th:each = "ticket : ${tickets}">
         <p><td th:text="${ticket}"></td></p>
       </tr>
     </div>
     <div>
-        <h2>Testitapahtuma:</h2>
-        <p th:text="${event}"></p>
         <h2>Event DB list all:</h2>
       <tr th:each = "event : ${events}">
         <p><td th:text="${event}"></td></p>
       </tr>
     </div>
     <div>
-        <h2>Testikäyttäjä:</h2>
-        <p th:text="${user}"></p>
-        <h2>User DB list all:</h2>
-        <tr th:each = "user : ${users}">
-        <p><td th:text="${user}"></td></p>
-      </tr>
-    </div>
-    <div>
-      <h2>Testihinta:</h2>
-      <p th:text="${cost}"></p>
       <h2>Cost DB list all:</h2>
       <tr th:each = "cost : ${costs}">
       <p><td th:text="${cost}"></td></p>
