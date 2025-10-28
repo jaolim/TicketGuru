@@ -48,9 +48,9 @@ public class TicketguruApplication {
 				TicketType type1 = new TicketType("Aikuinen");
 				TicketType type2 = new TicketType("Eläkeläinen", "Tarkista eläkeläisyys tarvittaessa");
 
-				AppUser testUser = new AppUser("user", "$2a$10$8vXq2.voWt5otOsgzMoYoe27VgDlCrBvqb9GQnNuWBz9t8zKuqtgu",
+				AppUser testUser = new AppUser("user", "$2a$10$6GGxgQSK2de0tm6SJjVRxePIbw2cOOqcp4Wb/Ne/b/1tpLX1ghVbe",
 						"User", "Esimerkki", "USER");
-				AppUser testAdmin = new AppUser("admin", "$2a$10$xh.egrUL4AuuvOuEEhW9nOV9JsVCIQe5OjOYEfJkh83T9zgTyU/pm",
+				AppUser testAdmin = new AppUser("admin", "$2a$10$.BwaemM9KhTg6Ty/UQngsuh9k9hdGsvfAXKxNPX.2rfaxlXa86wDe",
 						"Admin", "Esimerkki", "ADMIN");
 				Cost cost1 = new Cost(type1, 20.50, event1);
 				Cost cost2 = new Cost(type2, 7.99, event2);
