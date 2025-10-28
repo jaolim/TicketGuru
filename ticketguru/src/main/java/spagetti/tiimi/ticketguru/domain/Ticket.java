@@ -25,36 +25,19 @@ public class Ticket {
 
     private Boolean redeemed;
 
-    @NotBlank(message = "Ticket name required")
-    private String name;
-
     public Ticket() {
 
     }
 
-    public Ticket(String name) {
-        this.name = name;
-    }
-
-    public Ticket(String name, Cost cost) {
+    public Ticket(Cost cost) {
         this.cost = cost;
-        this.name = name;
         this.redeemed = false;
     }
 
-        public Ticket(String name, Cost cost, Sale sale) {
+        public Ticket(Cost cost, Sale sale) {
         this.cost = cost;
-        this.name = name;
         this.sale = sale;
         this.redeemed = false;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setTicketid(Long ticketid) {
@@ -91,7 +74,6 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket: [name: " + name + ", " + cost  + ", Redeemed: " + redeemed +"]";
+        return "Ticket: [" + cost + ", Redeemed: " + redeemed +"]";
     }
-
 }
