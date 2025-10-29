@@ -7,11 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
+import spagetti.tiimi.ticketguru.Exception.TicketAlreadyRedeemedException;
 import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
 import spagetti.tiimi.ticketguru.domain.Ticket;
@@ -99,7 +101,21 @@ public class TicketRestController {
                     ticket.setRedeemed(updatedTicket.getRedeemed());
                     return trepository.save(ticket);
                 });
+    }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PatchMapping("tickets/{id}")
+    public Optional<Ticket> setTicketUsed(@PathVariable Long id) {
+        if (!trepository.findById(id).isPresent()) {
+            throw new NotFoundException("Ticket does not exist");
+        } else if (trepository.findById(id).get().getRedeemed() == true) {
+            throw new TicketAlreadyRedeemedException("Ticket already used");
+        } 
+
+        trepository.findById(id).get().setRedeemed(true);
+        
+        return trepository.findById(id);
+  
     }
 
 }
