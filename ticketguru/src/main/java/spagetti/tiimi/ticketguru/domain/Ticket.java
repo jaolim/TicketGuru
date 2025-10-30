@@ -1,5 +1,7 @@
 package spagetti.tiimi.ticketguru.domain;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,8 @@ public class Ticket {
     private Sale sale;
 
     private Boolean redeemed;
+    private LocalDateTime redeemedTime;
+    private String ticketCode;
 
     public Ticket() {
 
@@ -72,8 +76,24 @@ public class Ticket {
         return redeemed;
     }
 
+    public LocalDateTime getRedeemedTime() {
+        return redeemedTime;
+    }
+
+    public void setRedeemedTime(LocalDateTime redeemedTime) {
+        this.redeemedTime = redeemedTime;
+    }
+
+    public void setTicketCode(String ticketCode) {
+        this.ticketCode = ticketCode;
+    }
+
+    public String getTicketCode() {
+        return ticketCode;
+    }
+
     @Override
     public String toString() {
-        return "Ticket: [" + cost + ", Redeemed: " + redeemed +"]";
+        return "Ticket: [" + cost + ", Redeemed: " + redeemed + "]";
     }
 }

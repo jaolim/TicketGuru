@@ -1,5 +1,7 @@
 package spagetti.tiimi.ticketguru.web;
 
+import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,7 @@ import spagetti.tiimi.ticketguru.domain.TicketRepository;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -38,10 +41,22 @@ public class TicketRestController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @GetMapping("/tickets")
+    @GetMapping(value = "/tickets", params = "!code")
     @ResponseStatus(HttpStatus.OK)
     public List<Ticket> getAllTickets() {
         return (List<Ticket>) trepository.findAll();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/tickets")
+    @ResponseStatus(HttpStatus.OK)
+    public Ticket getTicketByCode(@RequestParam String code) {
+        if (code.isEmpty()){
+            throw new BadRequestException("Include value for code or ");
+        } else if (!trepository.existsByTicketCode(code)) {
+            throw new NotFoundException("Ticket does not exist");
+        }
+        return trepository.findByTicketCode(code);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -58,16 +73,21 @@ public class TicketRestController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/tickets")
     @ResponseStatus(HttpStatus.CREATED)
-    public Ticket createTicket(@RequestBody Ticket ticket) {
+    public Optional<Ticket> createTicket(@RequestBody Ticket ticket) {
         if (ticket.getTicketid() != null) {
             throw new BadRequestException("Do not include ticketid");
         } else if (ticket.getCost() == null || !crepository.findById(ticket.getCost().getCostid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing Cost ID");
-         } else if (ticket.getSale() == null || !srepository.findById(ticket.getSale().getSaleid()).isPresent()) {
+        } else if (ticket.getSale() == null || !srepository.findById(ticket.getSale().getSaleid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing Sale ID");
         }
-        
-        return trepository.save(ticket);
+        Long id = trepository.save(ticket).getTicketid();
+        Optional<Ticket> saved = trepository.findById(id);
+
+        return saved.map(mapped -> {
+            mapped.setTicketCode(Base64.getEncoder().encodeToString((id.toString() + mapped.getCost().getCostid() + mapped.getSale().getSaleid().toString()).getBytes()));
+            return trepository.save(mapped);
+        });
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -95,10 +115,10 @@ public class TicketRestController {
 
         return trepository.findById(id)
                 .map(ticket -> {
-                    //ticket.setName(updatedTicket.getName());
                     ticket.setCost(updatedTicket.getCost());
                     ticket.setSale(updatedTicket.getSale());
                     ticket.setRedeemed(updatedTicket.getRedeemed());
+                    ticket.setTicketCode(Base64.getEncoder().encodeToString((id.toString() + updatedTicket.getCost().getCostid() + updatedTicket.getSale().getSaleid().toString()).getBytes()));
                     return trepository.save(ticket);
                 });
     }
@@ -107,21 +127,22 @@ public class TicketRestController {
     @PatchMapping("tickets/{id}")
     public Ticket setTicketUsed(@PathVariable Long id) {
         Optional<Ticket> optionalTicket = trepository.findById(id);
-        
+
         if (!optionalTicket.isPresent()) {
             throw new NotFoundException("Ticket does not exist");
-        } 
-        
+        }
+
         Ticket existingTicket = optionalTicket.get();
 
         if (existingTicket.getRedeemed() == true) {
             throw new TicketAlreadyRedeemedException("Ticket already used");
-        } 
+        }
 
         existingTicket.setRedeemed(true);
-        
+        existingTicket.setRedeemedTime(LocalDateTime.now());
+
         return trepository.save(existingTicket);
-  
+
     }
 
 }
