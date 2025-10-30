@@ -2,6 +2,13 @@
 
 Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
+1. [Event](#event)
+2. [Ticket](#ticket)
+3. [TicketType](#tickettype)
+4. [AppUser](#appuser)
+5. [Sale](#sale)
+5. [Cost](#cost)
+
 **Dev base url:** `http://locahost:8080`
 
 ## Autentikaatio
@@ -10,7 +17,7 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 
 Salasana ja käyttäjätunnus luodaan pyynnöstä käyttäen *HTTP basic access authenticationia*.
 
-## Events
+## Event
 
 | Metodi | URL | Kuvaus |
 | -------- | ------- | --------- |
@@ -130,10 +137,11 @@ id = poistettavan tapahtuman tunniste (Long)
 | Metodi | URL | Kuvaus |
 | -------- | ------- | --------- |
 | GET | {baseurl}/tickets | Listaa kaikki liput |
-| GET | {baseurl}/tickets/{id} | Palauttaa tietyn lipun|
-| POST | {baseurl}/tickets | Luo uuden lipun|
+| GET | {baseurl}/tickets/{id} | Palauttaa tietyn lipun |
+| POST | {baseurl}/tickets | Luo uuden lipun |
 | PUT | {baseurl}/tickets/{id} | Muokkaa olemassa olevaa lippua tai luo uuden |
-| DELETE | {baseurl}/tickets/{id} | Poistaa tietyn lipun|
+| DELETE | {baseurl}/tickets/{id} | Poistaa tietyn lipun |
+| PATCH | {baseurl}/tickets/{id} | Asettaa lipun käytetyksi |
 
 ### Get Ticket
 
@@ -267,6 +275,22 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 - `401` - Käyttäjää ei ole tunnistettu
 - `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Lippua ei ole olemassa
+
+### Patch ticket
+
+**URL:** `{baseurl}/tickets/{id}`
+
+**Metodi:** `PATCH`
+
+**Roolit:** `USER` & `ADMIN`
+
+**Vastaukset:**
+
+- `200` - Lippu merkitty käytetyksi
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
+- `404` - Lippua ei ole olemassa
+- `409` - Lippu on jo käytetty
 
 ## TicketType
 
