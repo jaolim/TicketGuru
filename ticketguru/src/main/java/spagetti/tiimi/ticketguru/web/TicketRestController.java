@@ -105,16 +105,22 @@ public class TicketRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PatchMapping("tickets/{id}")
-    public Optional<Ticket> setTicketUsed(@PathVariable Long id) {
-        if (!trepository.findById(id).isPresent()) {
+    public Ticket setTicketUsed(@PathVariable Long id) {
+        Optional<Ticket> optionalTicket = trepository.findById(id);
+        
+        if (!optionalTicket.isPresent()) {
             throw new NotFoundException("Ticket does not exist");
-        } else if (trepository.findById(id).get().getRedeemed() == true) {
+        } 
+        
+        Ticket existingTicket = optionalTicket.get();
+
+        if (existingTicket.getRedeemed() == true) {
             throw new TicketAlreadyRedeemedException("Ticket already used");
         } 
 
-        trepository.findById(id).get().setRedeemed(true);
+        existingTicket.setRedeemed(true);
         
-        return trepository.findById(id);
+        return trepository.save(existingTicket);
   
     }
 
