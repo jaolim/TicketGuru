@@ -4,6 +4,7 @@ package spagetti.tiimi.ticketguru.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 
@@ -20,7 +21,7 @@ import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
 //import spagetti.tiimi.ticketguru.domain.AppUserRepository;
 
-
+@CrossOrigin(origins = "*")
 @Controller
 public class HomeController {
 
