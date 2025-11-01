@@ -49,12 +49,8 @@ public class CostRestController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/costs/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Cost> getCostById(@PathVariable Long id) {
-        Optional<Cost> cost = crepository.findById(id);
-        if (!cost.isPresent()) {
-            throw new NotFoundException("Cost does not exist");
-        }
-        return crepository.findById(id);
+    public Cost getCostById(@PathVariable Long id) {
+         return crepository.findById(id).orElseThrow(() -> new NotFoundException("Cost does not exist"));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -64,15 +60,16 @@ public class CostRestController {
         if (cost.getPrice() == null) {
             throw new BadRequestException("Missing required field: price");
         }
-        if (cost.getEventId() == null || !erepository.findById(cost.getEventId()).isPresent()) {
+        if (cost.getEvent() == null || cost.getEvent().getEventid() == null) {
             throw new BadRequestException("Incorrect or missing Event ID");
         }
-        if (cost.getTicketTypeId() == null || !trepository.findById(cost.getTicketTypeId()).isPresent()) {
+        if (cost.getType() == null || cost.getType().getTypeid() == null) {
             throw new BadRequestException("Incorrect or missing TicketType ID");
         }
 
-        Event event = erepository.findById(cost.getEventId()).get();
-        TicketType type = trepository.findById(cost.getTicketTypeId()).get();
+
+        Event event = erepository.findById(cost.getEvent().getEventid()).orElseThrow(()-> new BadRequestException("Event not found"));
+        TicketType type = trepository.findById(cost.getType().getTypeid()).orElseThrow(()-> new BadRequestException("Ticket type not found"));
 
         cost.setEvent(event);
         cost.setType(type);
@@ -95,32 +92,24 @@ public class CostRestController {
             existingCost.setPrice(updatedCost.getPrice());
         }
 
-        if (updatedCost.getEventId() != null) {
-            Optional<Event> event = erepository.findById(updatedCost.getEventId());
-            if (!event.isPresent()) {
-                throw new BadRequestException("Event with ID " + updatedCost.getEventId() + " not found");
-            }
-            existingCost.setEvent(event.get());
+        if (updatedCost.getEvent() != null && updatedCost.getEvent().getEventid() != null) {
+            Event event = erepository.findById(updatedCost.getEvent().getEventid()).orElseThrow(() -> new BadRequestException("Event not found"));
+            existingCost.setEvent(event);
         }
 
-        if (updatedCost.getTicketTypeId() != null) {
-            Optional<TicketType> type = trepository.findById(updatedCost.getTicketTypeId());
-            if (!type.isPresent()) {
-                throw new BadRequestException("TicketType with ID " + updatedCost.getTicketTypeId() + " not found");
-            }
-            existingCost.setType(type.get());
+        if (updatedCost.getType() != null && updatedCost.getType().getTypeid() != null) {
+            TicketType type = trepository.findById(updatedCost.getType().getTypeid()).orElseThrow(() -> new BadRequestException("Ticket type not found"));
+            existingCost.setType(type);
         }
 
         return crepository.save(existingCost);
     }
 
-    
-
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/costs/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCost(@PathVariable Long id) {
-        if (!crepository.findById(id).isPresent()) {
+         if (!crepository.existsById(id)) {
             throw new NotFoundException("Cost with ID " + id + " not found");
         }
         crepository.deleteById(id);
