@@ -655,36 +655,48 @@ User: ei null ja userid:tä vastaava User löytyy
 [
     {
         "costid": 1,
+        "event": {
+            "eventid": 1,
+            "name": "Event1",
+            "venue": "Venue1",
+            "date": "2025-11-01T13:21:54.172903"
+        },
         "price": 20.5,
         "type": {
             "name": "Aikuinen",
             "note": null,
             "typeid": 1
-        },
-        "eventId": null,
-        "ticketTypeId": null
+        }
     },
     {
         "costid": 2,
+        "event": {
+            "eventid": 2,
+            "name": "Event2",
+            "venue": "Venue2",
+            "date": "1999-01-31T20:00:00"
+        },
         "price": 7.99,
         "type": {
             "name": "Eläkeläinen",
-            "note": null,
+            "note": "Tarkista eläkeläisyys tarvittaessa",
             "typeid": 2
-        },
-        "eventId": null,
-        "ticketTypeId": null
+        }
     },
     {
         "costid": 3,
+        "event": {
+            "eventid": 2,
+            "name": "Event2",
+            "venue": "Venue2",
+            "date": "1999-01-31T20:00:00"
+        },
         "price": 25.5,
         "type": {
             "name": "Aikuinen",
             "note": null,
             "typeid": 1
-        },
-        "eventId": null,
-        "ticketTypeId": null
+        }
     }
 ]
 ```
@@ -708,9 +720,9 @@ User: ei null ja userid:tä vastaava User löytyy
 
 ```
 {
-  "price": 30.0,
-  "eventId": 2,
-  "ticketTypeId": 1
+  "price": 15.75,
+  "event": { "eventid": 1 },
+  "ticketType": { "typeid": 1 }
 }
 ```
 
@@ -734,9 +746,9 @@ User: ei null ja userid:tä vastaava User löytyy
 
 ```
 {
-  "price": 42.0,
-  "eventId": 2,
-  "ticketTypeId": 2
+  "price": 15.75,
+  "event": { "eventid": 1 },
+  "ticketType": { "typeid": 1 }
 }
 ```
 ### Delete Cost
