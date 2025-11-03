@@ -34,3 +34,6 @@ build/
 
 ### env variables ###
 *.env
+
+### temp endpoint
+ticket-client-testing.html
