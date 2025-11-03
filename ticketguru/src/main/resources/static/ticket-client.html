@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ticket Check</title>
+</head>
+<body>
+  <h1>Ticket Check</h1>
+
+  <input id="id" placeholder="Ticket ID">
+  <button onclick="fetchTicket()">Fetch</button>
+
+  <div id="result"></div>
+
+  <script>
+    const apiBase = "https://demo-ticketguru-oktiimi.2.rahtiapp.fi/api/tickets";
+
+    async function fetchTicket() {
+      const id = document.getElementById("id").value.trim();
+      const result = document.getElementById("result");
+      result.textContent = "Loading...";
+
+      try {
+        const res = await fetch(`${apiBase}/${id}`);
+        if (!res.ok) {
+          result.textContent = "Ticket not found.";
+          return;
+        }
+
+        const t = await res.json();
+        result.innerHTML = `
+          <p><b>Ticket ID:</b> ${t.ticketId}</p>
+          <p><b>Ticket Type:</b> ${t.ticketTypeId.ticketName}</p>
+          <p><b>Price:</b> ${t.ticketTypeId.price} €</p>
+          <p><b>Event:</b> ${t.eventId.eventName}</p>
+          <p><b>Used:</b> ${t.used ? "Yes" : "No"}</p>
+          ${!t.used ? `<button onclick="markUsed(${t.ticketId})">Mark as used</button>` : ""}
+        `;
+      } catch {
+        result.textContent = "Error fetching ticket.";
+      }
+    }
+
+    async function markUsed(id) {
+      const res = await fetch(`${apiBase}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ used: true })
+      });
+      if (res.ok) {
+        alert("Ticket marked as used.");
+        fetchTicket();
+      } else {
+        alert("Error marking ticket as used.");
+      }
+    }
+  </script>
+</body>
+</html>
+
+
