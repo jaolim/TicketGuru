@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -15,26 +16,32 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import spagetti.tiimi.ticketguru.Views;
 
 @Entity
 public class Sale {
 
+    @JsonView(Views.Public.class)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long saleid;
 
+    @JsonView(Views.Public.class)
     @ManyToOne
     @JoinColumn(name = "userid")
     //@JsonIgnore
     private AppUser user;
 
+    @JsonView(Views.Public.class)
     @NotNull(message = "Price is required")
     @Positive
     private double price;
 
+    @JsonView(Views.Public.class)
     @NotNull(message = "Time of sale required")
     private LocalDateTime time;
 
+    @JsonView(Views.Public.class)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sale")
     @JsonIgnore
     private List<Ticket> tickets;

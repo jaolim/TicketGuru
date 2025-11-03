@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import jakarta.validation.Valid;
+import spagetti.tiimi.ticketguru.Views;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
@@ -32,12 +35,14 @@ public class EventRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping(value = "/events")
+    @JsonView(Views.Public.class)
     public List<Event> getAllEvents() {
         return (List<Event>) erepository.findAll();
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/events/{id}")
+    @JsonView(Views.Public.class)
     public Event getEventById(@PathVariable Long id) {
         return erepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Event not found"));
@@ -45,6 +50,7 @@ public class EventRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/events")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Event createEvent(@Valid @RequestBody Event event) {
         return erepository.save(event);
@@ -52,6 +58,7 @@ public class EventRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("events/{id}")
+    @JsonView(Views.Internal.class)
     public void deleteEvent(@PathVariable Long id) {
         if (!erepository.findById(id).isPresent()) {
             throw new NotFoundException("Event does not exist");
@@ -61,6 +68,7 @@ public class EventRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("events/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Event> editEvent(@PathVariable Long id, @Valid @RequestBody Event updatedEvent) {
 

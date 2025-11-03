@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import spagetti.tiimi.ticketguru.Views;
 import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.Exception.TicketAlreadyRedeemedException;
@@ -44,6 +47,7 @@ public class TicketRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping(value = "/tickets", params = "!code")
+    @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public List<Ticket> getAllTickets() {
         return (List<Ticket>) trepository.findAll();
@@ -51,6 +55,7 @@ public class TicketRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/tickets")
+    @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public Ticket getTicketByCode(@RequestParam String code) {
         if (code.isEmpty()){
@@ -63,6 +68,7 @@ public class TicketRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/tickets/{id}")
+    @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public Optional<Ticket> getTicketById(@PathVariable Long id) {
         Optional<Ticket> ticket = trepository.findById(id);
@@ -74,6 +80,7 @@ public class TicketRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/tickets")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Ticket> createTicket(@RequestBody Ticket ticket) {
         if (ticket.getTicketid() != null) {
@@ -94,6 +101,7 @@ public class TicketRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @DeleteMapping("tickets/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
     public void deleteTicket(@PathVariable Long id) {
         if (!trepository.findById(id).isPresent()) {
@@ -104,6 +112,7 @@ public class TicketRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("tickets/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Ticket> editTicket(@PathVariable Long id, @RequestBody Ticket updatedTicket) {
         if (updatedTicket.getCost() == null || !crepository.findById(updatedTicket.getCost().getCostid()).isPresent()) {
@@ -127,6 +136,7 @@ public class TicketRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PatchMapping("tickets/{id}")
+    @JsonView(Views.Internal.class)
     public Ticket setTicketUsed(@PathVariable Long id) {
         Optional<Ticket> optionalTicket = trepository.findById(id);
 
