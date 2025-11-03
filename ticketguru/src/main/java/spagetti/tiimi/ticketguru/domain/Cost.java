@@ -5,8 +5,10 @@ import java.util.List;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import spagetti.tiimi.ticketguru.Views;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,23 +25,29 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Cost {
 
+    @JsonView(Views.Public.class)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long costid;
 
+    @JsonView(Views.Public.class)
     @ManyToOne
     @JoinColumn(name = "eventid")
     @JsonIgnoreProperties("costs")
+    //@JsonBackReference
     private Event event;
 
+    @JsonView(Views.Public.class)
     @ManyToOne
     @JoinColumn(name = "ticketTypeid")
     private TicketType ticketType;
 
+    @JsonView(Views.Public.class)
     @NotNull(message = "Price is required")
     @Positive
     private Double price;
 
+    @JsonView(Views.Public.class)
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cost")
     private List<Ticket> tickets;

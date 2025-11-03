@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import spagetti.tiimi.ticketguru.Views;
 import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.TicketType;
@@ -32,6 +35,7 @@ public class TicketTypeRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/tickettypes")
+    @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public List<TicketType> getAllTicketTypes() {
         return (List<TicketType>) trepository.findAll();
@@ -39,6 +43,7 @@ public class TicketTypeRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/tickettypes/{id}")
+    @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public Optional<TicketType> getTicketTypeById(@PathVariable Long id) {
         if (!trepository.findById(id).isPresent()) {
@@ -49,6 +54,7 @@ public class TicketTypeRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/tickettypes")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public TicketType createTicketType(@RequestBody TicketType ticketType) {
         if (ticketType.getTypeid() != null) {
@@ -62,6 +68,7 @@ public class TicketTypeRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("tickettypes/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
     public void deleteTicketType(@PathVariable Long id) {
         if (!trepository.findById(id).isPresent()) {
@@ -72,6 +79,7 @@ public class TicketTypeRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("tickettypes/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<TicketType> editTicketType(@PathVariable Long id, @RequestBody TicketType updatedTicketType) {
         if (!trepository.findById(id).isPresent()) {

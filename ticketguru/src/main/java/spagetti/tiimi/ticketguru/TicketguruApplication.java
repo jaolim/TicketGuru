@@ -1,13 +1,17 @@
 package spagetti.tiimi.ticketguru;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.awt.image.BufferedImage;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.BufferedImageHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 
 import spagetti.tiimi.ticketguru.domain.Cost;
 import spagetti.tiimi.ticketguru.domain.CostRepository;
@@ -32,12 +36,16 @@ public class TicketguruApplication {
 	}
 
 	@Bean
+    public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
+        return new BufferedImageHttpMessageConverter();
+    }
+
+	@Bean
 	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository,
 			AppUserRepository urepository, CostRepository crepository, SaleRepository srepository,
 			TicketTypeRepository trepository) {
 
 		return (args) -> {
-			log.info("Adding some test books");
 
 			if (!urepository.existsByUsername("admin")) {
 				LocalDateTime testTimeNow = LocalDateTime.now();
@@ -64,34 +72,61 @@ public class TicketguruApplication {
 				Ticket ticket5 = new Ticket(cost3, sale2);
 				Ticket ticket6 = new Ticket(cost1, sale2);
 				Ticket ticket7 = new Ticket(cost1, sale2);
+
 				trepository.save(type1);
 				trepository.save(type2);
 
-				urepository.save(testUser);
 				urepository.save(testAdmin);
+
+				urepository.save(testUser);
 
 				erepository.save(event1);
 				erepository.save(event2);
 
-				crepository.save(cost1);
+				cost1 = crepository.save(cost1);
 				crepository.save(cost2);
 				crepository.save(cost3);
 
 				srepository.save(sale1);
 				srepository.save(sale2);
 
+				ticket1 = repository.save(ticket1);
+				ticket1.setTicketCode(Base64.getEncoder().encodeToString((ticket1.getTicketid().toString()
+						+ ticket1.getCost().getCostid() + ticket1.getSale().getSaleid().toString()).getBytes()));
 				repository.save(ticket1);
+				ticket2 = repository.save(ticket2);
+				ticket2.setTicketCode(Base64.getEncoder().encodeToString((ticket2.getTicketid().toString()
+						+ ticket2.getCost().getCostid() + ticket2.getSale().getSaleid().toString()).getBytes()));
+				ticket3 = repository.save(ticket3);
 				repository.save(ticket2);
+				ticket3.setTicketCode(Base64.getEncoder().encodeToString((ticket3.getTicketid().toString()
+						+ ticket3.getCost().getCostid() + ticket3.getSale().getSaleid().toString()).getBytes()));
 				repository.save(ticket3);
+				ticket4 = repository.save(ticket4);
+				ticket4.setTicketCode(Base64.getEncoder().encodeToString((ticket4.getTicketid().toString()
+						+ ticket4.getCost().getCostid() + ticket4.getSale().getSaleid().toString()).getBytes()));
 				repository.save(ticket4);
+				ticket5 = repository.save(ticket5);
+				ticket5.setTicketCode(Base64.getEncoder().encodeToString((ticket5.getTicketid().toString()
+						+ ticket5.getCost().getCostid() + ticket5.getSale().getSaleid().toString()).getBytes()));
 				repository.save(ticket5);
+				ticket6 = repository.save(ticket6);
+				ticket6.setTicketCode(Base64.getEncoder().encodeToString((ticket6.getTicketid().toString()
+						+ ticket6.getCost().getCostid() + ticket6.getSale().getSaleid().toString()).getBytes()));
 				repository.save(ticket6);
+				ticket7 = repository.save(ticket7);
+				ticket7.setTicketCode(Base64.getEncoder().encodeToString((ticket7.getTicketid().toString()
+						+ ticket7.getCost().getCostid() + ticket7.getSale().getSaleid().toString()).getBytes()));
 				repository.save(ticket7);
 
-				log.info("fetch tickets");
-				for (Ticket ticket : repository.findAll()) {
-					log.info(ticket.toString());
-				}
+				/*
+				 * log.info("fetch tickets");
+				 * for (Ticket ticket : repository.findAll()) {
+				 * log.info(ticket.toString());
+				 * }
+				 */
+				log.info("Added initial DB data");
+				log.info("Get event id:" + cost1.getEvent().getEventid());
 			}
 		};
 	}

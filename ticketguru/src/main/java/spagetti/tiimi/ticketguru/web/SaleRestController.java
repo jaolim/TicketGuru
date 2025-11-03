@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import spagetti.tiimi.ticketguru.Views;
 import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.AppUserRepository;
@@ -35,6 +38,7 @@ public class SaleRestController {
     
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sales")
+    @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public List<Sale> getAllSales() {
         return (List<Sale>) srepository.findAll();
@@ -42,6 +46,7 @@ public class SaleRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sales/{id}")
+    @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public Optional<Sale> getSaleById(@PathVariable Long id) {
         Optional<Sale> sale = srepository.findById(id);
@@ -53,6 +58,7 @@ public class SaleRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sales")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Sale createSale(@RequestBody Sale sale) {
         if (sale.getUser() == null || !urepository.findById(sale.getUser().getUserid()).isPresent()) {
@@ -63,6 +69,7 @@ public class SaleRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/sales/{id}")
+   @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
     public void deleteSale(@PathVariable Long id) {
         if (!srepository.findById(id).isPresent()) {
@@ -73,6 +80,7 @@ public class SaleRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("/sales/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Optional <Sale> editSale(@PathVariable Long id, @RequestBody Sale updatedSale) {
         if (updatedSale.getUser() == null || !urepository.findById(updatedSale.getUser().getUserid()).isPresent()) {

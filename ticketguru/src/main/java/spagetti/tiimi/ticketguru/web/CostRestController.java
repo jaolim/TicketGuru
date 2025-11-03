@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import spagetti.tiimi.ticketguru.Views;
 import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.Cost;
@@ -40,6 +43,7 @@ public class CostRestController {
     
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/costs")
+    @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public List<Cost> getAllCosts() {
         return (List<Cost>) crepository.findAll();
@@ -48,6 +52,7 @@ public class CostRestController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/costs/{id}")
+    @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public Cost getCostById(@PathVariable Long id) {
          return crepository.findById(id).orElseThrow(() -> new NotFoundException("Cost does not exist"));
@@ -55,18 +60,19 @@ public class CostRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/costs")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Cost createCost(@RequestBody Cost cost) {
         if (cost.getPrice() == null) {
             throw new BadRequestException("Missing required field: price");
-        }
+        } 
         if (cost.getEvent() == null || cost.getEvent().getEventid() == null) {
             throw new BadRequestException("Incorrect or missing Event ID");
-        }
+        } 
+        
         if (cost.getType() == null || cost.getType().getTypeid() == null) {
             throw new BadRequestException("Incorrect or missing TicketType ID");
         }
-
 
         Event event = erepository.findById(cost.getEvent().getEventid()).orElseThrow(()-> new BadRequestException("Event not found"));
         TicketType type = trepository.findById(cost.getType().getTypeid()).orElseThrow(()-> new BadRequestException("Ticket type not found"));
@@ -79,6 +85,7 @@ public class CostRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/costs/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Cost updateCost(@PathVariable Long id, @RequestBody Cost updatedCost) {
         Optional<Cost> optionalCost = crepository.findById(id);
@@ -107,6 +114,7 @@ public class CostRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/costs/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
     public void deleteCost(@PathVariable Long id) {
          if (!crepository.existsById(id)) {
