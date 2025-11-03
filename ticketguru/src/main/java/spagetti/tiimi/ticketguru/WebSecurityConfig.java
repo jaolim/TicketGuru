@@ -21,7 +21,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
  
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/home", "/css/**", "/login", "/costs/**", "/events/**", "/sales/**", "/tickets/**", "/tickettypes/**", "/users/**" ).permitAll())
+                .requestMatchers("/", "/home", "/css/**", "/login", "/costs/**", "/events/**", "/sales/**", "/tickets/**", "/tickettypes/**", "/users/**", "/qr/**" ).permitAll())
                 .formLogin(formlogin -> formlogin
                         .defaultSuccessUrl("/", true)
                         .permitAll())

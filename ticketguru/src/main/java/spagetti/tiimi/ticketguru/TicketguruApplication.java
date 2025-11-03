@@ -5,10 +5,13 @@ import java.util.Base64;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.awt.image.BufferedImage;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.BufferedImageHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 
 import spagetti.tiimi.ticketguru.domain.Cost;
 import spagetti.tiimi.ticketguru.domain.CostRepository;
@@ -31,6 +34,11 @@ public class TicketguruApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TicketguruApplication.class, args);
 	}
+
+	@Bean
+    public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
+        return new BufferedImageHttpMessageConverter();
+    }
 
 	@Bean
 	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository,
