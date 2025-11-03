@@ -29,7 +29,7 @@ public class WebSecurityConfig {
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/", "/home", "/css/**", "/login", "/costs/**", "/events/**", "/sales/**",
-                        "/tickets/**", "/tickettypes/**", "/users/**", "/qr/**")
+                        "/tickets/**", "/tickettypes/**", "/users/**", "/qr/**", "/check")
                 .permitAll())
                 .formLogin(formlogin -> formlogin
                         .defaultSuccessUrl("/", true)
