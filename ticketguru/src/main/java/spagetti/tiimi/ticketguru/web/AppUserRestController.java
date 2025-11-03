@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import spagetti.tiimi.ticketguru.Views;
 import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.AppUser;
@@ -32,6 +35,7 @@ public class AppUserRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
+    @JsonView(Views.Limited.class)
     @ResponseStatus(HttpStatus.OK)
     public List<AppUser> getAllUsers() {
         return (List<AppUser>) urepository.findAll();
@@ -39,6 +43,7 @@ public class AppUserRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users/{id}")
+    @JsonView(Views.Limited.class)
     @ResponseStatus(HttpStatus.OK)
     public Optional<AppUser> getUserById(@PathVariable Long id) {
         Optional<AppUser> user = urepository.findById(id);
@@ -50,6 +55,7 @@ public class AppUserRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/users")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public AppUser createUser(@RequestBody AppUser user) {
         if (user.getFirstname() == null || user.getLastname() == null) {
@@ -60,6 +66,7 @@ public class AppUserRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/users/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable Long id) {
         if (!urepository.findById(id).isPresent()) {
@@ -70,6 +77,7 @@ public class AppUserRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("users/{id}")
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<AppUser> editUser(@PathVariable Long id, @RequestBody AppUser updatedUser) {
         if (updatedUser.getFirstname() == null || updatedUser.getLastname() == null) {

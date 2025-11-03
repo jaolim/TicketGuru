@@ -9,6 +9,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import spagetti.tiimi.ticketguru.Views;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,29 +17,35 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class Event {
 
+    @JsonView(Views.Public.class)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long eventid;
 
+    @JsonView(Views.Public.class)
     @NotBlank(message = "Event name is required")
     @Size(max = 200)
     private String name;
 
+    @JsonView(Views.Public.class)
     @NotBlank(message = "Venue is required")
     @Size(max = 200)
     private String venue;
 
+    @JsonView(Views.Public.class)
     @NotNull(message = "Start time is required")
     private LocalDateTime date;
 
+    @JsonView(Views.Public.class)
     @JsonIgnoreProperties("event")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "event")
-    @JsonManagedReference
+    //@JsonManagedReference
     private List<Cost> costs;
 
     public Event() {

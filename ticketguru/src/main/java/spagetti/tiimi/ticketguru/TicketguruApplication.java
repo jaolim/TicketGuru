@@ -83,7 +83,7 @@ public class TicketguruApplication {
 				erepository.save(event1);
 				erepository.save(event2);
 
-				crepository.save(cost1);
+				cost1 = crepository.save(cost1);
 				crepository.save(cost2);
 				crepository.save(cost3);
 
@@ -126,6 +126,7 @@ public class TicketguruApplication {
 				 * }
 				 */
 				log.info("Added initial DB data");
+				log.info("Get event id:" + cost1.getEvent().getEventid());
 			}
 		};
 	}

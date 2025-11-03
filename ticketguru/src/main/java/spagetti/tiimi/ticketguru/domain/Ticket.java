@@ -2,6 +2,8 @@ package spagetti.tiimi.ticketguru.domain;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,24 +11,31 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import spagetti.tiimi.ticketguru.Views;
 
 @Entity
 public class Ticket {
 
+    @JsonView(Views.Public.class)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ticketid;
     
+    @JsonView(Views.Public.class)
     @ManyToOne
     @JoinColumn(name = "costid")
     private Cost cost;
 
+    @JsonView(Views.Public.class)
     @ManyToOne
     @JoinColumn(name = "saleid")
     private Sale sale;
 
+    @JsonView(Views.Public.class)
     private Boolean redeemed;
+    @JsonView(Views.Public.class)
     private LocalDateTime redeemedTime;
+    @JsonView(Views.Public.class)
     private String ticketCode;
 
     public Ticket() {
