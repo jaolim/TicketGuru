@@ -24,7 +24,7 @@ import spagetti.tiimi.ticketguru.domain.AppUserRepository;
 import spagetti.tiimi.ticketguru.domain.Sale;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(originPatterns = "*")
 @RestController
 public class SaleRestController {
 
