@@ -137,7 +137,8 @@ id = poistettavan tapahtuman tunniste (Long)
 | Metodi | URL | Kuvaus |
 | -------- | ------- | --------- |
 | GET | {baseurl}/tickets | Listaa kaikki liput |
-| GET | {baseurl}/tickets/{id} | Palauttaa tietyn lipun |
+| GET | {baseurl}/tickets/{id} | Palauttaa tietyn lipun id:n perusteella |
+| GET | {baseurl}/tickets?code={code} | Palauttaa tietyn lipun koodin perusteella |
 | POST | {baseurl}/tickets | Luo uuden lipun |
 | PUT | {baseurl}/tickets/{id} | Muokkaa olemassa olevaa lippua tai luo uuden |
 | DELETE | {baseurl}/tickets/{id} | Poistaa tietyn lipun |
@@ -145,7 +146,7 @@ id = poistettavan tapahtuman tunniste (Long)
 
 ### Get Ticket
 
-**URL:** `{baseurl}/tickets` & `{baseurl}/tickets/{id}`
+**URL:** `{baseurl}/tickets` & `{baseurl}/tickets/{id}` & `{baseurl}/tickets?code={code}`
 
 **Metodi:** `GET`
 
@@ -166,31 +167,63 @@ id = poistettavan tapahtuman tunniste (Long)
         "ticketid": 1,
         "cost": {
             "costid": 1,
-            "price": 20.5,
-            "type": {
+            "event": {
+                "eventid": 1,
+                "name": "Event1",
+                "venue": "Venue1",
+                "date": "2025-11-04T20:58:43.300956"
+            },
+            "ticketType": {
+                "ticketTypeid": 1,
                 "name": "Aikuinen",
-                "note": null,
-                "typeid": 1
-            }
+                "note": null
+            },
+            "price": 20.5
         },
-        "sale": null,
+        "sale": {
+            "saleid": 1,
+            "user": {
+                "userid": 2,
+                "username": "user",
+                "firstname": "User"
+            },
+            "price": 28.490000000000002,
+            "time": "2025-11-04T20:58:43.300956"
+        },
         "redeemed": false,
-        "name": "test1"
+        "redeemedTime": null,
+        "ticketCode": "MTEx"
     },
     {
         "ticketid": 2,
         "cost": {
             "costid": 2,
-            "price": 7.99,
-            "type": {
+            "event": {
+                "eventid": 2,
+                "name": "Event2",
+                "venue": "Venue2",
+                "date": "1999-01-31T20:00:00"
+            },
+            "ticketType": {
+                "ticketTypeid": 2,
                 "name": "Eläkeläinen",
-                "note": null,
-                "typeid": 2
-            }
+                "note": "Tarkista eläkeläisyys tarvittaessa"
+            },
+            "price": 7.99
         },
-        "sale": null,
+        "sale": {
+            "saleid": 1,
+            "user": {
+                "userid": 2,
+                "username": "user",
+                "firstname": "User"
+            },
+            "price": 28.490000000000002,
+            "time": "2025-11-04T20:58:43.300956"
+        },
         "redeemed": false,
-        "name": "test2"
+        "redeemedTime": null,
+        "ticketCode": "MjIx"
     }
 ]
 ```
