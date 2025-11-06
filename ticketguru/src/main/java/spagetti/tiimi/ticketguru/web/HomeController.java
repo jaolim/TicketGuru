@@ -78,8 +78,8 @@ public class HomeController {
     }
 
 
-    @GetMapping(value = { "/sell-ticket" })
-    public String getSellTicket(Model model) {
+    @GetMapping(value = { "/sell" })
+    public String getSell(Model model) {
         return "sell-ticket";
     }
 }
