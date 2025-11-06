@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sell tickets</title>
+</head>
+
+<body>
+    <h1>Sell tickets</h1>
+
+    <input id="username" placeholder="User">
+    <input type="password" id="password" placeholder="Password">
+    <input id="url" size="45" value="https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi" placeholder="URL">
+    <div>
+        <button onclick="fetchEvents()">Get Events</button>
+    </div>
+    <div id="status"></div>
+    <div id="result"></div>
+
+    <script>
+        async function fetchEvents() {
+            const url = document.getElementById("url").value.trim();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const credentials = btoa(`${username}:${password}`);
+            const status = document.getElementById("status");
+            const result = document.getElementById("result");
+            status.textContent = "Loading events...";
+            try {
+                const res = await fetch(`${url}/events`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Basic ${credentials}`,
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
+                });
+                if (!res.ok) {
+                    result.textContent = "Could not fetch events";
+                    return;
+                }
+
+                const events = await res.json();
+                const list = `<ul>${events.map(event => `<li>Name: ${event.name}, Event ID: ${event.eventid}, Date: ${event.date}, Venue: ${event.venue}</li>
+                            <ul>${event.costs.map(cost => `<li>Type: ${cost.ticketType.name}, Cost ID: ${cost.costid}, Price: ${cost.price}</li>`).join('')}</ul>`).join('')}
+                            </ul>`
+                status.innerHTML = "<h2>Events:</h2>"
+                result.innerHTML = `${list}`;
+            } catch {
+                result.textContent = "Error fetching events";
+            }
+        }
+    </script>
+</body>
+
+
+</html>

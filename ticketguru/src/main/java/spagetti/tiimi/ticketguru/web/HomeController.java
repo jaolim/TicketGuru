@@ -73,8 +73,13 @@ public class HomeController {
     }
 
     @GetMapping(value = { "/client" })
-    public String getCheck(Model model) {
+    public String getClient(Model model) {
         return "ticket-client";
     }
 
+
+    @GetMapping(value = { "/sell-ticket" })
+    public String getSellTicket(Model model) {
+        return "sell-ticket";
+    }
 }
