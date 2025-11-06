@@ -2,6 +2,7 @@ package spagetti.tiimi.ticketguru.domain;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.Entity;
@@ -29,6 +30,7 @@ public class Ticket {
     @JsonView(Views.Public.class)
     @ManyToOne
     @JoinColumn(name = "saleid")
+    @JsonIgnoreProperties("tickets")
     private Sale sale;
 
     @JsonView(Views.Public.class)
