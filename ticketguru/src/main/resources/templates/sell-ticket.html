@@ -31,20 +31,145 @@
         <div>
             <button onclick="addTicket()">Add Ticket</button>
         </div>
+        <div id="ticketStatus"></div>
+        <div id="ticketsHeader"></div>
         <div id="tickets"></div>
+    </div>
+    <div>
+        <h2>Sell</h2>
+        <div>
+            <button onclick="sellTickets()">Create sale</button>
+            <div id="saleStatus"></div>
+            <div id="sale"></div>
+            <div id="saleTickets"></div>
+        </div>
     </div>
 
     <script>
         let events = {};
         let tickets = [];
 
-        function addTicket() {
-            const ticketList = document.getElementById("tickets");
-            const cost = Number(document.getElementById("cost").value.trim());
+        async function sellTickets() {
+            const url = document.getElementById("url").value.trim();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const credentials = btoa(`${username}:${password}`);
+            const status = document.getElementById("saleStatus");
+            const result = document.getElementById("sale");
+            const clearTickets = document.getElementById("tickets");
+            const resultTickets = document.getElementById("saleTickets");
+            const date = new Date().toISOString();
+
+            if (events.length == 0) {
+                status.innerHTML = "Tickets required to generate sale"
+                return;
+            }
+
+            let totalPrice = 0;
+            for (let i = 0; i < tickets.length; i++) {
+                totalPrice += tickets[i].price * tickets[i].amount;
+            }
+
+            if (totalPrice <= 0) {
+                return;
+            }
+
+            body = {
+                user: { userid: 2 },
+                time: date,
+                price: totalPrice
+            };
+            try {
+                const res = await fetch(`${url}/sales`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Basic ${credentials}`,
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(body)
+                });
+                if (!res.ok) {
+                    status.textContent = "Error generating sale";
+                    return;
+                }
+                const sale = await res.json();
+                const saleid = sale.saleid;
+                for (let i = 0; i < tickets.length; i++) {
+                    for (let l = 0; l < tickets[i].amount; l++) {
+                        body = {
+                            cost: { costid: tickets[i].costid },
+                            sale: { saleid: saleid },
+                            redeemed: false
+                        };
+                        try {
+                            const res = await fetch(`${url}/tickets`, {
+                                method: "POST",
+                                headers: {
+                                    "Authorization": `Basic ${credentials}`,
+                                    "Content-Type": "application/json"
+                                },
+                                credentials: "include",
+                                body: JSON.stringify(body)
+                            });
+                        } catch {
+                            status.innerHTML = "Error generating tickets"
+                        }
+                    }
+                }
+
+                result.innerHTML = `Sale id: ${sale.saleid}, Total Price: ${sale.price}, Time: ${sale.time}`
+                resultTickets.innerHTML = `<ul>${tickets.map(ticket => `<li>Event: ${ticket.event}, Price: ${ticket.price}, Amount: ${ticket.amount}, Type: ${ticket.type}</li>`).join('')}</ul>`
+                tickets = [];
+                clearTickets.innerHTML = "";
+
+            } catch {
+                status.innerHTML = "Error generating sale"
+
+            }
+        }
+
+        async function addTicket() {
+            const url = document.getElementById("url").value.trim();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const credentials = btoa(`${username}:${password}`);
+            const status = document.getElementById("ticketStatus");
+            const ticketsHeader = document.getElementById("ticketsHeader");
+            const ticketPrint = document.getElementById("tickets");
+            const id = Number(document.getElementById("cost").value.trim());
             const amount = Number(document.getElementById("amount").value.trim());
-            const price = 1 //TODO: validate costId and and fetch actual price
-            tickets.push({ costId: cost, amount: amount, price : price });
-            ticketList.innerHTML = JSON.stringify(tickets);
+
+            if (!Number.isInteger(amount) || amount <= 0) {
+                status.innerHTML = "Amount has to be a positive integer"
+                return;
+            } else if (amount > 20){
+                status.innerHTML = "Current limit for amount is 20"
+                return;
+            }
+            let price = 0;
+            try {
+                const res = await fetch(`${url}/costs/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Basic ${credentials}`,
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
+                });
+                if (!res.ok) {
+                    status.textContent = "Invalid Cost ID";
+                    return;
+                }
+                const cost = await res.json();
+                const ticket = { costid: id, event: cost.event.name, amount: amount, price: cost.price, type: cost.ticketType.name };
+                tickets.push(ticket);
+            } catch {
+                status.innerHTML = "Error generating ticket"
+            }
+            const ticketList = `<ul>${tickets.map(ticket => `<li>Event: ${ticket.event}, Price: ${ticket.price}, Amount: ${ticket.amount}, Type: ${ticket.type}</li>`).join('')}</ul>`
+            ticketsHeader.innerHTML = "<h2>Tickets:</h2>"
+            ticketPrint.innerHTML = ticketList;
 
         }
 
