@@ -7,18 +7,47 @@
 </head>
 
 <body>
-    <h1>Sell tickets</h1>
-
-    <input id="username" placeholder="User">
-    <input type="password" id="password" placeholder="Password">
-    <input id="url" size="45" value="https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi" placeholder="URL">
     <div>
-        <button onclick="fetchEvents()">Get Events</button>
+        <h1>Sell tickets</h1>
+
+        <input id="username" placeholder="User">
+        <input type="password" id="password" placeholder="Password">
+        <input id="url" size="45" value="https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi" placeholder="URL">
     </div>
-    <div id="status"></div>
-    <div id="result"></div>
+    <div>
+        <div>
+            <div>
+                <button onclick="fetchEvents()">Get Events</button>
+            </div>
+            <div id="status"></div>
+            <div id="result"></div>
+        </div>
+
+    </div>
+    <div>
+        <h2>Add Ticket</h2>
+        <input id="cost" placeholder="Cost ID">
+        <input id="amount" placeholder="Amount">
+        <div>
+            <button onclick="addTicket()">Add Ticket</button>
+        </div>
+        <div id="tickets"></div>
+    </div>
 
     <script>
+        let events = {};
+        let tickets = [];
+
+        function addTicket() {
+            const ticketList = document.getElementById("tickets");
+            const cost = Number(document.getElementById("cost").value.trim());
+            const amount = Number(document.getElementById("amount").value.trim());
+            const price = 1 //TODO: validate costId and and fetch actual price
+            tickets.push({ costId: cost, amount: amount, price : price });
+            ticketList.innerHTML = JSON.stringify(tickets);
+
+        }
+
         async function fetchEvents() {
             const url = document.getElementById("url").value.trim();
             const username = document.getElementById("username").value.trim();
@@ -41,7 +70,7 @@
                     return;
                 }
 
-                const events = await res.json();
+                events = await res.json();
                 const list = `<ul>${events.map(event => `<li>Name: ${event.name}, Event ID: ${event.eventid}, Date: ${event.date}, Venue: ${event.venue}</li>
                             <ul>${event.costs.map(cost => `<li>Type: ${cost.ticketType.name}, Cost ID: ${cost.costid}, Price: ${cost.price}</li>`).join('')}</ul>`).join('')}
                             </ul>`
