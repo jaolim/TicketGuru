@@ -148,6 +148,8 @@ Tämän lisäksi
 
 ## Testaus
 
+Tarkemmat testaustiedot: [katso dokumentti](testplan.md)
+
 Tässä kohdin selvitetään, miten ohjelmiston oikea toiminta varmistetaan
 testaamalla projektin aikana: millaisia testauksia tehdään ja missä vaiheessa.
 Testauksen tarkemmat sisällöt ja testisuoritusten tulosten raportit kirjataan
