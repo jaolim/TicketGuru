@@ -1,4 +1,4 @@
-package spagetti.tiimi.ticketguru;
+package spagetti.tiimi.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,19 +41,12 @@ public class CostTest {
     }
 
     @Test
-    void shouldAllowPriceZero() {
+    void shouldThrowExceptionForNegativePrice() {
         Event event = new Event("Event", "Venue", LocalDateTime.now());
-        TicketType ticketType = new TicketType("TicketTypeName");
-        Cost cost = new Cost(ticketType, 0.0, event);
+        TicketType ticket = new TicketType("Basic");
 
-        assertEquals(0.0, cost.getPrice());
+        assertThrows(IllegalArgumentException.class,
+            () -> new Cost(ticket, -5.0, event)
+        );
     }
-
-    @Test 
-    void shouldNotAcceptNegativePrice() { 
-        Event event = new Event("Event", "Venue", LocalDateTime.now()); 
-        TicketType ticketType = new TicketType("TicketTypeName"); 
-
-        assertThrows(IllegalArgumentException.class, () -> { 
-        new Cost(ticketType, -1.0, event); }); }
 }
