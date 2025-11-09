@@ -45,9 +45,54 @@
         </div>
     </div>
 
+    <div>
+        <h2>Fetch Sale</h2>
+        <input id="saleId" placeholder="Sale">
+        <div>
+            <button onclick="fetchSale()">Fetch Sale</button>
+            <div id="fetchSaleStatus"></div>
+            <div id="fetchSale"></div>
+            <div id="fetchSaleTickets"></div>
+        </div>
+    </div>
+
     <script>
         let events = {};
         let tickets = [];
+        let sale = {};
+
+        async function fetchSale() {
+            const saleId = document.getElementById("saleId").value.trim();
+            const url = document.getElementById("url").value.trim();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const credentials = btoa(`${username}:${password}`);
+            const status = document.getElementById("fetchSaleStatus");
+            const result = document.getElementById("fetchSaleTickets");
+            status.textContent = "Loading sale...";
+            try {
+                const res = await fetch(`${url}/sales/${saleId}`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Basic ${credentials}`,
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
+                });
+                if (!res.ok) {
+                    status.textContent = "Could not fetch sale";
+                    return;
+                }
+
+                sale = await res.json();
+                const list = `<ul>${sale.tickets.map(ticket => `<li><ul><li>Event: ${ticket.cost.event.name}</li> <li>Date: ${ticket.cost.event.date}</li> <li>Venue: ${ticket.cost.event.venue}</li> <li>Ticket Id: ${ticket.ticketid}</li> <li>Ticket Code: ${ticket.ticketCode}</li><img src="${url}/qr/${ticket.ticketCode}"></ul></li>`).join('')}</ul>`
+                status.innerHTML = "<h2>Events:</h2>"
+                result.innerHTML = `${list}`;
+            } catch {
+                result.textContent = "Error fetching sale";
+            }
+        }
+        // , Date: ${ticket.cost.event.date}, Venue: ${ticket.costevent.venue}, Ticket Id: ${ticket.ticketId
 
         async function sellTickets() {
             const url = document.getElementById("url").value.trim();
@@ -143,7 +188,7 @@
             if (!Number.isInteger(amount) || amount <= 0) {
                 status.innerHTML = "Amount has to be a positive integer"
                 return;
-            } else if (amount > 20){
+            } else if (amount > 20) {
                 status.innerHTML = "Current limit for amount is 20"
                 return;
             }
@@ -191,7 +236,7 @@
                     credentials: "include"
                 });
                 if (!res.ok) {
-                    result.textContent = "Could not fetch events";
+                    status.textContent = "Could not fetch events";
                     return;
                 }
 
