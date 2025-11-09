@@ -89,10 +89,10 @@
                 status.innerHTML = "<h2>Events:</h2>"
                 result.innerHTML = `${list}`;
             } catch {
+                status.textContent = "";
                 result.textContent = "Error fetching sale";
             }
         }
-        // , Date: ${ticket.cost.event.date}, Venue: ${ticket.costevent.venue}, Ticket Id: ${ticket.ticketId
 
         async function sellTickets() {
             const url = document.getElementById("url").value.trim();
@@ -237,6 +237,7 @@
                 });
                 if (!res.ok) {
                     status.textContent = "Could not fetch events";
+                    result.textContent = "";
                     return;
                 }
 
@@ -247,6 +248,7 @@
                 status.innerHTML = "<h2>Events:</h2>"
                 result.innerHTML = `${list}`;
             } catch {
+                status.textContent = "";
                 result.textContent = "Error fetching events";
             }
         }
