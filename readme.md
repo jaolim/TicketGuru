@@ -50,6 +50,16 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 ![TicketGuru käyttöliittymäkaavio](/resources/Kayttoliittyma_Ticketguru.drawio.png)
 
+### Lipunmyynti
+
+**Endpoint: ** `/sell`
+
+-	Kentät basic auth tunnistaumiselle ja base url:lle(oletuksena main julkaisu)
+-	Painike tapahtumien hakuun ja listaukseen
+-	Kentät ja painike lippujen lisäykseen
+-	Painike myyntitapahtuman lisäämiseen
+-	Painike ja kenttä tiettyyn myyntiin liittyvien lippujen hakuun ja QR koodien generoimiseen
+
 ## Tietokanta
 
 ### Relaatiomalli
@@ -145,18 +155,6 @@ Tämän lisäksi
     johdonmukaisia nimeämiskäytäntöjä
 -   ohjelmiston pitää olla organisoitu komponentteihin niin, että turhalta toistolta
     vältytään
-	
-## Käyttöliittymä
-
-### Lipunmyynti
-
-**Endpoint: ** `/sell`
-
--	Kentät basic auth tunnistaumiselle ja base url:lle(oletuksena main julkaisu)
--	Painike tapahtumien hakuun ja listaukseen
--	Kentät ja painike lippujen lisäykseen
--	Painike myyntitapahtuman lisäämiseen
--	Painike ja kenttä tiettyyn myyntiin liittyvien lippujen hakuun ja QR koodien generoimiseen
 
 ## Testaus
 
