@@ -336,9 +336,6 @@ Generoi lipun QR-koodin kuvan `ticketCode`-kentästä. Frontend voi hakea tämä
   - `ticketCode` – lipun uniikki koodi, jonka perusteella QR-koodi generoidaan
 - **Palautusarvo:** PNG-kuva (`image/png`)  
 - **CORS:** Endpoint sallii cross-origin-fetchin, joten frontend voi hakea sen mistä tahansa domainista.
-- **Esimerkki pyyntö:**
-```http
-GET /qr/ABC12345
 
 ## TicketType
 
