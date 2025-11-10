@@ -158,14 +158,14 @@ Tämän lisäksi
 
 ## Testaus
 
+Projektin oieka toiminta on varmistettu useilla testausmenetelmillä:
+- **JUnit-yksikkötestit**: Testataan yksittäisten luokkien ja metodien toiminta.
+- **Integraatiotestit**: Varmistetaan eri komponenttien ja tietokantayhteyksien yhteensopivuus.
+- **End-to-end (E2E) testit**: Tarkastetaan koko sovelluksen toiminnallisuus front-endin ja back-endin välillä.
+
 Tarkemmat testaustiedot: [katso dokumentti](testplan.md)
 
-Tässä kohdin selvitetään, miten ohjelmiston oikea toiminta varmistetaan
-testaamalla projektin aikana: millaisia testauksia tehdään ja missä vaiheessa.
-Testauksen tarkemmat sisällöt ja testisuoritusten tulosten raportit kirjataan
-erillisiin dokumentteihin.
-
-Tänne kirjataan myös lopuksi järjestelmän tunnetut ongelmat, joita ei ole korjattu.
+Tällä hetkellä ei ole tunnettuja ongelmia.
 
 ## Asennustiedot
 

@@ -1,0 +1,121 @@
+package spagetti.tiimi.ticketguru.integration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import java.util.Optional;
+
+import spagetti.tiimi.ticketguru.domain.Sale;
+import spagetti.tiimi.ticketguru.domain.SaleRepository;
+import spagetti.tiimi.ticketguru.domain.Cost;
+import spagetti.tiimi.ticketguru.domain.CostRepository;
+import spagetti.tiimi.ticketguru.domain.Event;
+import spagetti.tiimi.ticketguru.domain.EventRepository;
+import spagetti.tiimi.ticketguru.domain.Ticket;
+import spagetti.tiimi.ticketguru.domain.TicketRepository;
+import spagetti.tiimi.ticketguru.domain.TicketType;
+import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
+
+@SpringBootTest
+public class TicketRepositoryTest {
+    @Autowired
+    private TicketRepository ticketRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private TicketTypeRepository ticketTypeRepository;
+
+    @Autowired
+    private SaleRepository saleRepository;
+
+    @Autowired
+    private CostRepository costRepository;
+
+    private Event event;
+    private TicketType ticketType;
+    private Sale sale;
+    private Cost cost;
+
+    @BeforeEach
+    public void setup() {
+        event = new Event("Event X", "Helsinki", LocalDateTime.now());
+        eventRepository.save(event);
+
+        ticketType = new TicketType("VIP");
+        ticketTypeRepository.save(ticketType);
+
+        cost = new Cost(ticketType, 10.0, event);
+        costRepository.save(cost);
+
+        sale = new Sale();
+        sale.setTime(LocalDateTime.now());
+        sale.setPrice(10.0);
+        saleRepository.save(sale);
+    }
+
+    @AfterEach
+    public void cleanup() {
+        ticketRepository.deleteAll();
+        costRepository.deleteAll();
+        saleRepository.deleteAll();
+        ticketTypeRepository.deleteAll();
+        eventRepository.deleteAll();
+    }
+    @Test
+    public void shouldCreateTicketWithCostOnly() {
+        Ticket ticket = new Ticket(cost);
+        ticketRepository.save(ticket);
+
+        Optional<Ticket> found = ticketRepository.findById(ticket.getTicketid());
+        assertTrue(found.isPresent());
+        assertEquals(cost.getCostid(), found.get().getCost().getCostid());
+        assertFalse(found.get().getRedeemed());
+    }
+
+    @Test
+    public void shouldCreateTicketWithCostAndSale() {
+        Ticket ticket = new Ticket(cost, sale);
+        ticketRepository.save(ticket);
+
+        Optional<Ticket> found = ticketRepository.findById(ticket.getTicketid());
+        assertTrue(found.isPresent());
+        assertEquals(cost.getCostid(), found.get().getCost().getCostid());
+        assertEquals(sale.getSaleid(), found.get().getSale().getSaleid());
+        assertFalse(found.get().getRedeemed());
+    }
+
+    @Test
+    public void shouldUpdateRedeemed() {
+        Ticket ticket = new Ticket(cost);
+        ticketRepository.save(ticket);
+
+        ticket.setRedeemed(true);
+        ticketRepository.save(ticket);
+
+        Optional<Ticket> found = ticketRepository.findById(ticket.getTicketid());
+        assertTrue(found.isPresent());
+        assertTrue(found.get().getRedeemed());
+    }
+
+    @Test
+    public void shouldDeleteTicket() {
+        Ticket ticket = new Ticket(cost);
+        ticketRepository.save(ticket);
+
+        ticketRepository.deleteById(ticket.getTicketid());
+        Optional<Ticket> found = ticketRepository.findById(ticket.getTicketid());
+        assertFalse(found.isPresent());
+    }
+
+    
+}
