@@ -23,7 +23,14 @@ Sama periaate kuin yksikkötesteissä, mutta testaa useamman komponentin yhteist
 `shouldCreateNewCost()` testaa, että uusi hinta tallentuu tietokantaan.
 `shouldReturnCostById()` testaa, että tietokannasta haetaan oikea hinta ID:n perusteella.
 `shouldDeleteCost()` testaa, että hinnan voi poistaa ja sitä ei löydä enää tietokannasta.
-`shouldUpdatePrice()` testaa, että hinnan päivitys onnsituu ja tallentuu tietokantaan. 
+`shouldUpdatePrice()` testaa, että hinnan päivitys onnsituu ja tallentuu tietokantaan.
+
+### Event-luokan CRUD-toiminnot
+`shouldCreateNewEvent()` testaa, että uusi eventti tallentuu tietokantaan.
+`shouldReturnEventById()` testaa, että tietokannasta haetaan oikea eventti ID:llä.
+`shouldUpdateEventVenue` testaa, että eventin paikkaa voidaan muuttaa.
+`shouldDeleteEvent()` testaa, että eventti voidaan poistaa.
+`shouldNotFindNonExistingEvent` testaa, että tietokannasta ei löydetä eventtejä, joita ei ole.
 
 
 ## End-2-end-testit
