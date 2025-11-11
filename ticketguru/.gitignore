@@ -34,3 +34,7 @@ build/
 
 ### env variables ###
 *.env
+
+### local testing files
+ticket-client-testing.html
+LocalTestController.java

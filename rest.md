@@ -325,6 +325,18 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 - `404` - Lippua ei ole olemassa
 - `409` - Lippu on jo käytetty
 
+### QR-koodi
+
+**GET /qr/{ticketCode}**
+
+Generoi lipun QR-koodin kuvan `ticketCode`-kentästä. Frontend voi hakea tämän endpointin kautta lipun QR-koodin ja näyttää sen käyttäjälle, esimerkiksi sisäänpääsyä varten.
+
+- **HTTP-metodi:** GET  
+- **URL-parametri:**  
+  - `ticketCode` – lipun uniikki koodi, jonka perusteella QR-koodi generoidaan
+- **Palautusarvo:** PNG-kuva (`image/png`)  
+- **CORS:** Endpoint sallii cross-origin-fetchin, joten frontend voi hakea sen mistä tahansa domainista.
+
 ## TicketType
 
 **Dev base url:** `http://locahost:8080`

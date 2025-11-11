@@ -23,7 +23,7 @@ import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(originPatterns = "*")
 @RestController
 public class EventRestController {
 

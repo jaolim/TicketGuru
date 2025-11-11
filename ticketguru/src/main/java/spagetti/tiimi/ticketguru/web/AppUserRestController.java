@@ -23,7 +23,7 @@ import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.AppUser;
 import spagetti.tiimi.ticketguru.domain.AppUserRepository;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(originPatterns = "*")
 @RestController
 public class AppUserRestController {
 
