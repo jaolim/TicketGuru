@@ -50,6 +50,16 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 ![TicketGuru käyttöliittymäkaavio](/resources/Kayttoliittyma_Ticketguru.drawio.png)
 
+### Lipunmyynti
+
+**Endpoint: ** `/sell`
+
+-	Kentät basic auth tunnistaumiselle ja base url:lle(oletuksena main julkaisu)
+-	Painike tapahtumien hakuun ja listaukseen
+-	Kentät ja painike lippujen lisäykseen
+-	Painike myyntitapahtuman lisäämiseen
+-	Painike ja kenttä tiettyyn myyntiin liittyvien lippujen hakuun ja QR koodien generoimiseen
+
 ## Tietokanta
 
 ### Relaatiomalli
@@ -148,12 +158,14 @@ Tämän lisäksi
 
 ## Testaus
 
-Tässä kohdin selvitetään, miten ohjelmiston oikea toiminta varmistetaan
-testaamalla projektin aikana: millaisia testauksia tehdään ja missä vaiheessa.
-Testauksen tarkemmat sisällöt ja testisuoritusten tulosten raportit kirjataan
-erillisiin dokumentteihin.
+Projektin oieka toiminta on varmistettu useilla testausmenetelmillä:
+- **JUnit-yksikkötestit**: Testataan yksittäisten luokkien ja metodien toiminta.
+- **Integraatiotestit**: Varmistetaan eri komponenttien ja tietokantayhteyksien yhteensopivuus.
+- **End-to-end (E2E) testit**: Tarkastetaan koko sovelluksen toiminnallisuus front-endin ja back-endin välillä.
 
-Tänne kirjataan myös lopuksi järjestelmän tunnetut ongelmat, joita ei ole korjattu.
+Tarkemmat testaustiedot: [katso dokumentti](testplan.md)
+
+Tällä hetkellä ei ole tunnettuja ongelmia.
 
 ## Asennustiedot
 

@@ -57,6 +57,9 @@ public class Cost {
     }
 
     public Cost(TicketType ticketType, Double price, Event event) {
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
         this.ticketType = ticketType;
         this.price = price;
         this.event = event;
@@ -71,6 +74,9 @@ public class Cost {
     }
 
     public void setPrice(Double price) {
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
         this.price = price;
     }
 

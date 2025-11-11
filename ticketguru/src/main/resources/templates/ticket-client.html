@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Ticket Check</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
   <h1>Ticket Check</h1>
 
   <input id="id" placeholder="Ticket ID">
   <button onclick="fetchTicket()">Fetch</button>
+
+  <h2>or scan QR code:</h2>
+  <div id="reader" style="width: 400px; height: 300px;"></div>
 
   <div id="result"></div>
 
@@ -54,6 +58,12 @@
         alert("Error marking ticket as used.");
       }
     }
+    function onScanSuccess(decodedText, decodedResult) {
+      console.log("Scanned QR code:", decodedText);
+      fetchTicket(decodedText);
+    }
+    const html5QrCodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+    html5QrCodeScanner.render(onScanSuccess);
   </script>
 </body>
 </html>

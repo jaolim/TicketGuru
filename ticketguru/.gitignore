@@ -35,5 +35,6 @@ build/
 ### env variables ###
 *.env
 
-### temp endpoint
+### local testing files
 ticket-client-testing.html
+LocalTestController.java

@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/home", "/css/**", "/login", "/costs/**", "/events/**", "/sales/**",
-                                "/tickets/**", "/tickettypes/**", "/users/**", "/qr/**", "/client")
+                                "/tickets/**", "/tickettypes/**", "/users/**", "/qr/**", "/client", "/sell")
                         .permitAll())
                 .formLogin(formlogin -> formlogin
                         .defaultSuccessUrl("/", true)
