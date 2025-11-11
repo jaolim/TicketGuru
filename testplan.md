@@ -62,3 +62,13 @@ Sama periaate kuin yksikkötesteissä, mutta testaa useamman komponentin yhteist
 - `shouldDeleteSale` testaa, että Sale voidaan poistaa tietokannasta onnistuneesti. 
 
 ## End-2-end-testit
+
+End-to-end -testit varmistavat koko järjestelmän toiminnan käyttäjän näkökulmasta. Näin varmistetaan, että autentikointi, controllerit, palvelukerros ja tietokanta toimivat kokonaisuutena.
+
+### SellTicket (end-2-end)
+
+`sellTicket_endToEndFlow` testaa lipun myyntiprosessin alusta loppuun.
+- Hakee tapahtumat `GET /events` -kutsulla ja varmistaa palvelimen vasteen.
+- Hakee olemassa olevan myyntitapahtuman `GET /sales` ja poimii `saleid`-arvon.
+- Luo uuden lipun `POST /tickets` käyttäen olemassa olevaa `saleid`- ja `costid`-arvoa.
+- Varmistaa `GET /tickets` -kutsulla, että luotu lippu näkyy järjestelmän listauksessa.
