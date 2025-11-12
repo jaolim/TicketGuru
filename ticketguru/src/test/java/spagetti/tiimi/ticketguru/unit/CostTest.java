@@ -1,4 +1,4 @@
-package spagetti.tiimi.unit;
+package spagetti.tiimi.ticketguru.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
