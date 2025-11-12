@@ -104,6 +104,7 @@
             const clearTickets = document.getElementById("tickets");
             const resultTickets = document.getElementById("saleTickets");
             const date = new Date().toISOString();
+            status.textContent = "Creating sale..."
 
             if (events.length == 0) {
                 status.innerHTML = "Tickets required to generate sale"
@@ -163,6 +164,7 @@
                     }
                 }
 
+                status.textContent = ""
                 result.innerHTML = `Sale id: ${sale.saleid}, Total Price: ${sale.price}, Time: ${sale.time}`
                 resultTickets.innerHTML = `<ul>${tickets.map(ticket => `<li>Event: ${ticket.event}, Price: ${ticket.price}, Amount: ${ticket.amount}, Type: ${ticket.type}</li>`).join('')}</ul>`
                 tickets = [];
