@@ -46,7 +46,7 @@
     </div>
 
     <div>
-        <h2>Fetch Sale</h2>
+        <h2>Fetch Tickets in Sale</h2>
         <input id="saleId" placeholder="Sale">
         <div>
             <button onclick="fetchSale()">Fetch Sale</button>
@@ -85,8 +85,8 @@
                 }
 
                 sale = await res.json();
-                const list = `<ul>${sale.tickets.map(ticket => `<li><ul><li>Event: ${ticket.cost.event.name}</li> <li>Date: ${ticket.cost.event.date}</li> <li>Venue: ${ticket.cost.event.venue}</li> <li>Ticket Id: ${ticket.ticketid}</li> <li>Ticket Code: ${ticket.ticketCode}</li><img src="${url}/qr/${ticket.ticketCode}"></ul></li>`).join('')}</ul>`
-                status.innerHTML = "<h2>Events:</h2>"
+                const list = `<ul>${sale.tickets.map(ticket => `<li><ul><li>Event: ${ticket.cost.event.name}</li> <li>Date: ${ticket.cost.event.date}</li> <li>Venue: ${ticket.cost.event.venue}</li> <li>Type: ${ticket.cost.ticketType.name}</li> <li>Ticket Id: ${ticket.ticketid}</li> <li>Ticket Code: ${ticket.ticketCode}</li><img src="${url}/qr/${ticket.ticketCode}"></ul></li>`).join('')}</ul>`
+                status.innerHTML = "<h2>Tickets:</h2>"
                 result.innerHTML = `${list}`;
             } catch {
                 status.textContent = "";
@@ -104,6 +104,7 @@
             const clearTickets = document.getElementById("tickets");
             const resultTickets = document.getElementById("saleTickets");
             const date = new Date().toISOString();
+            status.textContent = "Creating sale..."
 
             if (events.length == 0) {
                 status.innerHTML = "Tickets required to generate sale"
@@ -163,6 +164,7 @@
                     }
                 }
 
+                status.textContent = ""
                 result.innerHTML = `Sale id: ${sale.saleid}, Total Price: ${sale.price}, Time: ${sale.time}`
                 resultTickets.innerHTML = `<ul>${tickets.map(ticket => `<li>Event: ${ticket.event}, Price: ${ticket.price}, Amount: ${ticket.amount}, Type: ${ticket.type}</li>`).join('')}</ul>`
                 tickets = [];
@@ -243,7 +245,7 @@
 
                 events = await res.json();
                 const list = `<ul>${events.map(event => `<li>Name: ${event.name}, Event ID: ${event.eventid}, Date: ${event.date}, Venue: ${event.venue}</li>
-                            <ul>${event.costs.map(cost => `<li>Type: ${cost.ticketType.name}, Cost ID: ${cost.costid}, Price: ${cost.price}</li>`).join('')}</ul>`).join('')}
+                            <ul>${event.costs.map(cost => `<li>Type: ${cost.ticketType.name}, Cost ID: ${cost.costid}, Price: ${cost.price} <button>Test</button></li>`).join('')}</ul>`).join('')}
                             </ul>`
                 status.innerHTML = "<h2>Events:</h2>"
                 result.innerHTML = `${list}`;
