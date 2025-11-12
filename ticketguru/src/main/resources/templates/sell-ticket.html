@@ -245,7 +245,7 @@
 
                 events = await res.json();
                 const list = `<ul>${events.map(event => `<li>Name: ${event.name}, Event ID: ${event.eventid}, Date: ${event.date}, Venue: ${event.venue}</li>
-                            <ul>${event.costs.map(cost => `<li>Type: ${cost.ticketType.name}, Cost ID: ${cost.costid}, Price: ${cost.price} <button>Test</button></li>`).join('')}</ul>`).join('')}
+                            <ul>${event.costs.map(cost => `<li>Type: ${cost.ticketType.name}, Cost ID: ${cost.costid}, Price: ${cost.price}</li>`).join('')}</ul>`).join('')}
                             </ul>`
                 status.innerHTML = "<h2>Events:</h2>"
                 result.innerHTML = `${list}`;
