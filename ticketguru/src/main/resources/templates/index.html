@@ -26,6 +26,12 @@
       </tr>
     </div>
     <div>
+      <h2>Venue DB list all:</h2>
+      <tr th:each = "venue : ${venues}">
+        <p><td th:text="${venue}"></td></p>
+      </tr>
+    </div>
+    <div>
       <h2>Cost DB list all:</h2>
       <tr th:each = "cost : ${costs}">
       <p><td th:text="${cost}"></td></p>

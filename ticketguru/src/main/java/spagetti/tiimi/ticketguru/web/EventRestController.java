@@ -79,7 +79,7 @@ public class EventRestController {
         return erepository.findById(id)
                 .map(event -> {
                     event.setName(updatedEvent.getName());
-                    event.setVenue(updatedEvent.getVenue());
+                    event.setVenueString(updatedEvent.getVenueString());
                     event.setDate(updatedEvent.getDate());
                     return erepository.save(event);
                 });

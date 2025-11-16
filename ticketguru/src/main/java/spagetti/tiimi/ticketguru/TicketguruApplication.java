@@ -23,6 +23,8 @@ import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.domain.TicketType;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
+import spagetti.tiimi.ticketguru.domain.Venue;
+import spagetti.tiimi.ticketguru.domain.VenueRepository;
 import spagetti.tiimi.ticketguru.domain.AppUser;
 import spagetti.tiimi.ticketguru.domain.AppUserRepository;
 
@@ -43,7 +45,7 @@ public class TicketguruApplication {
 	@Bean
 	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository,
 			AppUserRepository urepository, CostRepository crepository, SaleRepository srepository,
-			TicketTypeRepository trepository) {
+			TicketTypeRepository trepository, VenueRepository vRepository) {
 
 		return (args) -> {
 
@@ -51,8 +53,14 @@ public class TicketguruApplication {
 				LocalDateTime testTimeNow = LocalDateTime.now();
 				LocalDateTime testTimeStatic = LocalDateTime.of(1999, 1, 31, 20, 00);
 
-				Event event1 = new Event("Event1", "Venue1", testTimeNow);
-				Event event2 = new Event("Event2", "Venue2", testTimeStatic);
+				Venue venue1 = new Venue("Areena", 10000, "Osoite 1, 12345 Kaupunki");
+				Venue venue2 = new Venue("Teatteri", 200, "Osoite 2, 12345 Kaupunki");
+				vRepository.save(venue1);
+				vRepository.save(venue2);
+
+
+				Event event1 = new Event("Event1", venue1, testTimeNow);
+				Event event2 = new Event("Event2", venue2, testTimeStatic);
 				TicketType type1 = new TicketType("Aikuinen");
 				TicketType type2 = new TicketType("Eläkeläinen", "Tarkista eläkeläisyys tarvittaessa");
 

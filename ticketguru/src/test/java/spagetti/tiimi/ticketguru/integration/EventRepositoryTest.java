@@ -16,7 +16,7 @@ import spagetti.tiimi.ticketguru.domain.EventRepository;
 
 @SpringBootTest
 public class EventRepositoryTest {
-        
+
     @Autowired
     private EventRepository ereporitory;
 
@@ -52,11 +52,11 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldUpdateEventVenue() {
-        event.setVenue("Updated Venue");
+        event.setVenueString("Updated Venue");
         ereporitory.save(event);
         Optional<Event> found = ereporitory.findById(event.getEventid());
         assertTrue(found.isPresent());
-        assertEquals("Updated Venue", found.get().getVenue());
+        assertEquals("Updated Venue", found.get().getVenueString());
     }
 
     @Test
