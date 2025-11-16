@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +16,7 @@ import spagetti.tiimi.ticketguru.Views;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,7 +28,7 @@ public class Event {
     @JsonView(Views.Public.class)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long eventid;
 
     @JsonView(Views.Public.class)
@@ -34,9 +37,7 @@ public class Event {
     private String name;
 
     @JsonView(Views.Public.class)
-    @NotBlank(message = "Venue is required")
-    @Size(max = 200)
-    private String venue;
+    private String venueString;
 
     @JsonView(Views.Public.class)
     @NotNull(message = "Start time is required")
@@ -45,14 +46,19 @@ public class Event {
     @JsonView(Views.Public.class)
     @JsonIgnoreProperties("event")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "event")
-    //@JsonManagedReference
+    // @JsonManagedReference
     private List<Cost> costs;
+
+    @JsonView(Views.Public.class)
+    @ManyToOne
+    @JoinColumn(name = "venueid")
+    private Venue venue;
 
     public Event() {
 
     }
 
-    public Event(String name, String venue, LocalDateTime date) {
+    public Event(String name, Venue venue, LocalDateTime date) {
         this.name = name;
         this.venue = venue;
         this.date = date;
@@ -74,12 +80,12 @@ public class Event {
         this.name = name;
     }
 
-    public void setVenue(String venue) {
-        this.venue = venue;
+    public void setVenueString(String venue) {
+        this.venueString = venue;
     }
 
-    public String getVenue() {
-        return venue;
+    public String getVenueString() {
+        return venueString;
     }
 
     public void setDate(LocalDateTime date) {
@@ -96,6 +102,14 @@ public class Event {
 
     public void setCosts(List<Cost> costs) {
         this.costs = costs;
+    }
+
+    public Venue getVenue() {
+        return venue;
+    }
+
+    public void setVenue(Venue venue) {
+        this.venue = venue;
     }
 
     @Override
