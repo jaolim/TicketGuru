@@ -1,13 +1,11 @@
 package spagetti.tiimi.ticketguru.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import spagetti.tiimi.ticketguru.domain.AppUser;
-import spagetti.tiimi.ticketguru.domain.TicketType;
 
 public class AppUserTest {
     private AppUser user;

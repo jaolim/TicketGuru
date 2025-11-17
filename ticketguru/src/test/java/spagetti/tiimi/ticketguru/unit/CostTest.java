@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Test;
 import spagetti.tiimi.ticketguru.domain.Cost;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.TicketType;
+import spagetti.tiimi.ticketguru.domain.Venue;
 
 public class CostTest {
 
-    // TODO Toteutettavia testejä
-    // hinnan laskeminen oikein
-
     @Test
     void shouldCreateCostWithCorrectValues() {
-        Event event = new Event("Event", "Venue", LocalDateTime.now());
+        Venue venue = new Venue("name", "address");
+        Event event = new Event("Event", venue, LocalDateTime.now(), 10);
         TicketType ticketType = new TicketType("TicketTypeName");
 
         Cost cost = new Cost(ticketType, 2.5, event);
@@ -31,7 +30,8 @@ public class CostTest {
 
     @Test
     void shouldUpdatePrice() {
-        Event event = new Event("Event", "Venue", LocalDateTime.now());
+        Venue venue = new Venue("name", "address");
+        Event event = new Event("Event", venue, LocalDateTime.now(), 10);
         TicketType ticketType = new TicketType("TicketTypeName");
         Cost cost = new Cost(ticketType, 4.0, event);
 
@@ -42,7 +42,8 @@ public class CostTest {
 
     @Test
     void shouldThrowExceptionForNegativePrice() {
-        Event event = new Event("Event", "Venue", LocalDateTime.now());
+        Venue venue = new Venue("name", "address");
+        Event event = new Event("Event", venue, LocalDateTime.now(), 10);
         TicketType ticket = new TicketType("Basic");
 
         assertThrows(IllegalArgumentException.class,

@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
+import spagetti.tiimi.ticketguru.domain.Venue;
+import spagetti.tiimi.ticketguru.domain.VenueRepository;
 
 @SpringBootTest
 public class EventRepositoryTest {
@@ -20,22 +22,29 @@ public class EventRepositoryTest {
     @Autowired
     private EventRepository ereporitory;
 
+    @Autowired
+    private VenueRepository vrepository;
+
     private Event event;
+    private Venue venue;
 
     @BeforeEach
     public void setup() {
-        event = new Event("Test Event", "Test Venue", LocalDateTime.now());
+        venue = new Venue("name", "address");
+        vrepository.save(venue);
+        event = new Event("Event", venue, LocalDateTime.now(), 10);
         ereporitory.save(event);
     }
 
     @AfterEach
     public void cleanup() {
         ereporitory.deleteAll();
+        vrepository.deleteAll();
     }
 
     @Test
     public void shouldCreateNewEvent() {
-        Event newEvent = new Event("Concert", "Main Hall", LocalDateTime.now().plusDays(1));
+        Event newEvent = new Event("Concert", venue, LocalDateTime.now().plusDays(1), 10);
         ereporitory.save(newEvent);
 
         Optional<Event> found = ereporitory.findById(newEvent.getEventid());
@@ -52,11 +61,13 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldUpdateEventVenue() {
-        event.setVenueString("Updated Venue");
+        Venue newVenue = new Venue("Updated Venue", "address");
+        vrepository.save(newVenue);
+        event.setVenue(newVenue);
         ereporitory.save(event);
         Optional<Event> found = ereporitory.findById(event.getEventid());
         assertTrue(found.isPresent());
-        assertEquals("Updated Venue", found.get().getVenueString());
+        assertEquals(newVenue.getName(), found.get().getVenue().getName());
     }
 
     @Test
