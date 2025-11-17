@@ -1,5 +1,11 @@
 package spagetti.tiimi.ticketguru.domain;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,15 +18,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import spagetti.tiimi.ticketguru.Views;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class Event {
@@ -37,11 +34,12 @@ public class Event {
     private String name;
 
     @JsonView(Views.Public.class)
-    private String venueString;
-
-    @JsonView(Views.Public.class)
     @NotNull(message = "Start time is required")
     private LocalDateTime date;
+
+    @JsonView(Views.Public.class)
+    @NotNull(message = "Capacity is required")
+    private Integer capacity;
 
     @JsonView(Views.Public.class)
     @JsonIgnoreProperties("event")
@@ -58,10 +56,11 @@ public class Event {
 
     }
 
-    public Event(String name, Venue venue, LocalDateTime date) {
+    public Event(String name, Venue venue, LocalDateTime date, Integer capacity) {
         this.name = name;
         this.venue = venue;
         this.date = date;
+        this.capacity = capacity;
     }
 
     public void setEventid(Long eventid) {
@@ -80,20 +79,20 @@ public class Event {
         this.name = name;
     }
 
-    public void setVenueString(String venue) {
-        this.venueString = venue;
-    }
-
-    public String getVenueString() {
-        return venueString;
-    }
-
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
     public List<Cost> getCosts() {
@@ -114,7 +113,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event: " + name + ", Venue: " + venue + ", Date: " + date;
+        return "Event: " + name + ", Venue: " + venue + ", Date: " + date + ", Capacity: " + capacity;
     }
 
 }

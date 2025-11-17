@@ -53,14 +53,14 @@ public class TicketguruApplication {
 				LocalDateTime testTimeNow = LocalDateTime.now();
 				LocalDateTime testTimeStatic = LocalDateTime.of(1999, 1, 31, 20, 00);
 
-				Venue venue1 = new Venue("Areena", 10000, "Osoite 1, 12345 Kaupunki");
-				Venue venue2 = new Venue("Teatteri", 200, "Osoite 2, 12345 Kaupunki");
+				Venue venue1 = new Venue("Areena", "Osoite 1, 12345 Kaupunki");
+				Venue venue2 = new Venue("Teatteri", "Osoite 2, 12345 Kaupunki");
 				vRepository.save(venue1);
 				vRepository.save(venue2);
 
 
-				Event event1 = new Event("Event1", venue1, testTimeNow);
-				Event event2 = new Event("Event2", venue2, testTimeStatic);
+				Event event1 = new Event("Event1", venue1, testTimeNow, 500);
+				Event event2 = new Event("Event2", venue2, testTimeStatic, 10);
 				TicketType type1 = new TicketType("Aikuinen");
 				TicketType type2 = new TicketType("Eläkeläinen", "Tarkista eläkeläisyys tarvittaessa");
 
