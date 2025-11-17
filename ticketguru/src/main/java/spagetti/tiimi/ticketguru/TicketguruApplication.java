@@ -38,9 +38,9 @@ public class TicketguruApplication {
 	}
 
 	@Bean
-    public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
-        return new BufferedImageHttpMessageConverter();
-    }
+	public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
+		return new BufferedImageHttpMessageConverter();
+	}
 
 	@Bean
 	public CommandLineRunner ticketGuru(TicketRepository repository, EventRepository erepository,
@@ -58,19 +58,24 @@ public class TicketguruApplication {
 				vRepository.save(venue1);
 				vRepository.save(venue2);
 
-
 				Event event1 = new Event("Event1", venue1, testTimeNow, 500);
 				Event event2 = new Event("Event2", venue2, testTimeStatic, 10);
 				TicketType type1 = new TicketType("Aikuinen");
 				TicketType type2 = new TicketType("Eläkeläinen", "Tarkista eläkeläisyys tarvittaessa");
+				TicketType type3 = new TicketType("Opiskeliija", "Tarkista opiskelijakortti");
+				TicketType type4 = new TicketType("Lapsi");
 
 				AppUser testUser = new AppUser("user", "$2a$10$6GGxgQSK2de0tm6SJjVRxePIbw2cOOqcp4Wb/Ne/b/1tpLX1ghVbe",
 						"User", "Esimerkki", "USER");
 				AppUser testAdmin = new AppUser("admin", "$2a$10$.BwaemM9KhTg6Ty/UQngsuh9k9hdGsvfAXKxNPX.2rfaxlXa86wDe",
 						"Admin", "Esimerkki", "ADMIN");
-				Cost cost1 = new Cost(type1, 20.50, event1);
-				Cost cost2 = new Cost(type2, 7.99, event2);
-				Cost cost3 = new Cost(type1, 25.50, event2);
+				Cost cost1 = new Cost(type1, 29.99, event1);
+				Cost cost2 = new Cost(type2, 19.99, event1);
+				Cost cost3 = new Cost(type3, 19.99, event1);
+				Cost cost4 = new Cost(type4, 10.0, event1);
+				Cost cost5 = new Cost(type1, 75.0, event2);
+				Cost cost6 = new Cost(type3, 30.0, event2);
+				Cost cost7 = new Cost(type4, 19.50, event2);
 				Sale sale1 = new Sale(testUser, testTimeNow, (cost1.getPrice() + cost2.getPrice()));
 				Sale sale2 = new Sale(testAdmin, testTimeStatic, cost3.getPrice() * 2 + cost1.getPrice() * 3);
 				Ticket ticket1 = new Ticket(cost1, sale1);
@@ -83,6 +88,8 @@ public class TicketguruApplication {
 
 				trepository.save(type1);
 				trepository.save(type2);
+				trepository.save(type3);
+				trepository.save(type4);
 
 				urepository.save(testAdmin);
 
@@ -91,9 +98,13 @@ public class TicketguruApplication {
 				erepository.save(event1);
 				erepository.save(event2);
 
-				cost1 = crepository.save(cost1);
+				crepository.save(cost1);
 				crepository.save(cost2);
 				crepository.save(cost3);
+				crepository.save(cost4);
+				crepository.save(cost5);
+				crepository.save(cost6);
+				crepository.save(cost7);
 
 				srepository.save(sale1);
 				srepository.save(sale2);
