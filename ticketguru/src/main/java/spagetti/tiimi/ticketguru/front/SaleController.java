@@ -21,7 +21,7 @@ public class SaleController {
         this.cRepository = cRepository;
     }
 
-    @GetMapping(value = { "/sellticket" })
+    @GetMapping(value = { "/sell" })
     public String getSell(Model model) {
         model.addAttribute("events", eRepository.findAll());
         model.addAttribute("costs", cRepository.findAll());
