@@ -23,6 +23,8 @@ import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.domain.TicketType;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
+import spagetti.tiimi.ticketguru.domain.Venue;
+import spagetti.tiimi.ticketguru.domain.VenueRepository;
 
 @SpringBootTest
 public class TicketRepositoryTest {
@@ -41,14 +43,20 @@ public class TicketRepositoryTest {
     @Autowired
     private CostRepository costRepository;
 
+    @Autowired
+    private VenueRepository vrepository;
+
     private Event event;
     private TicketType ticketType;
     private Sale sale;
     private Cost cost;
+    private Venue venue;
 
     @BeforeEach
     public void setup() {
-        event = new Event("Event X", "Helsinki", LocalDateTime.now());
+        venue = new Venue("name", "address");
+        vrepository.save(venue);
+        event = new Event("Event X", venue, LocalDateTime.now(), 10);
         eventRepository.save(event);
 
         ticketType = new TicketType("VIP");
@@ -70,7 +78,9 @@ public class TicketRepositoryTest {
         saleRepository.deleteAll();
         ticketTypeRepository.deleteAll();
         eventRepository.deleteAll();
+        vrepository.deleteAll();
     }
+
     @Test
     public void shouldCreateTicketWithCostOnly() {
         Ticket ticket = new Ticket(cost);
@@ -117,5 +127,4 @@ public class TicketRepositoryTest {
         assertFalse(found.isPresent());
     }
 
-    
 }

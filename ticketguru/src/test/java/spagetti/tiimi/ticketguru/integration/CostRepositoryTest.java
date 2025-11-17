@@ -19,11 +19,11 @@ import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
 import spagetti.tiimi.ticketguru.domain.TicketType;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
+import spagetti.tiimi.ticketguru.domain.Venue;
+import spagetti.tiimi.ticketguru.domain.VenueRepository;
 
 @SpringBootTest
 public class CostRepositoryTest {
-    // TODO Toteutettavia testejä
-    // hinnan laskeminen oikein
 
     @Autowired
     private CostRepository crepository;
@@ -34,12 +34,18 @@ public class CostRepositoryTest {
     @Autowired
     private TicketTypeRepository ttrepository;
 
+    @Autowired
+    private VenueRepository vrepository;
+
     private Event event;
+    private Venue venue;
     private TicketType ticketType;
 
     @BeforeEach
     public void setup() {
-        event = new Event("Event", "Venue", LocalDateTime.now());
+        venue = new Venue("name", "address");
+        vrepository.save(venue);
+        event = new Event("Event", venue, LocalDateTime.now(), 10);
         erepository.save(event);
         ticketType = new TicketType("TicketTypeName");
         ttrepository.save(ticketType);
@@ -50,6 +56,7 @@ public class CostRepositoryTest {
         crepository.deleteAll();
         erepository.deleteAll();
         ttrepository.deleteAll();
+        vrepository.deleteAll();
     }
 
     @Test
