@@ -81,9 +81,4 @@ public class HomeController {
         return "ticket-client";
     }
 
-
-    @GetMapping(value = { "/sell" })
-    public String getSell(Model model) {
-        return "sell-ticket";
-    }
 }
