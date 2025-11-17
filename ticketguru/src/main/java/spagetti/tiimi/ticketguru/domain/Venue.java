@@ -1,13 +1,16 @@
 package spagetti.tiimi.ticketguru.domain;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import spagetti.tiimi.ticketguru.Views;
 
 @Entity
@@ -23,21 +26,19 @@ public class Venue {
     private String name;
 
     @JsonView(Views.Public.class)
-    @NotNull(message = "Capacity is required")
-    private Integer capacity;
-
-    @JsonView(Views.Public.class)
     @NotBlank(message = "Address is required")
     private String address;
+
+    @JsonView(Views.Public.class)
+    @JsonIgnore
+    @OneToMany(mappedBy = "venue")
+    private List<Event> events;
    
     public Venue() {
     }
 
-    public Venue(@NotBlank(message = "Venue must have a name") String name,
-            @NotBlank(message = "Capacity is required") Integer capacity,
-            @NotBlank(message = "Address is required") String address) {
+    public Venue(String name, String address) {
         this.name = name;
-        this.capacity = capacity;
         this.address = address;
     }
 
@@ -57,14 +58,6 @@ public class Venue {
         this.name = name;
     }
 
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -75,7 +68,7 @@ public class Venue {
 
     @Override
     public String toString() {
-        return name + ", capacity: " + capacity + ", address: " + address + "]";
+        return name + ", address: " + address + "]";
     }
 
     
