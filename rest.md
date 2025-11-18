@@ -8,6 +8,7 @@ Tämä dokumentti kuvaa palvelun tarjoamat REST API -päätepisteet.
 4. [AppUser](#appuser)
 5. [Sale](#sale)
 5. [Cost](#cost)
+6. [Venue](#venue)
 
 **Dev base url:** `http://locahost:8080`
 
@@ -810,3 +811,112 @@ User: ei null ja userid:tä vastaava User löytyy
 - `401` - Käyttäjää ei ole tunnistettu
 - `403` - Käyttäjällä ei ole oikeuksia
 - `404` - Hintaa ei löytynyt
+
+## Venue
+
+| Metodi | URL | Kuvaus |
+| -------- | ------- | --------- |
+| GET | {baseurl}/venues | Listaa kaikki tapahtumapaikat |
+| GET | {baseurl}/venues/{id} | Palauttaa tietyn tapahtumapaikan|
+| POST | {baseurl}/venues | Luo uuden tapahtumapaikan |
+| PUT | {baseurl}/venues/{id} | Muokkaa olemassa olevaa tapahtumapaikkaa |
+| DELETE | {baseurl}/venues/{id} | Poistaa tietyn tapahtumapaikan |
+
+### Get Venues
+
+**URL:** `{baseurl}/venues`
+
+**Metodi:** `GET`
+
+**Roolit:** `USER` & `ADMIN`
+
+**Vastaukset:**
+
+- `200` - Tapahtumapaikka tai -paikat haettu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
+- `404` - Tapahtumapaikkaa ei löydy
+
+**Esimerkkituloste:**
+
+```
+[
+    {
+        "venueid": 1,
+        "name": "Venue 1",
+        "address": "Address"
+    },
+    {
+        "venueid": 2,
+        "name": "Venue 2",
+        "address": "Address"
+    }
+]
+```
+
+### Post Venue
+
+**URL:** `{baseurl}/venues`
+
+**Metodi:** `POST`
+
+**Roolit:** `ADMIN`
+
+**Vastaukset:**
+
+- `201` - Tapahtumapaikka luotu
+- `400` - Puuttuvaa tai väärää dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
+
+**Esimerkkipyyntö:**
+
+```
+{
+    "name": "Venue",
+    "address": "Address"
+}
+```
+
+### Put Venue
+
+**URL:** `{baseurl}/venues/{id}`
+
+**Metodi:** `PUT`
+
+**Roolit:** `ADMIN`
+
+**Vastaukset:**
+
+- `201` - Tapahtumapaikka luotu
+- `400` - Puuttuvaa tai väärää dataa
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
+- `404` - Tapahtumapaikkaa ei ole olemassa
+
+**Esimerkkipyyntö:**
+
+```
+{
+    "name": "Venue",
+    "address": "Address"
+}
+```
+
+### Delete Venue
+
+**URL:** `{baseurl}/venues/{id}`
+
+**Metodi:** `DELETE`
+
+**Roolit:** `ADMIN`
+
+**Vastaukset:**
+
+- `200` - Tapahtumapaikka tuhottu
+- `401` - Käyttäjää ei ole tunnistettu
+- `403` - Käyttäjällä ei ole oikeuksia
+- `404` - Tapahtumapaikkaa ei ole olemassa
+
+**Path variable:** 
+id = poistettavan tapahtuman tunniste (Long)

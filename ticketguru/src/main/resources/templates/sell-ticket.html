@@ -1,260 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Sell tickets</title>
 </head>
 
-<body>
+<body style="margin:5px">
     <div>
+        <a th:href="@{/}">Home</a>
+
         <h1>Sell tickets</h1>
 
-        <input id="username" placeholder="User">
-        <input type="password" id="password" placeholder="Password">
-        <input id="url" size="45" value="https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi" placeholder="URL">
-    </div>
-    <div>
+        <p sec:authorize="isAuthenticated()">
+            Kirjautuneena sisään:
+            <span sec:authentication="name"></span>
+        </p>
+
         <div>
-            <div>
-                <button onclick="fetchEvents()">Get Events</button>
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+
+        <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
+        <div th:each="event : ${events}">
+            <h2>
+                Event: <span th:text="${event.name}"></span>,
+                Venue: <span th:text="${event.venue.name}"></span>,
+                Date: <span th:text="${event.date}"></span>
+            </h2>
+            <div th:each="cost : ${costs}">
+
+                <h4 th:if="${cost.event.eventid == event.eventid}">
+                    Type: <span th:text="${cost.type.name}"></span>,
+                    Price: <span th:text="${cost.price}"></span>,
+                    ID: <span th:text="${cost.costid}"></span>
+                    <input type="number" th:id="|amount-${cost.costid}" />
+                    <button
+                        th:onClick="|addTicket(${cost.costid}, document.getElementById('amount-${cost.costid}').value)|">Add</button>
+                </h4>
             </div>
-            <div id="status"></div>
-            <div id="result"></div>
+        </div>
+        <a id="saleLink" class="btn btn-primary" href="">Create Sale</a>
+        Test Buttons:
+        <a id="saleLink" class="btn btn-primary" href="?tickets=">Empty param</a>
+        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,3:2,1:2">Normal Format</a>
+        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,3:2,1">Missing last</a>
+        <a id="saleLink" class="btn btn-primary" href="?tickets=9999:5,asdf:2,1:4">Wrong ID</a>
+        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,asdf:2,1:4">ID String</a>
+        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,3:4fdsa,1:3">Quantity String</a>
+        <a id="saleLink" class="btn btn-primary" href="?tickets=2:53:2,1:2">Wrong format</a>
+        <a id="saleLink" class="btn btn-primary" href="?tickets=2.1:5,3:2,1:10">ID decimal</a>
+        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5.5,3:2,1:10">Quantity decimal</a>
+
+        <div id="addStatus"></div>
+        <div id="addResult"></div>
+        <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success"></div>
+        <div th:if="${sale != null}">
+            <h3>Sale: <span th:text="${sale.saleid}"></span>, Time: <span th:text="${sale.time}"></span>, Price: <span
+                    th:text="${sale.price}"></span>, Seller: <span th:text="${sale.user.username}"></span></h3>
+            <ul th:each="ticket: ${tickets}">
+                <li>Event: <span th:text="${ticket.cost.event.name}"></span></li>
+                <li>Type: <span th:text="${ticket.cost.type.name}"></span></li>
+                <li>Time: <span th:text="${ticket.cost.event.date}"></span></li>
+                <li>Price: <span th:text="${ticket.cost.price}"></span></li>
+                <li>Code: <span th:text="${ticket.ticketCode}"></span></li>
+                <img th:src="@{'https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/qr/' + ${ticket.ticketCode}}">
+            </ul>
         </div>
 
-    </div>
-    <div>
-        <h2>Add Ticket</h2>
-        <input id="cost" placeholder="Cost ID">
-        <input id="amount" placeholder="Amount">
-        <div>
-            <button onclick="addTicket()">Add Ticket</button>
-        </div>
-        <div id="ticketStatus"></div>
-        <div id="ticketsHeader"></div>
-        <div id="tickets"></div>
-    </div>
-    <div>
-        <h2>Sell</h2>
-        <div>
-            <button onclick="sellTickets()">Create sale</button>
-            <div id="saleStatus"></div>
-            <div id="sale"></div>
-            <div id="saleTickets"></div>
-        </div>
-    </div>
+        <script>
+            let tickets = [];
 
-    <div>
-        <h2>Fetch Tickets in Sale</h2>
-        <input id="saleId" placeholder="Sale">
-        <div>
-            <button onclick="fetchSale()">Fetch Sale</button>
-            <div id="fetchSaleStatus"></div>
-            <div id="fetchSale"></div>
-            <div id="fetchSaleTickets"></div>
-        </div>
-    </div>
-
-    <script>
-        let events = {};
-        let tickets = [];
-        let sale = {};
-
-        async function fetchSale() {
-            const saleId = document.getElementById("saleId").value.trim();
-            const url = document.getElementById("url").value.trim();
-            const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
-            const credentials = btoa(`${username}:${password}`);
-            const status = document.getElementById("fetchSaleStatus");
-            const result = document.getElementById("fetchSaleTickets");
-            status.textContent = "Loading sale...";
-            try {
-                const res = await fetch(`${url}/sales/${saleId}`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Basic ${credentials}`,
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include"
-                });
-                if (!res.ok) {
-                    status.textContent = "Could not fetch sale";
+            function addTicket(id, number) {
+                let status = document.getElementById("addStatus");
+                let result = document.getElementById("addResult");
+                let link = document.getElementById("saleLink");
+                let params = "?tickets=";
+                status.value = "";
+                if (!Number.isInteger(Number(number)) || number <= 0) {
+                    status.innerHTML = "Quantity has to be a positive integer"
                     return;
                 }
+                tickets.push([id, number]);
+                tickets.forEach(ticket => {
+                    params = `${params}${ticket[0]}:${ticket[1]},`
+                })
 
-                sale = await res.json();
-                const list = `<ul>${sale.tickets.map(ticket => `<li><ul><li>Event: ${ticket.cost.event.name}</li> <li>Date: ${ticket.cost.event.date}</li> <li>Venue: ${ticket.cost.event.venue}</li> <li>Type: ${ticket.cost.ticketType.name}</li> <li>Ticket Id: ${ticket.ticketid}</li> <li>Ticket Code: ${ticket.ticketCode}</li><img src="${url}/qr/${ticket.ticketCode}"></ul></li>`).join('')}</ul>`
-                status.innerHTML = "<h2>Tickets:</h2>"
-                result.innerHTML = `${list}`;
-            } catch {
-                status.textContent = "";
-                result.textContent = "Error fetching sale";
-            }
-        }
-
-        async function sellTickets() {
-            const url = document.getElementById("url").value.trim();
-            const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
-            const credentials = btoa(`${username}:${password}`);
-            const status = document.getElementById("saleStatus");
-            const result = document.getElementById("sale");
-            const clearTickets = document.getElementById("tickets");
-            const resultTickets = document.getElementById("saleTickets");
-            const date = new Date().toISOString();
-            status.textContent = "Creating sale..."
-
-            if (events.length == 0) {
-                status.innerHTML = "Tickets required to generate sale"
-                return;
-            }
-
-            let totalPrice = 0;
-            for (let i = 0; i < tickets.length; i++) {
-                totalPrice += tickets[i].price * tickets[i].amount;
-            }
-
-            if (totalPrice <= 0) {
-                return;
-            }
-
-            body = {
-                user: { userid: 2 },
-                time: date,
-                price: totalPrice
-            };
-            try {
-                const res = await fetch(`${url}/sales`, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Basic ${credentials}`,
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include",
-                    body: JSON.stringify(body)
-                });
-                if (!res.ok) {
-                    status.textContent = "Error generating sale";
-                    return;
-                }
-                const sale = await res.json();
-                const saleid = sale.saleid;
+                let formatted = "Tickets: "
                 for (let i = 0; i < tickets.length; i++) {
-                    for (let l = 0; l < tickets[i].amount; l++) {
-                        body = {
-                            cost: { costid: tickets[i].costid },
-                            sale: { saleid: saleid },
-                            redeemed: false
-                        };
-                        try {
-                            const res = await fetch(`${url}/tickets`, {
-                                method: "POST",
-                                headers: {
-                                    "Authorization": `Basic ${credentials}`,
-                                    "Content-Type": "application/json"
-                                },
-                                credentials: "include",
-                                body: JSON.stringify(body)
-                            });
-                        } catch {
-                            status.innerHTML = "Error generating tickets"
-                        }
-                    }
+                    formatted += `Ticket${i + 1} - id: ${id}, amount: ${number}`;
                 }
-
-                status.textContent = ""
-                result.innerHTML = `Sale id: ${sale.saleid}, Total Price: ${sale.price}, Time: ${sale.time}`
-                resultTickets.innerHTML = `<ul>${tickets.map(ticket => `<li>Event: ${ticket.event}, Price: ${ticket.price}, Amount: ${ticket.amount}, Type: ${ticket.type}</li>`).join('')}</ul>`
-                tickets = [];
-                clearTickets.innerHTML = "";
-
-            } catch {
-                status.innerHTML = "Error generating sale"
-
+                status.innerHTML = "";
+                result.innerHTML = formatted;
+                link.setAttribute("href", params);
             }
-        }
 
-        async function addTicket() {
-            const url = document.getElementById("url").value.trim();
-            const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
-            const credentials = btoa(`${username}:${password}`);
-            const status = document.getElementById("ticketStatus");
-            const ticketsHeader = document.getElementById("ticketsHeader");
-            const ticketPrint = document.getElementById("tickets");
-            const id = Number(document.getElementById("cost").value.trim());
-            const amount = Number(document.getElementById("amount").value.trim());
-
-            if (!Number.isInteger(amount) || amount <= 0) {
-                status.innerHTML = "Amount has to be a positive integer"
-                return;
-            } else if (amount > 20) {
-                status.innerHTML = "Current limit for amount is 20"
-                return;
-            }
-            let price = 0;
-            try {
-                const res = await fetch(`${url}/costs/${id}`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Basic ${credentials}`,
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include"
-                });
-                if (!res.ok) {
-                    status.textContent = "Invalid Cost ID";
-                    return;
-                }
-                const cost = await res.json();
-                const ticket = { costid: id, event: cost.event.name, amount: amount, price: cost.price, type: cost.ticketType.name };
-                tickets.push(ticket);
-            } catch {
-                status.innerHTML = "Error generating ticket"
-            }
-            const ticketList = `<ul>${tickets.map(ticket => `<li>Event: ${ticket.event}, Price: ${ticket.price}, Amount: ${ticket.amount}, Type: ${ticket.type}</li>`).join('')}</ul>`
-            ticketsHeader.innerHTML = "<h2>Tickets:</h2>"
-            ticketPrint.innerHTML = ticketList;
-
-        }
-
-        async function fetchEvents() {
-            const url = document.getElementById("url").value.trim();
-            const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
-            const credentials = btoa(`${username}:${password}`);
-            const status = document.getElementById("status");
-            const result = document.getElementById("result");
-            status.textContent = "Loading events...";
-            try {
-                const res = await fetch(`${url}/events`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Basic ${credentials}`,
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include"
-                });
-                if (!res.ok) {
-                    status.textContent = "Could not fetch events";
-                    result.textContent = "";
-                    return;
-                }
-
-                events = await res.json();
-                const list = `<ul>${events.map(event => `<li>Name: ${event.name}, Event ID: ${event.eventid}, Date: ${event.date}, Venue: ${event.venue}</li>
-                            <ul>${event.costs.map(cost => `<li>Type: ${cost.ticketType.name}, Cost ID: ${cost.costid}, Price: ${cost.price}</li>`).join('')}</ul>`).join('')}
-                            </ul>`
-                status.innerHTML = "<h2>Events:</h2>"
-                result.innerHTML = `${list}`;
-            } catch {
-                status.textContent = "";
-                result.textContent = "Error fetching events";
-            }
-        }
-    </script>
+        </script>
 </body>
 
 

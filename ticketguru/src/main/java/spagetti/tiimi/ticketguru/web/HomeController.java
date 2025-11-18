@@ -20,6 +20,7 @@ import spagetti.tiimi.ticketguru.domain.TicketRepository;
 //import spagetti.tiimi.ticketguru.domain.TicketType;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
 //import spagetti.tiimi.ticketguru.domain.AppUserRepository;
+import spagetti.tiimi.ticketguru.domain.VenueRepository;
 
 @CrossOrigin(originPatterns = "*")
 @Controller
@@ -37,6 +38,8 @@ public class HomeController {
     private TicketTypeRepository trepository;
     @Autowired
     private SaleRepository srepository;
+    @Autowired
+    private VenueRepository vrepository;
 
     /*
      * public static Event testEvent = new Event("Testitapahtuma", "Testipaikka",
@@ -69,6 +72,7 @@ public class HomeController {
         model.addAttribute("tickets", repository.findAll());
         model.addAttribute("events", erepository.findAll());
         model.addAttribute("costs", crepository.findAll());
+        model.addAttribute("venues", vrepository.findAll());
         return "index";
     }
 
@@ -77,9 +81,4 @@ public class HomeController {
         return "ticket-client";
     }
 
-
-    @GetMapping(value = { "/sell" })
-    public String getSell(Model model) {
-        return "sell-ticket";
-    }
 }

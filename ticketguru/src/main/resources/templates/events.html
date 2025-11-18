@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Events</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+
+<h1>Events</h1>
+<p>
+    Kirjautuneena sisään:
+    <span sec:authentication="name"></span>
+</p>
+
+<form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
+    <button type="submit">Logout</button>
+</form>
+
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Venue</th>
+            <th>Tickets</th>
+            <th sec:authorize="hasAuthority('ADMIN')">Edit</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr th:each="event : ${events}">
+            <td th:text="${event.name}"></td>
+            <td th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:utext="${event.venue.name + '<br>' + event.venue.address}"></td>
+            <td>
+                <ul>
+                    <li th:each="cost : ${event.costs}">
+                        <span th:text="${cost.type.name}"></span> -
+                        <span th:text="${cost.price}"></span> €
+                    </li>
+                </ul>
+            </td>
+            <td sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{'/event/edit/' + ${event.eventid}}">
+                    <button>Edit</button>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

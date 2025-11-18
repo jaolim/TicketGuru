@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>Ticket Check</title>
@@ -7,6 +7,17 @@
 </head>
 <body>
   <h1>Ticket Check</h1>
+
+  <p>
+    Kirjautuneena sisään:
+    <span sec:authentication="name"></span>
+  </p>
+
+  <div>
+    <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
+      <button type="submit">Logout</button>
+    </form>
+  </div>
 
   <input id="id" placeholder="Ticket ID">
   <button onclick="fetchTicket()">Fetch</button>

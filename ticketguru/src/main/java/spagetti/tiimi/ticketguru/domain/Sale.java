@@ -30,7 +30,7 @@ public class Sale {
     @JsonView(Views.Public.class)
     @ManyToOne
     @JoinColumn(name = "userid")
-    //@JsonIgnore
+    @JsonIgnoreProperties("sales")
     private AppUser user;
 
     @JsonView(Views.Public.class)
@@ -105,7 +105,7 @@ public class Sale {
     
     @Override
     public String toString() {
-        return "Sale [saleid=" + saleid + ", time=" + time + "]";
+        return "Sale [saleid=" + saleid + ", time=" + time +", Tickets: " + tickets +"]" ;
     }
 
 }

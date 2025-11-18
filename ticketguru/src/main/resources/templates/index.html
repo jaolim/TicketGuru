@@ -1,38 +1,70 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-  <title>TicketGuru</title>
+  <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>TicketGuru</title>
 </head>
 
-<body>
-    <h1>TicketGuru</h1>
-  
+<body style="margin:5px">
+  <h1>TicketGuru</h1>
 
-    <p>Tevetuloa TicketGuruun, pääsylippusi pääsylippuihin!</p>
 
-    <div>
-        <h2>Ticket DB list all:</h2>
-      <tr th:each = "ticket : ${tickets}">
-        <p><td th:text="${ticket}"></td></p>
-      </tr>
-    </div>
-    <div>
-        <h2>Event DB list all:</h2>
-      <tr th:each = "event : ${events}">
-        <p><td th:text="${event}"></td></p>
-      </tr>
-    </div>
-    <div>
-      <h2>Cost DB list all:</h2>
-      <tr th:each = "cost : ${costs}">
-      <p><td th:text="${cost}"></td></p>
-      </tr>
-    </div>
-    <div>
-      <h2>Version check: update manually to see when a specific version is live on rahti</h2>
-      <p>Selliin lisätty tietyn myyntitapahtuman lippujen haku</p>
-    </div>
+  <p>Tevetuloa TicketGuruun, pääsylippusi pääsylippuihin!</p>
+
+  <p sec:authorize="isAuthenticated()">
+    Kirjautuneena sisään:
+    <span sec:authentication="name"></span>
+  </p>
+  <div>
+    <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+      <button type="submit">Logout</button>
+    </form>
+  </div>
+  <div style="padding:5px">
+    <a class="btn btn-info" th:href="@{/login}">Login</a>
+    <a class="btn btn-info" th:href="@{/sell}">Sell Tickets</a>
+    <a class="btn btn-info" th:href="@{/eventpage}">Events</a>
+  </div>
+
+
+  <div>
+    <h2>Ticket DB list all:</h2>
+    <tr th:each="ticket : ${tickets}">
+      <p>
+        <td th:text="${ticket}"></td>
+      </p>
+    </tr>
+  </div>
+  <div>
+    <h2>Event DB list all:</h2>
+    <tr th:each="event : ${events}">
+      <p>
+        <td th:text="${event}"></td>
+      </p>
+    </tr>
+  </div>
+  <div>
+    <h2>Venue DB list all:</h2>
+    <tr th:each="venue : ${venues}">
+      <p>
+        <td th:text="${venue}"></td>
+      </p>
+    </tr>
+  </div>
+  <div>
+    <h2>Cost DB list all:</h2>
+    <tr th:each="cost : ${costs}">
+      <p>
+        <td th:text="${cost}"></td>
+      </p>
+    </tr>
+  </div>
+  <div>
+    <h2>Version check: update manually to see when a specific version is live on rahti</h2>
+    <p>Selliin lisätty tietyn myyntitapahtuman lippujen haku</p>
+  </div>
 </body>
