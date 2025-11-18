@@ -57,6 +57,10 @@ public class SaleController {
     public String sellTickets(@RequestParam String tickets, Model model, HttpServletRequest request,
             RedirectAttributes redirectAttributes, Authentication authentication) {
         String referer = request.getHeader("Referer");
+        if (referer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Referer address not found");
+            return "redirect:/sell";
+        }
         AppUser user = auRepository.findByUsername(authentication.getName());
         if (tickets.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Add tickets to submit");
