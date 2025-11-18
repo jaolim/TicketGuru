@@ -34,11 +34,11 @@ public class Event {
     private String name;
 
     @JsonView(Views.Public.class)
-    //@NotNull(message = "Start time is required")
+    @NotNull(message = "Start time is required")
     private LocalDateTime date;
 
     @JsonView(Views.Public.class)
-    //@NotNull(message = "Capacity is required")
+    @NotNull(message = "Capacity is required")
     private Integer capacity;
 
     @JsonView(Views.Public.class)
