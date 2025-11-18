@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <title>TicketGuru</title>
@@ -12,6 +12,16 @@
   
 
     <p>Tevetuloa TicketGuruun, pääsylippusi pääsylippuihin!</p>
+
+    <p>
+      Kirjautuneena sisään:
+      <span sec:authentication="name"></span>
+    </p>
+    <div>
+      <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+      </form>
+    </div>
 
     <div>
         <h2>Ticket DB list all:</h2>
