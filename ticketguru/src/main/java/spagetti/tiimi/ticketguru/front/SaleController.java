@@ -96,11 +96,13 @@ public class SaleController {
         Sale sale = new Sale(user, now, rounded);
         Long saleid = sRepository.save(sale).getSaleid();
         ticketsMapped.forEach((k, v) -> {
-            Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
-            Ticket saved = tRepository.save(ticket);
-            saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
-                    + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
-            tRepository.save(saved);
+            for (int i = 0; i < v; i++) {
+                Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
+                Ticket saved = tRepository.save(ticket);
+                saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
+                        + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
+                tRepository.save(saved);
+            }
         });
 
         model.addAttribute("events", eRepository.findAll());
