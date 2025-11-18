@@ -49,7 +49,7 @@ public class TicketguruApplication {
 
 		return (args) -> {
 
-			if (!urepository.existsByUsername("admin")) {
+			//if (!urepository.existsByUsername("admin")) {
 				repository.deleteAll();
 				crepository.deleteAll();
 				trepository.deleteAll();
@@ -154,7 +154,7 @@ public class TicketguruApplication {
 				 */
 				log.info("Added initial DB data");
 				log.info("Get event id:" + cost1.getEvent().getEventid());
-			}
+			//}
 		};
 	}
 
