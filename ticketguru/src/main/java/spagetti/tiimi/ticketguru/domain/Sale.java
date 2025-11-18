@@ -30,7 +30,7 @@ public class Sale {
     @JsonView(Views.Public.class)
     @ManyToOne
     @JoinColumn(name = "userid")
-    //@JsonIgnore
+    @JsonIgnoreProperties("sales")
     private AppUser user;
 
     @JsonView(Views.Public.class)

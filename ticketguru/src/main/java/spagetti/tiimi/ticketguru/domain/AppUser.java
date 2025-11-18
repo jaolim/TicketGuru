@@ -2,19 +2,22 @@ package spagetti.tiimi.ticketguru.domain;
 
 import spagetti.tiimi.ticketguru.Views;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
-
 
 @Entity
 @Table(name = "users")
@@ -50,6 +53,11 @@ public class AppUser {
     @NotBlank
     @JsonView(Views.Limited.class)
     private String userRole;
+
+    @JsonView(Views.Public.class)
+    @JsonIgnoreProperties("user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Sale> sales;
 
     public AppUser() {
 
@@ -116,7 +124,5 @@ public class AppUser {
         return "AppUser [userid=" + userid + ", username=" + username + ", passwordHash=" + passwordHash
                 + ", firstname=" + firstname + ", lastname=" + lastname + ", userRole=" + userRole + "]";
     }
-
-   
 
 }

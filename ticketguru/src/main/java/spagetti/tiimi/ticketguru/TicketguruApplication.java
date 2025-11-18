@@ -50,6 +50,14 @@ public class TicketguruApplication {
 		return (args) -> {
 
 			if (!urepository.existsByUsername("admin")) {
+				repository.deleteAll();
+				crepository.deleteAll();
+				trepository.deleteAll();
+				srepository.deleteAll();
+				erepository.deleteAll();
+				vRepository.deleteAll();
+				urepository.deleteAll();
+
 				LocalDateTime testTimeNow = LocalDateTime.now();
 				LocalDateTime testTimeStatic = LocalDateTime.of(1999, 1, 31, 20, 00);
 
