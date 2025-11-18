@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
@@ -10,6 +10,8 @@
 
 <body style="margin:5px">
     <div>
+        <a th:href="@{/}">Home</a>
+        
         <h1>Sell tickets</h1>
 
         <p sec:authorize="isAuthenticated()">
@@ -58,7 +60,7 @@
                 let result = document.getElementById("addResult");
                 let link = document.getElementById("saleLink");
                 let params = "?tickets=";
-                status.value= "";
+                status.value = "";
                 if (!Number.isInteger(Number(number)) || number <= 0) {
                     status.innerHTML = "Quantity has to be a positive integer"
                     return;
