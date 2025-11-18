@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -9,6 +9,15 @@
 <body>
     <div>
         <h1>Sell tickets</h1>
+
+        <p>
+            Kirjautuneena sisään:
+            <span sec:authentication="name"></span>
+        </p>
+
+        <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
+            <button type="submit">Logout</button>
+        </form>
 
         <input id="username" placeholder="User">
         <input type="password" id="password" placeholder="Password">

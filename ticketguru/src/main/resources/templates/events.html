@@ -11,6 +11,14 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
 <h1>Events</h1>
+<p>
+    Kirjautuneena sisään:
+    <span sec:authentication="name"></span>
+</p>
+
+<form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
+    <button type="submit">Logout</button>
+</form>
 
 <table border="1" cellpadding="6">
     <thead>
