@@ -34,12 +34,12 @@ public class Sale {
     private AppUser user;
 
     @JsonView(Views.Public.class)
-    @NotNull(message = "Price is required")
+    //@NotNull(message = "Price is required")
     @Positive
     private double price;
 
     @JsonView(Views.Public.class)
-    @NotNull(message = "Time of sale required")
+    //@NotNull(message = "Time of sale required")
     private LocalDateTime time;
 
     @JsonView(Views.Public.class)

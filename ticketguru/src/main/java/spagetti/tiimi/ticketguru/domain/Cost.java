@@ -43,7 +43,7 @@ public class Cost {
     private TicketType ticketType;
 
     @JsonView(Views.Public.class)
-    @NotNull(message = "Price is required")
+    //@NotNull(message = "Price is required")
     @Positive
     private Double price;
 

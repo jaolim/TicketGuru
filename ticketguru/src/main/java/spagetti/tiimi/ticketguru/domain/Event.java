@@ -34,7 +34,7 @@ public class Event {
     private String name;
 
     @JsonView(Views.Public.class)
-    @NotNull(message = "Start time is required")
+    //@NotNull(message = "Start time is required")
     private LocalDateTime date;
 
     @JsonView(Views.Public.class)
