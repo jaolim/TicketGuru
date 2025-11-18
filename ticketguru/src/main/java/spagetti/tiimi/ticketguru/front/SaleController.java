@@ -54,7 +54,7 @@ public class SaleController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sell")
-    public String sellTickets(@RequestParam String tickets, HttpServletRequest request,
+    public String sellTickets(@RequestParam String tickets, Model model, HttpServletRequest request,
             RedirectAttributes redirectAttributes, Authentication authentication) {
         String referer = request.getHeader("Referer");
         AppUser user = auRepository.findByUsername(authentication.getName());
@@ -94,15 +94,20 @@ public class SaleController {
         LocalDateTime now = LocalDateTime.now();
         double rounded = new BigDecimal(Double.toString(total)).setScale(2, RoundingMode.HALF_UP).doubleValue();
         Sale sale = new Sale(user, now, rounded);
-        sRepository.save(sale);
-        ticketsMapped.forEach( (k, v) -> {
+        Long saleid = sRepository.save(sale).getSaleid();
+        ticketsMapped.forEach((k, v) -> {
             Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
             Ticket saved = tRepository.save(ticket);
-            saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString() + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
+            saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
+                    + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
             tRepository.save(saved);
         });
 
-        redirectAttributes.addFlashAttribute("errorMessage", "Success: " + ticketsMapped + "Total Price: " + rounded);
+        model.addAttribute("events", eRepository.findAll());
+        model.addAttribute("costs", cRepository.findAll());
+        redirectAttributes.addFlashAttribute("sale", sRepository.findById(saleid).get());
+        redirectAttributes.addFlashAttribute("tickets", tRepository.findBySale(sRepository.findById(saleid).get()));
+        redirectAttributes.addFlashAttribute("successMessage", "New sale created");
         return "redirect:" + referer;
     }
 

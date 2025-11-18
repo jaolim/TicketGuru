@@ -11,7 +11,7 @@
 <body style="margin:5px">
     <div>
         <a th:href="@{/}">Home</a>
-        
+
         <h1>Sell tickets</h1>
 
         <p sec:authorize="isAuthenticated()">
@@ -19,18 +19,24 @@
             <span sec:authentication="name"></span>
         </p>
 
+        <div>
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+
         <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
         <div th:each="event : ${events}">
             <h2>
                 Event: <span th:text="${event.name}"></span>,
-                Venue: <span th:text="${event.venue.name}"></span>
+                Venue: <span th:text="${event.venue.name}"></span>,
                 Date: <span th:text="${event.date}"></span>
             </h2>
             <div th:each="cost : ${costs}">
 
                 <h4 th:if="${cost.event.eventid == event.eventid}">
                     Type: <span th:text="${cost.type.name}"></span>,
-                    Price: <span th:text="${cost.price}"></span>
+                    Price: <span th:text="${cost.price}"></span>,
                     ID: <span th:text="${cost.costid}"></span>
                     <input type="number" th:id="|amount-${cost.costid}" />
                     <button
@@ -51,6 +57,19 @@
 
         <div id="addStatus"></div>
         <div id="addResult"></div>
+        <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success"></div>
+        <div th:if="${sale != null}">
+            <h3>Sale: <span th:text="${sale.saleid}"></span>, Time: <span th:text="${sale.time}"></span>, Price: <span
+                    th:text="${sale.price}"></span>, Seller: <span th:text="${sale.user.username}"></span></h3>
+            <ul th:each="ticket: ${tickets}">
+                <li>Event: <span th:text="${ticket.cost.event.name}"></span></li>
+                <li>Type: <span th:text="${ticket.cost.type.name}"></span></li>
+                <li>Time: <span th:text="${ticket.cost.event.date}"></span></li>
+                <li>Price: <span th:text="${ticket.cost.price}"></span></li>
+                <li>Code: <span th:text="${ticket.ticketCode}"></span></li>
+                <img th:src="@{'https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/qr/' + ${ticket.ticketCode}}">
+            </ul>
+        </div>
 
         <script>
             let tickets = [];
@@ -70,8 +89,12 @@
                     params = `${params}${ticket[0]}:${ticket[1]},`
                 })
 
+                let formatted = "Tickets: "
+                for (let i = 0; i < tickets.length; i++) {
+                    formatted += `Ticket${i + 1} - id: ${id}, amount: ${number}`;
+                }
                 status.innerHTML = "";
-                result.innerHTML = tickets;
+                result.innerHTML = formatted;
                 link.setAttribute("href", params);
             }
 

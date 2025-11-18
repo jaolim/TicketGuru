@@ -105,7 +105,7 @@ public class Sale {
     
     @Override
     public String toString() {
-        return "Sale [saleid=" + saleid + ", time=" + time + "]";
+        return "Sale [saleid=" + saleid + ", time=" + time +", Tickets: " + tickets +"]" ;
     }
 
 }
