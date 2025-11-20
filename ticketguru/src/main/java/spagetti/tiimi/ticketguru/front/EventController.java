@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
+import java.util.Map;
 
 import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
@@ -39,34 +40,70 @@ public class EventController {
     }
 
     @GetMapping("/event/edit/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public String editEvent(@PathVariable Long id, Model model) {
+
         Event event = eRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Event not found"));
-        model.addAttribute("event", event);
+
+        model.addAttribute("item", event);
         model.addAttribute("venues", vRepository.findAll());
-        model.addAttribute("costs", cRepository.findAll());
+        model.addAttribute("title", "Edit Event");
+        model.addAttribute("entity", "event");
+
         return "event-edit";
     }
 
     @PostMapping("/event/edit/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String saveEditedEvent(@PathVariable Long id,
-            @RequestParam String name,
-            @RequestParam("date") String dateStr,
-            @RequestParam("venueId") Long venueId) {
+    public String saveEvent(@PathVariable Long id,
+            @RequestParam Map<String, String> allParams) {
 
         Event event = eRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Event not found"));
 
+        event.setName(allParams.get("name"));
+        event.setCapacity(Integer.parseInt(allParams.get("capacity")));
+        event.setDate(LocalDateTime.parse(allParams.get("date")));
+
+        Long venueId = Long.parseLong(allParams.get("venueId"));
         Venue venue = vRepository.findById(venueId)
                 .orElseThrow(() -> new NotFoundException("Venue not found"));
+        event.setVenue(venue);
 
+        eRepository.save(event);
+
+        return "redirect:/eventpage";
+    }
+
+    @PostMapping("/event/delete/{id}")
+    public String deleteEvent(@PathVariable Long id) {
+        Event event = eRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Event not found"));
+
+        eRepository.delete(event);
+        return "redirect:/eventpage";
+    }
+
+    @GetMapping("/event/add")
+    public String addEventForm(Model model) {
+
+        model.addAttribute("venues", vRepository.findAll());
+        return "event-add";
+    }
+
+    @PostMapping("/event/add")
+    public String addEvent(
+            @RequestParam String name,
+            @RequestParam String date,
+            @RequestParam Long venueId,
+            @RequestParam Integer capacity) {
+
+        Event event = new Event();
         event.setName(name);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime date = LocalDateTime.parse(dateStr, formatter);
-        event.setDate(date);
+        event.setCapacity(capacity);
+        event.setDate(LocalDateTime.parse(date));
 
+        Venue venue = vRepository.findById(venueId)
+                .orElseThrow(() -> new NotFoundException("Venue not found"));
         event.setVenue(venue);
 
         eRepository.save(event);

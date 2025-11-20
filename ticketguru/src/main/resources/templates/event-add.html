@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Event</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+
+<h1>Add Event</h1>
+
+<form th:action="@{/event/add}" method="post">
+
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="date">Date:</label><br>
+    <input type="datetime-local" id="date" name="date" required><br><br>
+
+    <label for="venueId">Venue:</label><br>
+    <select id="venueId" name="venueId" required>
+        <option value="">-- Choose venue --</option>
+        <option th:each="v : ${venues}" 
+                th:value="${v.venueid}" 
+                th:text="${v.name}">
+        </option>
+    </select>
+    <br><br>
+
+    <label for="capacity">Capacity:</label><br>
+    <input type="number" id="capacity" name="capacity" required><br><br>
+
+    <button type="submit">Save</button>
+</form>
+
+<div style="padding:5px">
+    <a class="btn btn-info" th:href="@{/eventpage}">Back</a>
+</div>
+
+</body>
+</html>
