@@ -1,5 +1,7 @@
 package spagetti.tiimi.ticketguru.front;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -68,6 +70,8 @@ public class AppUserController {
 
     @PostMapping("/user/add")
     public String saveNewUser(@ModelAttribute AppUser user) {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPasswordHash(encoder.encode(user.getPasswordHash()));
         uRepository.save(user);
         return "redirect:/userpage";
     }
