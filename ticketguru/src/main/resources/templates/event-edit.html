@@ -2,12 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
     <title th:text="${title}">Edit Event</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
 <body>
+    <div class="container">
 
 <h1 th:text="${title}">Edit Event</h1>
 
@@ -34,6 +36,7 @@
 
 <div style="padding:5px">
     <a class="btn btn-info" th:href="@{'/eventpage'}">Back</a>
+</div>
 </div>
 
 </body>
