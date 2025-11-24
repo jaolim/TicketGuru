@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <title>Tickets</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body>
+    <div class="container">
+
+        <a th:href="@{/}">Home</a>
+        <h1>Tickets</h1>
+
+        <p>
+            Logged in:
+            <span sec:authentication="name"></span>
+        </p>
+
+        <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
+            <button type="submit">Logout</button>
+        </form>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Event</th>
+                    <th>Ticket Type</th>
+                    <th>Price</th>
+                    <th>Redeemed</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="t : ${tickets}">
+                    <td th:text="${t.ticketid}"></td>
+                    <td th:text="${t.cost.event.name}"></td>
+                    <td th:text="${t.cost.type.name}"></td>
+                    <td th:text="${t.cost.price}"></td>
+                    <td th:text="${t.redeemed}"></td>
+
+                    <td>
+                        <a th:href="@{'/ticket/edit/' + ${t.ticketid}}">
+                            <button>Edit</button>
+                        </a>
+                    </td>
+
+                    <td>
+                        <form th:action="@{'/ticket/delete/' + ${t.ticketid}}" method="post">
+                            <button onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/ticket/add}">
+            <button>Add Ticket</button>
+        </a>
+
+</body>
+
+</html>
