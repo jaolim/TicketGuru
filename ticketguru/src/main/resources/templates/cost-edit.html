@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Cost</title>
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" /> 
 </head>
 <body>
 <div class="container">
@@ -33,7 +33,7 @@
         <br><br>
 
         <button type="submit">Save</button>
-        
+
         <div style="padding:5px">
             <a class="btn btn-info" th:href="@{'/costpage'}">Back</a>
         </div>
