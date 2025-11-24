@@ -2,11 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
     <title>Users</title>
 </head>
 
 <body>
+    <div class="container">
     <a th:href="@{/}">Home</a>
 <h1>Users</h1>
 <p>
@@ -18,7 +20,7 @@
     <button type="submit">Logout</button>
 </form>
 
-<table border="1" cellpadding="10">
+<table class="table table-bordered">
     <thead>
     <tr>
         <th>ID</th>
@@ -56,6 +58,6 @@
         <button>Add New User</button>
     </a>
 </div>
-
+</div>
 </body>
 </html>

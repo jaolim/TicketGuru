@@ -2,12 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
     <title th:text="${title}">Edit User</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
 <body>
+    <div class="container">
 <h1 th:text="${title}"></h1>
 
 <form th:action="@{${item.userid != null} ? '/user/edit/' + ${item.userid} : '/user/add'}" method="post">
@@ -30,6 +32,6 @@
 </form>
 
 <a th:href="@{/userpage}">Back</a>
-
+</div>
 </body>
 </html>

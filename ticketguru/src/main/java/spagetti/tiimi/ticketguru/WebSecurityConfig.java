@@ -51,9 +51,14 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/home", "/css/**", "/login", "/costs/**", "/events/**", "/sales/**",
-                        "/tickets/**", "/tickettypes/**", "/users/**", "/venues/**", "/qr/**", "/client", "/sell", "/eventpage", 
-                        "/event/edit/**", "/event/delete/**", "/event/add", "/venuepage", "/venue/edit/**", "/venue/delete/**", "/venue/add", "/userpage", 
-                        "/user/edit/**", "/user/delete/**", "/user/add")                        .permitAll())
+                                "/tickets/**", "/tickettypes/**", "/users/**", "/venues/**", "/qr/**", "/client",
+                                "/sell", "/eventpage",
+                                "/event/edit/**", "/event/delete/**", "/event/add", 
+                                "/venuepage", "/venue/edit/**", "/venue/delete/**", "/venue/add", 
+                                "/userpage", "/user/edit/**", "/user/delete/**", "/user/add", 
+                                "/tickettypepage", "/tickettype/edit/**", "/tickettype/delete/**", "/tickettype/add",
+                                "/costpage", "/cost/edit/**", "/cost/delete/**", "/cost/add")
+                        .permitAll())
                 .formLogin(formlogin -> formlogin
                         .defaultSuccessUrl("/", true)
                         .permitAll())

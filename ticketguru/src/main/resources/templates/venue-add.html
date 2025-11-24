@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
     <title th:text="${title}">Add Venue</title>
 </head>
 <body>
+    <div class="container">
 <h1 th:text="${title}">Add Venue</h1>
 
 <form th:action="@{/venue/add}" th:object="${venue}" method="post">
@@ -18,5 +20,6 @@
 </form>
 
 <a th:href="@{/venuepage}">Back</a>
+</div>
 </body>
 </html>

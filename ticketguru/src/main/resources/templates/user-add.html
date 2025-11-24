@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
     <title th:text="${title}">Add User</title>
 </head>
 <body>
+    <div class="container">
 <h1 th:text="${title}">Add User</h1>
 
 <form th:action="@{/user/add}" th:object="${user}" method="post">
@@ -27,5 +29,6 @@
 </form>
 
 <a th:href="@{/userpage}">Back</a>
+</div>
 </body>
 </html>
