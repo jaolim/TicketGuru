@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -99,17 +100,27 @@ public class SellController {
         }
         LocalDateTime now = LocalDateTime.now();
         double rounded = new BigDecimal(Double.toString(total)).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        Sale sale = new Sale(user, now, rounded);
-        Long saleid = sRepository.save(sale).getSaleid();
-        ticketsMapped.forEach((k, v) -> {
-            for (int i = 0; i < v; i++) {
-                Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
-                Ticket saved = tRepository.save(ticket);
-                saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
-                        + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
-                tRepository.save(saved);
+
+        Sale sale = sRepository.save(new Sale(user, now, rounded));
+        Long saleid = sale.getSaleid();
+        for (Map.Entry<Long, Integer> entry : ticketsMapped.entrySet()) {
+            Long k = entry.getKey();
+            Integer v = entry.getValue();
+            Event event = cRepository.findById(k).get().getEvent();
+            Long totalTickets = tRepository.countByCost_Event_Eventid(event.getEventid());
+
+            if (totalTickets + v < event.getCapacity()) {
+                for (int i = 0; i < v; i++) {
+                    Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
+                    Ticket saved = tRepository.save(ticket);
+                    saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
+                            + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
+                    tRepository.save(saved);
+                }
             }
-        });
+            event.setTotalTickets(totalTickets);
+            eRepository.save(event);
+        }
 
         model.addAttribute("events", eRepository.findAll());
         model.addAttribute("costs", cRepository.findAll());

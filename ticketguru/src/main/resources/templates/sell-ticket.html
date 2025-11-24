@@ -27,25 +27,39 @@
 
         <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
         <div th:each="event : ${events}">
-            <h2>
-                Event: <span th:text="${event.name}"></span>,
-                Venue: <span th:text="${event.venue.name}"></span>,
-                Date: <span th:text="${event.date}"></span>
-            </h2>
-            <div th:each="cost : ${costs}">
+            <table class="table table-bordered">
+                <td>Event: <span th:text="${event.name}"></span></td>
+                <td>Venue: <span th:text="${event.venue.name}"></span></td>
+                <td>Date: <span th:text="${event.date}"></span></td>
+                <td>Capacity: <span th:text="${event.capacity}"></span></td>
 
-                <h4 th:if="${cost.event.eventid == event.eventid}">
-                    Type: <span th:text="${cost.type.name}"></span>,
-                    Price: <span th:text="${cost.price}"></span>,
-                    ID: <span th:text="${cost.costid}"></span>
-                    <input type="number" th:id="|amount-${cost.costid}" />
-                    <button
-                        th:onClick="|addTicket(${cost.costid}, document.getElementById('amount-${cost.costid}').value)|">Add</button>
-                </h4>
-            </div>
+                <td th:if="${event.totalTickets}">
+                    Total: <span th:text="${event.totalTickets}"></span>
+                </td>
+            </table>
+            <table class="table table-bordered">
+                <th>Type</th>
+                <th>Price</th>
+                <th>ID</th>
+                <th>Quantity</th>
+                <th></th>
+                </tr>
+                <div th:each="cost : ${costs}" class="table table-bordered">
+                    <tr th:if="${cost.event.eventid == event.eventid}">
+                        <td>Type: <span th:text="${cost.type.name}"></span></td>
+                        <td>Price: <span th:text="${cost.price}"></span></td>
+                        <td>ID: <span th:text="${cost.costid}"></span></td>
+                        <td><input type="number" th:id="|amount-${cost.costid}" /></td>
+                        <td><button
+                                th:onClick="|addTicket(${cost.costid}, document.getElementById('amount-${cost.costid}').value)|">Add</button>
+                        </td>
+                    </tr>
+                </div>
+            </table>
         </div>
         <a id="saleLink" class="btn btn-primary" href="">Create Sale</a>
         Test Buttons:
+        <a id="saleLink" class="btn btn-warning" href="?tickets=">Empty param</a>
         <a id="saleLink" class="btn btn-primary" href="?tickets=">Empty param</a>
         <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,3:2,1:2">Normal Format</a>
         <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,3:2,1">Missing last</a>
@@ -74,6 +88,11 @@
 
         <script>
             let tickets = [];
+
+            function test() {
+                let status = document.getElementById("addStatus");
+
+            }
 
             function addTicket(id, number) {
                 let status = document.getElementById("addStatus");

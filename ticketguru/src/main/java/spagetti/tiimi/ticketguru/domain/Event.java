@@ -52,6 +52,8 @@ public class Event {
     @JoinColumn(name = "venueid")
     private Venue venue;
 
+    private Long totalTickets;
+
     public Event() {
 
     }
@@ -109,6 +111,14 @@ public class Event {
 
     public void setVenue(Venue venue) {
         this.venue = venue;
+    }
+
+    public void setTotalTickets(Long totalTickets) {
+        this.totalTickets = totalTickets;
+    }
+
+    public Long getTotalTickets() {
+        return totalTickets;
     }
 
     @Override
