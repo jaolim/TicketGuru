@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -108,16 +110,18 @@ public class SellController {
             Integer v = entry.getValue();
             Event event = cRepository.findById(k).get().getEvent();
             Long totalTickets = tRepository.countByCost_Event_Eventid(event.getEventid());
-
-            if (totalTickets + v < event.getCapacity()) {
-                for (int i = 0; i < v; i++) {
-                    Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
-                    Ticket saved = tRepository.save(ticket);
-                    saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
-                            + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
-                    tRepository.save(saved);
-                }
+            if (totalTickets + v > event.getCapacity()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Sale has not been created: capacity exceeded");
+                return "redirect:/sell/delete/" + saleid;
             }
+            for (int i = 0; i < v; i++) {
+                Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
+                Ticket saved = tRepository.save(ticket);
+                saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
+                        + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
+                tRepository.save(saved);
+            }
+
             event.setTotalTickets(totalTickets);
             eRepository.save(event);
         }
@@ -127,6 +131,25 @@ public class SellController {
         redirectAttributes.addFlashAttribute("sale", sRepository.findById(saleid).get());
         redirectAttributes.addFlashAttribute("tickets", tRepository.findBySale(sRepository.findById(saleid).get()));
         redirectAttributes.addFlashAttribute("successMessage", "New sale created");
+        return "redirect:" + referer;
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/sell/delete/{id}")
+    public String deleteSale(@PathVariable Long id, Model model, HttpServletRequest request,
+            RedirectAttributes redirectAttributes, Authentication authentication,
+            @ModelAttribute("errorMessage") String errorMessage) {
+        String referer = request.getHeader("Referer");
+        if (referer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Referer address not found");
+            return "redirect:/sell";
+        }
+        sRepository.deleteById(id);
+        if (errorMessage != null && !errorMessage.isBlank()) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Sale by the id of " + id + " has been deleted");
+        }
         return "redirect:" + referer;
     }
 
