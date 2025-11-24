@@ -25,14 +25,12 @@ public class CostController {
         this.trepository = trepository;
     }
 
-    // Show list of costs
     @GetMapping("/costpage")
     public String costList(Model model) {
         model.addAttribute("costs", crepository.findAll());
         return "costs";
     }
 
-    // Show add form
     @GetMapping("/cost/add")
     public String showAddForm(Model model) {
         model.addAttribute("cost", new Cost());
@@ -41,7 +39,6 @@ public class CostController {
         return "cost-add";
     }
 
-    // Handle POST from add form
     @PostMapping("/cost/add")
     public String saveCost(@ModelAttribute Cost cost,
                            @RequestParam Long eventId,
@@ -60,7 +57,6 @@ public class CostController {
         return "redirect:/costpage";
     }
 
-    // Show edit form
     @GetMapping("/cost/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
@@ -74,7 +70,6 @@ public class CostController {
         return "cost-edit";
     }
 
-    // Handle edit save
     @PostMapping("/cost/edit/{id}")
     public String saveEditedCost(@PathVariable Long id,
                                  @ModelAttribute Cost updatedCost,
