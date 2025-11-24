@@ -11,65 +11,66 @@
 <body>
 
     <div class="container">
-    <a th:href="@{/}">Home</a>
+        <a th:href="@{/}">Home</a>
 
-<h1>Events</h1>
-<p>
-    Kirjautuneena sisään:
-    <span sec:authentication="name"></span>
-</p>
+        <h1>Events</h1>
+        <p>
+            Logged in:
+            <span sec:authentication="name"></span>
+        </p>
 
-<form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
-    <button type="submit">Logout</button>
-</form>
+        <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
+            <button type="submit">Logout</button>
+        </form>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Venue</th>
-            <th>Tickets</th>
-            <th>Capacity</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Venue</th>
+                    <th>Tickets</th>
+                    <th>Capacity</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
 
-    <tbody>
-        <tr th:each="event : ${events}">
-            <td th:text="${event.name}"></td>
-            <td th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></td>
-            <td th:utext="${event.venue.name + '<br>' + event.venue.address}"></td>
-            <td>
-                <ul>
-                    <li th:each="cost : ${event.costs}">
-                        <span th:text="${cost.type.name}"></span> -
-                        <span th:text="${cost.price}"></span> €
-                    </li>
-                </ul>
-            </td>
-            <td th:text="${event.capacity}"></td>
-            <td>
-                <a th:href="@{'/event/edit/' + ${event.eventid}}">
-                    <button>Edit</button>
-                </a>
-            </td>
-            <td>
-                <form th:action="@{'/event/delete/' + ${event.eventid}}" method="post" style="display:inline">
-                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
-                </form>
-            </td>
+            <tbody>
+                <tr th:each="event : ${events}">
+                    <td th:text="${event.name}"></td>
+                    <td th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:utext="${event.venue.name + '<br>' + event.venue.address}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="cost : ${event.costs}">
+                                <span th:text="${cost.type.name}"></span> -
+                                <span th:text="${cost.price}"></span> €
+                            </li>
+                        </ul>
+                    </td>
+                    <td th:text="${event.capacity}"></td>
+                    <td>
+                        <a th:href="@{'/event/edit/' + ${event.eventid}}">
+                            <button>Edit</button>
+                        </a>
+                    </td>
+                    <td>
+                        <form th:action="@{'/event/delete/' + ${event.eventid}}" method="post" style="display:inline">
+                            <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
 
-        </tr>
-    </tbody>
-</table>
-<div style="margin-top: 10px;">
-    <a th:href="@{'/event/add'}">
-        <button>Add New Event</button>
-    </a>
-</div>
-</div>
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 10px;">
+            <a th:href="@{'/event/add'}">
+                <button>Add New Event</button>
+            </a>
+        </div>
+    </div>
 
 </body>
+
 </html>
