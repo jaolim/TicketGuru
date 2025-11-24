@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Costs</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container">
+
+    <a th:href="@{/}">Home</a>
+
+    <h1>Costs</h1>
+
+    <p>
+    Kirjautuneena sisään:
+    <span sec:authentication="name"></span>
+    </p>
+
+    <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
+        <button type="submit">Logout</button>
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Event</th>
+            <th>Ticket Type</th>
+            <th>Price (€)</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="c : ${costs}">
+            <td th:text="${c.costid}"></td>
+            <td th:text="${c.event != null ? c.event.name : 'N/A'}"></td>
+            <td th:text="${c.type != null ? c.type.name : 'N/A'}"></td>
+            <td th:text="${c.price}"></td>
+            <td>
+                <a th:href="@{'/cost/edit/' + ${c.costid}}">
+                    <button>Edit</button>
+                </a>
+            </td>
+            <td>
+                <form th:action="@{'/cost/delete/' + ${c.costid}}" method="post" style="display:inline">
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="margin-top: 10px;">
+        <a th:href="@{'/cost/add'}">
+            <button>Add New Cost</button>
+        </a>
+    </div>
+
+</div>
+</body>
+</html>
