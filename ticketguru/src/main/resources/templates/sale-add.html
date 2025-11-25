@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <title>Add Sale</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+<div class="container">
+    <h1>Add Sale</h1>
+
+    <form th:action="@{/sales/add}" method="post">
+
+        <label for="userId">User:</label><br>
+        <select id="userId" name="userId" required>
+            <option value="">-- Choose user --</option>
+            <option th:each="u : ${users}"
+                    th:value="${u.userid}"
+                    th:text="${u.username}">
+            </option>
+        </select>
+        <br><br>
+
+        <label for="price">Price:</label><br>
+        <input type="number"
+               id="price"
+               name="price"
+               step="0.01"
+               min="0"
+               required>
+        <br><br>
+
+        <button type="submit" class="btn btn-info">Save</button>
+    </form>
+
+    <div style="padding:5px">
+        <a class="btn btn-info" th:href="@{/salespage}">Back</a>
+    </div>
+</div>
+
+</body>
+</html>
