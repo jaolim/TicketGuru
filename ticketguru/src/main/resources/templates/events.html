@@ -31,8 +31,7 @@
                     <th>Venue</th>
                     <th>Tickets</th>
                     <th>Capacity</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
 
@@ -51,13 +50,14 @@
                     </td>
                     <td th:text="${event.capacity}"></td>
                     <td>
-                        <a th:href="@{'/event/edit/' + ${event.eventid}}">
-                            <button>Edit</button>
+                        <a class="btn btn-sm btn-secondary" th:href="@{'/event/edit/' + ${event.eventid}}">
+                            Edit
                         </a>
-                    </td>
-                    <td>
-                        <form th:action="@{'/event/delete/' + ${event.eventid}}" method="post" style="display:inline">
-                            <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+
+                        <form th:action="@{'/event/delete/' + ${event.eventid}}" method="post"
+                            style="display:inline; margin-left:5px;">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure?');">Delete</button>
                         </form>
                     </td>
 

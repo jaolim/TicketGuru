@@ -9,37 +9,29 @@
 </head>
 
 <body>
-<div class="container">
-    <h1>Add Sale</h1>
+    <div class="container">
+        <h1>Add Sale</h1>
 
-    <form th:action="@{/sale/add}" method="post">
+        <form th:action="@{/sale/add}" method="post">
 
-        <label for="userId">User:</label><br>
-        <select id="userId" name="userId" required>
-            <option value="">-- Choose user --</option>
-            <option th:each="u : ${users}"
-                    th:value="${u.userid}"
-                    th:text="${u.username}">
-            </option>
-        </select>
-        <br><br>
+            <label for="userId">User:</label><br>
+            <select id="userId" name="userId" required>
+                <option value="">-- Choose user --</option>
+                <option th:each="u : ${users}" th:value="${u.userid}" th:text="${u.username}">
+                </option>
+            </select>
+            <br><br>
 
-        <label for="price">Price:</label><br>
-        <input type="number"
-               id="price"
-               name="price"
-               step="0.01"
-               min="0"
-               required>
-        <br><br>
+            <label for="price">Price:</label><br>
+            <input type="number" id="price" name="price" step="0.01" min="0" required>
+            <br><br>
 
-        <button type="submit" class="btn btn-info">Save</button>
-    </form>
+            <button type="submit" class="btn btn-success">Save</button>
+            <a class="btn btn-outline-secondary" th:href="@{/salepage}">Back</a>
+        </form>
 
-    <div style="padding:5px">
-        <a class="btn btn-info" th:href="@{/salepage}">Back</a>
     </div>
-</div>
 
 </body>
+
 </html>
