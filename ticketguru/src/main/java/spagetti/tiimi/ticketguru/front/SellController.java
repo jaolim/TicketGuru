@@ -146,6 +146,93 @@ public class SellController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/sell/doorSale")
+    public String doorSell(@RequestParam String tickets, Model model, HttpServletRequest request,
+            RedirectAttributes redirectAttributes, Authentication authentication) {
+        String referer = request.getHeader("Referer");
+        if (referer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Referer address not found");
+            return "redirect:/sell";
+        }
+        AppUser user = auRepository.findByUsername(authentication.getName());
+        if (tickets.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Add tickets to submit");
+            return "redirect:" + referer;
+        }
+        HashMap<Long, Integer> ticketsMapped = new HashMap<>();
+        double total = 0;
+        try {
+            String[] ticketListString = tickets.split(",");
+            for (String ticket : ticketListString) {
+                String[] split = ticket.split(":");
+                if (split.length != 2) {
+                    redirectAttributes.addFlashAttribute("errorMessage", "Error parsing input");
+                    return "redirect:" + referer;
+                }
+                try {
+                    Long costid = Long.valueOf(split[0]);
+                    int amount = Integer.valueOf(split[1]);
+                    Optional<Cost> cost = cRepository.findById(costid);
+                    if (!cost.isPresent()) {
+                        redirectAttributes.addFlashAttribute("errorMessage", "Invalid costid");
+                        return "redirect:" + referer;
+                    }
+                    if (ticketsMapped.containsKey(costid)) {
+                        ticketsMapped.put(costid, (ticketsMapped.get(costid) + amount));
+                    } else {
+                        ticketsMapped.put(costid, amount);
+                    }
+                } catch (Exception e) {
+                    redirectAttributes.addFlashAttribute("errorMessage", "Error parsing numbers");
+                    return "redirect:" + referer;
+                }
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error parsing input");
+            return "redirect:" + referer;
+        }
+        LocalDateTime now = LocalDateTime.now();
+        double rounded = new BigDecimal(Double.toString(total)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+
+        Sale sale = sRepository.save(new Sale(user, now, rounded));
+        sale.setDoorSale(true);
+        Long saleid = sale.getSaleid();
+        for (Map.Entry<Long, Integer> entry : ticketsMapped.entrySet()) {
+            Long k = entry.getKey();
+            Integer v = entry.getValue();
+            Event event = cRepository.findById(k).get().getEvent();
+            Long totalTickets = tRepository.countByCost_Event_Eventid(event.getEventid());
+            if (totalTickets + v > event.getCapacity()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Sale has not been created: capacity exceeded");
+                return "redirect:/sell/delete/" + saleid;
+            }
+            totalTickets += v;
+            for (int i = 0; i < v; i++) {
+                Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
+                Ticket saved = tRepository.save(ticket);
+                saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
+                        + saved.getCost().getCostid()).getBytes()));
+                tRepository.save(saved);
+            }
+        }
+
+        for (Map.Entry<Long, Integer> entry : ticketsMapped.entrySet()) {
+            Long k = entry.getKey();
+            Event event = cRepository.findById(k).get().getEvent();
+            Long totalTickets = tRepository.countByCost_Event_Eventid(event.getEventid());
+            event.setTotalTickets(totalTickets);
+            eRepository.save(event);
+        }
+
+        model.addAttribute("events", eRepository.findAll());
+        model.addAttribute("costs", cRepository.findAll());
+        redirectAttributes.addFlashAttribute("sale", sRepository.findById(saleid).get());
+        redirectAttributes.addFlashAttribute("tickets", tRepository.findBySale(sRepository.findById(saleid).get()));
+        redirectAttributes.addFlashAttribute("successMessage", "New sale created");
+        return "redirect:" + referer;
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sell/delete/{id}")
     public String deleteSale(@PathVariable Long id, Model model, HttpServletRequest request,
             RedirectAttributes redirectAttributes, Authentication authentication,

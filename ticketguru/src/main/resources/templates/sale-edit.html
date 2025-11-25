@@ -13,7 +13,7 @@
 
     <h1 th:text="${title}">Edit Sale</h1>
 
-    <form th:action="@{'/sales/edit/' + ${sale.saleid}}" method="post">
+    <form th:action="@{'/sale/edit/' + ${sale.saleid}}" method="post">
 
         <label for="saleid">Sale ID:</label><br>
         <input type="text" id="saleid" name="saleid" th:value="${sale.saleid}" readonly><br><br>
@@ -43,7 +43,7 @@
     </form>
 
     <div style="padding:5px">
-        <a class="btn btn-info" th:href="@{'/salespage'}">Back</a>
+        <a class="btn btn-info" th:href="@{'/salepage'}">Back</a>
     </div>
 </div>
 

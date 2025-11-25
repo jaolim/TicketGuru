@@ -61,13 +61,21 @@
             </table>
         </div>
         <a id="saleLink" class="btn btn-primary" href="">Create Sale</a>
+        <a id="doorSaleLink" class="btn btn-primary" href="">Create Door Sale</a>
 
         <div id="addStatus"></div>
         <div id="addResult"></div>
         <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success"></div>
         <div th:if="${sale != null}">
-            <h3>Sale: <span th:text="${sale.saleid}"></span>, Time: <span th:text="${sale.time}"></span>, Price: <span
-                    th:text="${sale.price}"></span>, Seller: <span th:text="${sale.user.username}"></span></h3>
+            <table class="table table-bordered">
+                <tr>
+                    <td>Sale: <span th:text="${sale.saleid}"></span></td>
+                    <td>Time: <span th:text="${sale.time}"></span></td>
+                    <td>Price: <span th:text="${sale.price}"></span> </td>
+                    <td>Seller: <span th:text="${sale.user.username}"></span></td>
+                    <td><a id="doorSaleLink" class="btn btn-warning" th:href="|/sell/delete/${sale.saleid}">Revert sale</a></td>
+                </tr>
+            </table>
             <ul th:each="ticket: ${tickets}">
                 <li>Event: <span th:text="${ticket.cost.event.name}"></span></li>
                 <li>Type: <span th:text="${ticket.cost.type.name}"></span></li>
@@ -85,6 +93,7 @@
                 let status = document.getElementById("addStatus");
                 let result = document.getElementById("addResult");
                 let link = document.getElementById("saleLink");
+                let doorLink = document.getElementById("doorSaleLink");
                 let params = "?tickets=";
                 status.value = "";
                 if (!Number.isInteger(Number(number)) || number <= 0) {
@@ -103,6 +112,8 @@
                 status.innerHTML = "";
                 result.innerHTML = `<ul>${formatted}</ul>`;
                 link.setAttribute("href", params);
+                doorLink.setAttribute("href", `/sell/doorSale${params}`)
+
             }
 
         </script>

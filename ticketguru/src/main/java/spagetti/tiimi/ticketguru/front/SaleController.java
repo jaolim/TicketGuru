@@ -29,13 +29,13 @@ public class SaleController {
         this.tRepository = tRepository;
     }
 
-    @GetMapping("/salespage")
+    @GetMapping("/salepage")
     public String getSales(Model model) {
         model.addAttribute("sales", sRepository.findAll());
         return "sales";
     }
 
-    @GetMapping("/sales/edit/{id}")
+    @GetMapping("/sale/edit/{id}")
     public String editSale(@PathVariable Long id, Model model) {
         Sale sale = sRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sale not found"));
@@ -50,7 +50,7 @@ public class SaleController {
         return "sale-edit";
     }
 
-    @PostMapping("/sales/edit/{id}")
+    @PostMapping("/sale/edit/{id}")
     public String saveSale(@PathVariable Long id,
                            @RequestParam Long userId,
                            @RequestParam Double price) {
@@ -66,10 +66,10 @@ public class SaleController {
 
         sRepository.save(sale);
 
-        return "redirect:/salespage";
+        return "redirect:/salepage";
     }
 
-    @PostMapping("/sales/delete/{id}")
+    @PostMapping("/sale/delete/{id}")
     public String deleteSale(@PathVariable Long id) {
         Sale sale = sRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sale not found"));
@@ -78,14 +78,14 @@ public class SaleController {
         return "redirect:/salespage";
     }
 
-    @GetMapping("/sales/add")
+    @GetMapping("/sale/add")
     public String addSaleForm(Model model) {
         model.addAttribute("users", uRepository.findAll());
         model.addAttribute("allTickets", tRepository.findAll());
         return "sale-add"; 
     }
 
-    @PostMapping("/sales/add")
+    @PostMapping("/sale/add")
     public String addSale(@RequestParam Long userId,
                           @RequestParam Double price) {
 
@@ -100,6 +100,6 @@ public class SaleController {
 
         sRepository.save(sale);
 
-        return "redirect:/salespage";
+        return "redirect:/salepage";
     }
 }

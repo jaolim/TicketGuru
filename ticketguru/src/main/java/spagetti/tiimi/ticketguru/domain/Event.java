@@ -52,6 +52,7 @@ public class Event {
     @JoinColumn(name = "venueid")
     private Venue venue;
 
+    @JsonView(Views.Public.class)
     private Long totalTickets;
 
     public Event() {
