@@ -1,120 +1,112 @@
 package spagetti.tiimi.ticketguru.front;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Optional;
-
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
-import spagetti.tiimi.ticketguru.domain.AppUser;
-import spagetti.tiimi.ticketguru.domain.AppUserRepository;
-import spagetti.tiimi.ticketguru.domain.Cost;
-import spagetti.tiimi.ticketguru.domain.CostRepository;
-import spagetti.tiimi.ticketguru.domain.EventRepository;
+import java.time.LocalDateTime;
+
 import spagetti.tiimi.ticketguru.domain.Sale;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
+import spagetti.tiimi.ticketguru.domain.AppUser;
+import spagetti.tiimi.ticketguru.domain.AppUserRepository;
 import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
+import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 
 @Controller
 public class SaleController {
 
-    private EventRepository eRepository;
-    private SaleRepository sRepository;
-    private CostRepository cRepository;
-    private TicketRepository tRepository;
-    private AppUserRepository auRepository;
+    private final SaleRepository sRepository;
+    private final AppUserRepository uRepository;
+    private final TicketRepository tRepository;
 
-    public SaleController(EventRepository eRepository, SaleRepository sRepository, CostRepository cRepository,
-            TicketRepository tRepository, AppUserRepository auRepository) {
-        this.eRepository = eRepository;
+    public SaleController(SaleRepository sRepository,
+                          AppUserRepository uRepository,
+                          TicketRepository tRepository) {
         this.sRepository = sRepository;
-        this.cRepository = cRepository;
+        this.uRepository = uRepository;
         this.tRepository = tRepository;
-        this.auRepository = auRepository;
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @GetMapping(value = { "/sell" }, params = "!tickets")
-    public String getSell(Model model) {
-        model.addAttribute("events", eRepository.findAll());
-        model.addAttribute("costs", cRepository.findAll());
-        return "sell-ticket";
+    @GetMapping("/salepage")
+    public String getSales(Model model) {
+        model.addAttribute("sales", sRepository.findAll());
+        return "sales";
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @GetMapping("/sell")
-    public String sellTickets(@RequestParam String tickets, Model model, HttpServletRequest request,
-            RedirectAttributes redirectAttributes, Authentication authentication) {
-        String referer = request.getHeader("Referer");
-        if (referer == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Referer address not found");
-            return "redirect:/sell";
-        }
-        AppUser user = auRepository.findByUsername(authentication.getName());
-        if (tickets.isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Add tickets to submit");
-            return "redirect:" + referer;
-        }
-        HashMap<Long, Integer> ticketsMapped = new HashMap<>();
-        double total = 0;
-        try {
-            String[] ticketListString = tickets.split(",");
-            for (String ticket : ticketListString) {
-                String[] split = ticket.split(":");
-                if (split.length != 2) {
-                    redirectAttributes.addFlashAttribute("errorMessage", "Error parsing input");
-                    return "redirect:" + referer;
-                }
-                try {
-                    Long costid = Long.valueOf(split[0]);
-                    int amount = Integer.valueOf(split[1]);
-                    Optional<Cost> cost = cRepository.findById(costid);
-                    if (!cost.isPresent()) {
-                        redirectAttributes.addFlashAttribute("errorMessage", "Invalid costid");
-                        return "redirect:" + referer;
-                    }
-                    total += cost.get().getPrice() * amount;
-                    ticketsMapped.put(costid, amount);
-                } catch (Exception e) {
-                    redirectAttributes.addFlashAttribute("errorMessage", "Error parsing numbers");
-                    return "redirect:" + referer;
-                }
-            }
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error parsing input");
-            return "redirect:" + referer;
-        }
-        LocalDateTime now = LocalDateTime.now();
-        double rounded = new BigDecimal(Double.toString(total)).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        Sale sale = new Sale(user, now, rounded);
-        Long saleid = sRepository.save(sale).getSaleid();
-        ticketsMapped.forEach((k, v) -> {
-            for (int i = 0; i < v; i++) {
-                Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
-                Ticket saved = tRepository.save(ticket);
-                saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
-                        + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
-                tRepository.save(saved);
-            }
-        });
+    @GetMapping("/sale/edit/{id}")
+    public String editSale(@PathVariable Long id, Model model) {
+        Sale sale = sRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Sale not found"));
 
-        model.addAttribute("events", eRepository.findAll());
-        model.addAttribute("costs", cRepository.findAll());
-        redirectAttributes.addFlashAttribute("sale", sRepository.findById(saleid).get());
-        redirectAttributes.addFlashAttribute("tickets", tRepository.findBySale(sRepository.findById(saleid).get()));
-        redirectAttributes.addFlashAttribute("successMessage", "New sale created");
-        return "redirect:" + referer;
+        model.addAttribute("sale", sale);
+        model.addAttribute("users", uRepository.findAll());
+        model.addAttribute("allTickets", tRepository.findAll());
+
+        model.addAttribute("title", "Edit Sale");
+        model.addAttribute("entity", "sale");
+
+        return "sale-edit";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PostMapping("/sale/edit/{id}")
+    public String saveSale(@PathVariable Long id,
+                           @RequestParam Long userId,
+                           @RequestParam Double price) {
+
+        Sale sale = sRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Sale not found"));
+
+        AppUser user = uRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        sale.setUser(user);
+        sale.setPrice(price);
+
+        sRepository.save(sale);
+
+        return "redirect:/salepage";
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PostMapping("/sale/delete/{id}")
+    public String deleteSale(@PathVariable Long id) {
+        Sale sale = sRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Sale not found"));
+
+        sRepository.delete(sale);
+        return "redirect:/salespage";
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/sale/add")
+    public String addSaleForm(Model model) {
+        model.addAttribute("users", uRepository.findAll());
+        model.addAttribute("allTickets", tRepository.findAll());
+        return "sale-add"; 
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PostMapping("/sale/add")
+    public String addSale(@RequestParam Long userId,
+                          @RequestParam Double price) {
+
+        AppUser user = uRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        Sale sale = new Sale();
+        sale.setUser(user);
+        sale.setPrice(price);
+        sale.setTime(LocalDateTime.now());
+
+
+        sRepository.save(sale);
+
+        return "redirect:/salepage";
+    }
 }

@@ -3,7 +3,6 @@ package spagetti.tiimi.ticketguru.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -16,7 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import spagetti.tiimi.ticketguru.Views;
 
 @Entity
@@ -35,7 +34,7 @@ public class Sale {
 
     @JsonView(Views.Public.class)
     @NotNull(message = "Price is required")
-    @Positive
+    @PositiveOrZero
     private double price;
 
     @JsonView(Views.Public.class)
@@ -46,6 +45,8 @@ public class Sale {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sale")
     @JsonIgnoreProperties("sale")
     private List<Ticket> tickets;
+
+    private boolean doorSale;
 
 
     public Sale() {
@@ -101,6 +102,14 @@ public class Sale {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public void setDoorSale(boolean doorSale) {
+        this.doorSale = doorSale;
+    }
+
+    public boolean getDoorSale() {
+        return doorSale;
     }
     
     @Override

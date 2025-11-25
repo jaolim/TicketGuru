@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import spagetti.tiimi.ticketguru.Views;
+import jakarta.persistence.Transient;
 
 @Entity
 public class Ticket {
@@ -21,7 +22,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ticketid;
-    
+
     @JsonView(Views.Public.class)
     @ManyToOne
     @JoinColumn(name = "costid")
@@ -40,6 +41,9 @@ public class Ticket {
     @JsonView(Views.Public.class)
     private String ticketCode;
 
+    @Transient
+    private Long selectedEventId;
+
     public Ticket() {
 
     }
@@ -49,7 +53,7 @@ public class Ticket {
         this.redeemed = false;
     }
 
-        public Ticket(Cost cost, Sale sale) {
+    public Ticket(Cost cost, Sale sale) {
         this.cost = cost;
         this.sale = sale;
         this.redeemed = false;
@@ -103,8 +107,17 @@ public class Ticket {
         return ticketCode;
     }
 
+    public Long getSelectedEventId() {
+        return selectedEventId;
+    }
+
+    public void setSelectedEventId(Long selectedEventId) {
+        this.selectedEventId = selectedEventId;
+    }
+
     @Override
     public String toString() {
         return "Ticket: [" + cost + ", Redeemed: " + redeemed + "]";
     }
+
 }

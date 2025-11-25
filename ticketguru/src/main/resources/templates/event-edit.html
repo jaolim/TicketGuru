@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
-    <title>Edit Event</title>
+    <title th:text="${title}">Edit Event</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
+
 <body>
+    <div class="container">
 
-<h1>Edit Event</h1>
+<h1 th:text="${title}">Edit Event</h1>
 
-<form th:action="@{'/event/edit/' + ${event.eventid}}" method="post">
-    <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+<form th:action="${action}" method="post">
 
     <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" th:value="${event.name}" required><br><br>
+    <input type="text" id="name" name="name" th:value="${item.name}" required><br><br>
 
     <label for="date">Date:</label><br>
     <input type="datetime-local" id="date" name="date"
-           th:value="${#temporals.format(event.date, 'yyyy-MM-dd''T''HH:mm')}" required><br><br>
+       th:value="${item.date != null ? #temporals.format(item.date, 'yyyy-MM-dd''T''HH:mm') : ''}" required><br><br>
 
-    <label for="venue">Venue:</label><br>
-    <select id="venue" name="venueId" required>
-        <option th:each="v : ${venues}" th:value="${v.venueid}"
-                th:text="${v.name}" th:selected="${v.venueid == event.venue.venueid}">
-        </option>
+    <label for="venueId">Venue:</label><br>
+    <select id="venueId" name="venueId" required>
+        <option th:each="v : ${venues}" th:value="${v.venueid}" th:text="${v.name}"
+                th:selected="${item.venue != null and v.venueid == item.venue.venueid}"></option>
     </select><br><br>
+
+    <label for="capacity">Capacity:</label><br>
+    <input type="number" id="capacity" name="capacity" th:value="${item.capacity}" required><br><br>
 
     <button type="submit">Save</button>
 </form>
 
-<a th:href="@{/eventpage}">Back to Events</a>
+<div style="padding:5px">
+    <a class="btn btn-info" th:href="@{'/eventpage'}">Back</a>
+</div>
+</div>
 
 </body>
 </html>

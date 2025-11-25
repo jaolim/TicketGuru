@@ -4,9 +4,16 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface TicketRepository extends CrudRepository<Ticket, Long>{
+public interface TicketRepository extends CrudRepository<Ticket, Long> {
 
     Ticket findByTicketCode(String ticketcode);
+
     Boolean existsByTicketCode(String ticketcode);
+
     List<Ticket> findBySale(Sale sale);
+
+    List<Ticket> findAll();
+
+    Long countByCost_Event_Eventid(Long eventid);
+
 }

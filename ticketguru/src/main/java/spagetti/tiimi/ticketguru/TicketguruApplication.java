@@ -103,8 +103,8 @@ public class TicketguruApplication {
 
 				urepository.save(testUser);
 
-				erepository.save(event1);
-				erepository.save(event2);
+				Long savedEvent1Id = erepository.save(event1).getEventid();
+				Long savedEvent2Id = erepository.save(event2).getEventid();
 
 				crepository.save(cost1);
 				crepository.save(cost2);
@@ -119,32 +119,42 @@ public class TicketguruApplication {
 
 				ticket1 = repository.save(ticket1);
 				ticket1.setTicketCode(Base64.getEncoder().encodeToString((ticket1.getTicketid().toString()
-						+ ticket1.getCost().getCostid() + ticket1.getSale().getSaleid().toString()).getBytes()));
+						+ ticket1.getCost().getCostid()).getBytes()));
 				repository.save(ticket1);
 				ticket2 = repository.save(ticket2);
 				ticket2.setTicketCode(Base64.getEncoder().encodeToString((ticket2.getTicketid().toString()
-						+ ticket2.getCost().getCostid() + ticket2.getSale().getSaleid().toString()).getBytes()));
+						+ ticket2.getCost().getCostid()).getBytes()));
 				ticket3 = repository.save(ticket3);
 				repository.save(ticket2);
 				ticket3.setTicketCode(Base64.getEncoder().encodeToString((ticket3.getTicketid().toString()
-						+ ticket3.getCost().getCostid() + ticket3.getSale().getSaleid().toString()).getBytes()));
+						+ ticket3.getCost().getCostid()).getBytes()));
 				repository.save(ticket3);
 				ticket4 = repository.save(ticket4);
 				ticket4.setTicketCode(Base64.getEncoder().encodeToString((ticket4.getTicketid().toString()
-						+ ticket4.getCost().getCostid() + ticket4.getSale().getSaleid().toString()).getBytes()));
+						+ ticket4.getCost().getCostid() ).getBytes()));
 				repository.save(ticket4);
 				ticket5 = repository.save(ticket5);
 				ticket5.setTicketCode(Base64.getEncoder().encodeToString((ticket5.getTicketid().toString()
-						+ ticket5.getCost().getCostid() + ticket5.getSale().getSaleid().toString()).getBytes()));
+						+ ticket5.getCost().getCostid()).getBytes()));
 				repository.save(ticket5);
 				ticket6 = repository.save(ticket6);
 				ticket6.setTicketCode(Base64.getEncoder().encodeToString((ticket6.getTicketid().toString()
-						+ ticket6.getCost().getCostid() + ticket6.getSale().getSaleid().toString()).getBytes()));
+						+ ticket6.getCost().getCostid() ).getBytes()));
 				repository.save(ticket6);
 				ticket7 = repository.save(ticket7);
 				ticket7.setTicketCode(Base64.getEncoder().encodeToString((ticket7.getTicketid().toString()
-						+ ticket7.getCost().getCostid() + ticket7.getSale().getSaleid().toString()).getBytes()));
+						+ ticket7.getCost().getCostid()).getBytes()));
 				repository.save(ticket7);
+
+				 
+				 
+				Event savedEvent1 = erepository.findById(savedEvent1Id).get();
+				Event savedEvent2 = erepository.findById(savedEvent2Id).get();
+				savedEvent1.setTotalTickets(repository.countByCost_Event_Eventid(savedEvent1.getEventid()));
+				savedEvent2.setTotalTickets(repository.countByCost_Event_Eventid(savedEvent2.getEventid()));
+
+				erepository.save(savedEvent1);
+				erepository.save(savedEvent2);
 
 				/*
 				 * log.info("fetch tickets");
@@ -153,7 +163,6 @@ public class TicketguruApplication {
 				 * }
 				 */
 				log.info("Added initial DB data");
-				log.info("Get event id:" + cost1.getEvent().getEventid());
 			}
 		};
 	}

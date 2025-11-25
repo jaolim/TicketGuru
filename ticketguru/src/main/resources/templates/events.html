@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
     <title>Events</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
@@ -10,48 +10,67 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
 
-<h1>Events</h1>
-<p>
-    Kirjautuneena sisään:
-    <span sec:authentication="name"></span>
-</p>
+    <div class="container">
+        <a th:href="@{/}">Home</a>
 
-<form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
-    <button type="submit">Logout</button>
-</form>
+        <h1>Events</h1>
+        <p>
+            Logged in:
+            <span sec:authentication="name"></span>
+        </p>
 
-<table border="1" cellpadding="6">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Venue</th>
-            <th>Tickets</th>
-            <th sec:authorize="hasAuthority('ADMIN')">Edit</th>
-        </tr>
-    </thead>
+        <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
+            <button type="submit">Logout</button>
+        </form>
 
-    <tbody>
-        <tr th:each="event : ${events}">
-            <td th:text="${event.name}"></td>
-            <td th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></td>
-            <td th:utext="${event.venue.name + '<br>' + event.venue.address}"></td>
-            <td>
-                <ul>
-                    <li th:each="cost : ${event.costs}">
-                        <span th:text="${cost.type.name}"></span> -
-                        <span th:text="${cost.price}"></span> €
-                    </li>
-                </ul>
-            </td>
-            <td sec:authorize="hasAuthority('ADMIN')">
-                <a th:href="@{'/event/edit/' + ${event.eventid}}">
-                    <button>Edit</button>
-                </a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Venue</th>
+                    <th>Tickets</th>
+                    <th>Capacity</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="event : ${events}">
+                    <td th:text="${event.name}"></td>
+                    <td th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:utext="${event.venue.name + '<br>' + event.venue.address}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="cost : ${event.costs}">
+                                <span th:text="${cost.type.name}"></span> -
+                                <span th:text="${cost.price}"></span> €
+                            </li>
+                        </ul>
+                    </td>
+                    <td th:text="${event.capacity}"></td>
+                    <td>
+                        <a th:href="@{'/event/edit/' + ${event.eventid}}">
+                            <button>Edit</button>
+                        </a>
+                    </td>
+                    <td>
+                        <form th:action="@{'/event/delete/' + ${event.eventid}}" method="post" style="display:inline">
+                            <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 10px;">
+            <a th:href="@{'/event/add'}">
+                <button>Add New Event</button>
+            </a>
+        </div>
+    </div>
 
 </body>
+
 </html>

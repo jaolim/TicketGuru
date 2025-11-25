@@ -5,11 +5,15 @@ Tiimi: Eetu, Henna, Janne, Jenny, Veera
 
 ## Johdanto
 
-Projektin tavoitteena on toteuttaa TicketGuru lipunmyyntijärjestelmä, joka on suunnattu lipputoimistolle lippujen hallintaan ja myyntiin. Järjestelmän ensisijainen käyttäjä on lipunmyyjä, joka voi myyntipisteessä myydä lippuja ja tulostaa ne asiakkaille. Toimiston täytyy voida luoda järjestelmään tapahtumat, joihin lippuja myydään. Lisäksi järjestelmä tukee ovelta myyntiä: jäljellä olevat liput voidaan tulostaa ja myydä tapahtuman yhteydessä, ja lipuissa oleva koodi mahdollistaa nopean tarkastuksen sekä käytön merkitsemisen ovella.
+Projektin tavoitteena on toteuttaa TicketGuru lipunmyyntijärjestelmä, joka on suunnattu lipputoimistolle tapahtumien lippujen hallintaan ja myyntiin. Järjestelmän ensisijaisia käyttäjiä ovat lipunmyyjät sekä toimistohenkilöstä, jotka voivat luoda uusia tapahtumia, määritellä lipputyyppejä ja tapahtumien kapasiteettia sekä myydä ja tulostaa asiakkaille yksilöidyt liput. Lisäksi järjestelmä tukee ovelta myyntiä: jäljellä olevat liput voidaan tulostaa ja myydä tapahtuman yhteydessä, ja lipuissa oleva koodi mahdollistaa nopean tarkastuksen sekä käytön merkitsemisen ovella.
 
-### (Alustava) Toteutus- ja toimintaympäristö
+Projektin valmistuessa järjestelmässä on toiminnallisuudet tapahtumien luomiseen, lipputyyppien ja myyntien hallintaan, lipun tulostamiseen yksilöllisellä QR-koodilla sekä lipun käyttämisen merkitsemiseen. Lisäksi järjestelmä sisältää kirjautumisen, joka varmistaa, että vain valtuutettu henkilökunta voi käyttää lipunmyyntijärjestelmää. Admin käyttäjällä on oikeudet kaikille toiminnoille ja muilla käyttäjillä on lippujen ja tapahtumien hallintaan tarvittavat oikeudet. 
 
-Järjestelmä toteutetaan modernilla palvelinteknologialla hyödyntäen relaatiotietokantaa tapahtumien, lippujen ja myyntitapahtumien tallentamiseen. Käyttö tapahtuu aluksi desktop-ympäristössä lipunmyyjien työasemilla, ja käyttöliittymä toteutetaan selainpohjaisena ratkaisuna. Tämä mahdollistaa järjestelmän laajentamisen myöhemmin myös mobiililaitteille ja verkkokauppaan.
+### Toteutus- ja toimintaympäristö
+
+Järjestelmä toteutetaan Spring boot -sovelluskehyksellä, joka tarjoaa REST-rajapinnat lipunmyyntiin, tapahtumatietoihin ja lipuntarkistukseen liittyville toiminnoille. Järjestelmä käyttää PostgreSQL-tietokantaa tietojen tallentamiseen. Palvelin voidaan ajaa paikallisesti kehitysympäristössä ja valmistuessaan se siirretään tuotantoon Rahti-palveluun. 
+
+Käyttöliittymä toteutetaan Thymeleaf-mallipohjilla, joista luodaan HTML-sivut palvelimella. Käyttö tapahtuu aluksi työpöytäympäristössä lipunmyyjien työasemilla, ja käyttöliittymä toteutetaan selainpohjaisena ratkaisuna. Tämä mahdollistaa järjestelmän laajentamisen myöhemmin myös mobiililaitteille ja verkkokauppaan.
 
 
 ## Järjestelmän määrittely
@@ -108,13 +112,13 @@ Pakolliset kentät merkitty tähdellä (*)
 - firstname *
 - lastname *
 
-#### Mahdolliset laajennukset
-
 **Venue**: Tietty tapahtumapaikka
 - PK: venue_id
 - FK: address_id
 - name
 - note
+
+#### Mahdolliset laajennukset
 
 **Address**: Tapahtumapaikan osoite
 - PK: address_id
@@ -129,36 +133,23 @@ Pakolliset kentät merkitty tähdellä (*)
 
 ## Tekninen kuvaus
 
+TicketGuru-lipunmyyntijärjestelmä on toteutettu Spring Boot -sovelluskehyksellä ja se suoritetaan Rahti-palvelussa. 
+
+Järjestelmä sisältää Thymeleafilla toteutetun käyttöliittymän, jota käytetään selaimen kautta, jolloin erillisiä ohjelma-asennuksia ei tarvita. Lipunmyyjät ja toimistotyöntekijät voivat käyttää kaikkia lipunmyyntiin tarvittavia toimintoja selaimen käyttöliittymän kautta. 
+
+Järjestelmä käyttää PostgreSQL-tietokantaa, jota suoritetaan palvelinympäristössä. Tietokantaan tallennetaan kaikki tietokannan määrittelyssä mainitut tiedot. 
+
 ### REST päätepisteet (endpoints)
 
-Lisätietoa REST API -päätepisteistä: [katso dokumentaatio](rest.md)
+[REST API -päätepisteet](rest.md)
 
 ### Autentikointi
 
-#### Basic Auth
-
-Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
-ratkaisut, esim.
-
--   Missä mikäkin järjestelmän komponentti ajetaan (tietokone, palvelinohjelma)
-    ja komponenttien väliset yhteydet (vaikkapa tähän tyyliin:
-    https://security.ufl.edu/it-workers/risk-assessment/creating-an-information-systemdata-flow-diagram/)
--   Palvelintoteutuksen yleiskuvaus: teknologiat, deployment-ratkaisut yms.
--   Keskeisten rajapintojen kuvaukset, esimerkit REST-rajapinta. Tarvittaessa voidaan rajapinnan käyttöä täsmentää
-    UML-sekvenssikaavioilla.
--   Toteutuksen yleisiä ratkaisuja, esim. turvallisuus.
-
-Tämän lisäksi
-
--   ohjelmakoodin tulee olla kommentoitua
--   luokkien, metodien ja muuttujien tulee olla kuvaavasti nimettyjä ja noudattaa
-    johdonmukaisia nimeämiskäytäntöjä
--   ohjelmiston pitää olla organisoitu komponentteihin niin, että turhalta toistolta
-    vältytään
+Autentikointi on toteutettu Spring Securityn tarjoamalla HTTP Basic Authentication -ratkaisulla. Jokaisella käyttäjällä on oma käyttäjätunnus ja salasana järjestelmään. Ilman käyttäjätunnusta järjestelmän tietoja ei näe. 
 
 ## Testaus
 
-Projektin oieka toiminta on varmistettu useilla testausmenetelmillä:
+Projektin oikea toiminta on varmistettu useilla testausmenetelmillä:
 - **JUnit-yksikkötestit**: Testataan yksittäisten luokkien ja metodien toiminta.
 - **Integraatiotestit**: Varmistetaan eri komponenttien ja tietokantayhteyksien yhteensopivuus.
 - **End-to-end (E2E) testit**: Tarkastetaan koko sovelluksen toiminnallisuus front-endin ja back-endin välillä.

@@ -52,8 +52,11 @@ public class Event {
     @JoinColumn(name = "venueid")
     private Venue venue;
 
-    public Event() {
+    @JsonView(Views.Public.class)
+    private Long totalTickets;
 
+    public Event() {
+        this.totalTickets = Long.valueOf(0);
     }
 
     public Event(String name, Venue venue, LocalDateTime date, Integer capacity) {
@@ -61,10 +64,12 @@ public class Event {
         this.venue = venue;
         this.date = date;
         this.capacity = capacity;
+        this.totalTickets = Long.valueOf(0);
     }
 
     public void setEventid(Long eventid) {
         this.eventid = eventid;
+        this.totalTickets = Long.valueOf(0);
     }
 
     public Long getEventid() {
@@ -109,6 +114,14 @@ public class Event {
 
     public void setVenue(Venue venue) {
         this.venue = venue;
+    }
+
+    public void setTotalTickets(Long totalTickets) {
+        this.totalTickets = totalTickets;
+    }
+
+    public Long getTotalTickets() {
+        return totalTickets;
     }
 
     @Override

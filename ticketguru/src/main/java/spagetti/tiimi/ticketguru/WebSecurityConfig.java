@@ -50,9 +50,15 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/event/edit/**").hasAuthority("ADMIN")
                         .requestMatchers("/", "/home", "/css/**", "/login", "/costs/**", "/events/**", "/sales/**",
-                                "/tickets/**", "/tickettypes/**", "/users/**", "/venues/**", "/qr/**", "/client", "/sell", "/eventpage")
+                                "/tickets/**", "/tickettypes/**", "/users/**", "/venues/**", "/qr/**", "/client",
+                                "/sell","/sell/delete/**", "/sell/doorSale", "/eventpage",
+                                "/event/edit/**", "/event/delete/**", "/event/add", 
+                                "/venuepage", "/venue/edit/**", "/venue/delete/**", "/venue/add", 
+                                "/userpage", "/user/edit/**", "/user/delete/**", "/user/add", 
+                                "/tickettypepage", "/tickettype/edit/**", "/tickettype/delete/**", "/tickettype/add",
+                                "/costpage", "/cost/edit/**", "/cost/delete/**", "/cost/add", "/ticketpage", "/ticket/edit/**", 
+                                "/ticket/add", "/ticket/delete/**", "/salepage", "/sale/add", "/sale/edit/**", "/sale/delete/**")
                         .permitAll())
                 .formLogin(formlogin -> formlogin
                         .defaultSuccessUrl("/", true)

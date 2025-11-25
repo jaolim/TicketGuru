@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Ticket</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body>
+    <div class="container">
+
+        <a th:href="@{/ticketpage}">Back</a>
+        <h1>Add New Ticket</h1>
+
+        <form th:action="@{/ticket/add}" method="post">
+            <label>Event:</label>
+            <select name="selectedEventId" onchange="window.location.href='?eventId=' + this.value">
+                <option th:each="e : ${events}" th:value="${e.eventid}" th:text="${e.name}"
+                    th:selected="${ticket.selectedEventId == e.eventid}">
+                </option>
+            </select> <br><br>
+
+            <label>Cost:</label>
+            <select name="costId">
+                <option th:each="c : ${costs}" th:value="${c.costid}"
+                    th:text="${c.type.name} + ' (' + ${c.price} + '€)'">
+                </option>
+            </select> <br><br>
+
+            <button type="submit">Save</button>
+        </form>
+        <a th:href="@{/venuepage}">Back</a>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <title>Events</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+
+    <div class="container">
+    <a th:href="@{/}">Home</a>
+
+<h1>Ticket types</h1>
+<p>
+    Logged in:
+    <span sec:authentication="name"></span>
+</p>
+
+<form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
+    <button type="submit">Logout</button>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr th:each="tickettype : ${tickettypes}">
+            <td th:text="${tickettype.name}"></td>
+            <td>
+                <a th:href="@{'/tickettype/edit/' + ${tickettype.Typeid}}">
+                    <button>Edit</button>
+                </a>
+            </td>
+            <td>
+                <form th:action="@{'/tickettype/delete/' + ${tickettype.Typeid}}" method="post" style="display:inline">
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </td>
+
+        </tr>
+    </tbody>
+</table>
+<div style="margin-top: 10px;">
+    <a th:href="@{'/tickettype/add'}">
+        <button>Add Ticket type</button>
+    </a>
+</div>
+</div>
+</body>
+</html>
