@@ -1,5 +1,6 @@
 package spagetti.tiimi.ticketguru.front;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +30,14 @@ public class SaleController {
         this.tRepository = tRepository;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/salepage")
     public String getSales(Model model) {
         model.addAttribute("sales", sRepository.findAll());
         return "sales";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sale/edit/{id}")
     public String editSale(@PathVariable Long id, Model model) {
         Sale sale = sRepository.findById(id)
@@ -50,6 +53,7 @@ public class SaleController {
         return "sale-edit";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sale/edit/{id}")
     public String saveSale(@PathVariable Long id,
                            @RequestParam Long userId,
@@ -69,6 +73,7 @@ public class SaleController {
         return "redirect:/salepage";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sale/delete/{id}")
     public String deleteSale(@PathVariable Long id) {
         Sale sale = sRepository.findById(id)
@@ -78,6 +83,7 @@ public class SaleController {
         return "redirect:/salespage";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sale/add")
     public String addSaleForm(Model model) {
         model.addAttribute("users", uRepository.findAll());
@@ -85,6 +91,7 @@ public class SaleController {
         return "sale-add"; 
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sale/add")
     public String addSale(@RequestParam Long userId,
                           @RequestParam Double price) {

@@ -25,15 +25,19 @@
     </form>
   </div>
   <div style="padding:5px">
-    <a class="btn btn-info" th:href="@{/login}">Login</a>
-    <a class="btn btn-info" th:href="@{/sell}">Sell Tickets</a>
-    <a class="btn btn-info" th:href="@{/eventpage}">Events</a>
-    <a class="btn btn-info" th:href="@{/venuepage}">Venues</a>
-    <a class="btn btn-info" th:href="@{/userpage}">Users</a>
-    <a class="btn btn-info" th:href="@{/tickettypepage}">Ticket types</a>
-    <a class="btn btn-info" th:href="@{/costpage}">Costs</a>
-    <a class="btn btn-info" th:href="@{/ticketpage}">Tickets</a>
-    <a class="btn btn-info" th:href="@{/salepage}">Sales</a>
+    <div sec:authorize="isAuthenticated()" style="padding:5px">
+      <a class="btn btn-info" th:href="@{/login}">Login</a>
+      <a class="btn btn-info" th:href="@{/sell}">Sell Tickets</a>
+      <a class="btn btn-info" th:href="@{/eventpage}">Events</a>
+      <a class="btn btn-info" th:href="@{/venuepage}">Venues</a>
+      <a class="btn btn-info" th:href="@{/tickettypepage}">Ticket types</a>
+      <a class="btn btn-info" th:href="@{/costpage}">Costs</a>
+      <a class="btn btn-info" th:href="@{/ticketpage}">Tickets</a>
+      <a class="btn btn-info" th:href="@{/salepage}">Sales</a>
+    </div>
+    <div sec:authorize="hasAuthority('ADMIN')" style="padding:5px">
+      <a class="btn btn-warning" th:href="@{/userpage}">Users</a>
+    </div>
   </div>
 
 

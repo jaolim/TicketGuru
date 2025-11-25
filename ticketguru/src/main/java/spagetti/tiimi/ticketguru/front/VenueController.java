@@ -1,5 +1,6 @@
 package spagetti.tiimi.ticketguru.front;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +26,7 @@ public class VenueController {
         this.vRepository = vRepository;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/venuepage")
     public String getVenueList(Model model) {
         model.addAttribute("venues", vRepository.findAll());
@@ -32,6 +34,7 @@ public class VenueController {
         return "venues";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/venue/edit/{id}")
     public String editVenue(@PathVariable Long id, Model model) {
 
@@ -45,6 +48,7 @@ public class VenueController {
         return "venue-edit";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/venue/edit/{id}")
     public String saveVenue(@PathVariable Long id,
             @RequestParam Map<String, String> allParams) {
@@ -60,31 +64,34 @@ public class VenueController {
         return "redirect:/venuepage";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/venue/delete/{id}")
-public String deleteVenue(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteVenue(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 
-    Venue venue = vRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Venue not found"));
+        Venue venue = vRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Venue not found"));
 
-    List<Event> events = venue.getEvents();
+        List<Event> events = venue.getEvents();
 
-    if (events != null && !events.isEmpty()) {
-        redirectAttributes.addFlashAttribute("errorMessage",
-                "Cannot delete venue because there are events linked to it.");
+        if (events != null && !events.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Cannot delete venue because there are events linked to it.");
+            return "redirect:/venuepage";
+        }
+
+        vRepository.delete(venue);
         return "redirect:/venuepage";
     }
 
-    vRepository.delete(venue);
-    return "redirect:/venuepage";
-}
-
-@GetMapping("/venue/add")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/venue/add")
     public String addVenueForm(Model model) {
         model.addAttribute("venue", new Venue());
         model.addAttribute("title", "Add Venue");
         return "venue-add";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/venue/add")
     public String saveNewVenue(@ModelAttribute Venue venue) {
         vRepository.save(venue);

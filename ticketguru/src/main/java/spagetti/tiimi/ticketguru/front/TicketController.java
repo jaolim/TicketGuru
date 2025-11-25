@@ -1,5 +1,6 @@
 package spagetti.tiimi.ticketguru.front;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,6 +39,7 @@ public class TicketController {
         this.eRepository = eRepository;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/ticketpage")
     public String listTickets(Model model) {
         List<Ticket> tickets = tRepository.findAll();
@@ -45,6 +47,7 @@ public class TicketController {
         return "tickets";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/ticket/add")
     public String addTicketPage(@RequestParam(required = false) Long eventId, Model model) {
         Ticket ticket = new Ticket();
@@ -71,20 +74,22 @@ public class TicketController {
         return "ticket-add";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/ticket/add")
-public String saveNewTicket(@RequestParam Long costId) {
-    Cost cost = cRepository.findById(costId).orElseThrow();
+    public String saveNewTicket(@RequestParam Long costId) {
+        Cost cost = cRepository.findById(costId).orElseThrow();
 
-    Ticket ticket = new Ticket();
-    ticket.setCost(cost);
-    ticket.setRedeemed(false);
-    ticket.setRedeemedTime(null);
+        Ticket ticket = new Ticket();
+        ticket.setCost(cost);
+        ticket.setRedeemed(false);
+        ticket.setRedeemedTime(null);
 
-    tRepository.save(ticket);
+        tRepository.save(ticket);
 
-    return "redirect:/ticketpage";
-}
+        return "redirect:/ticketpage";
+    }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/ticket/edit/{id}")
     public String editTicketPage(@PathVariable Long id,
             @RequestParam(required = false) Long eventId,
@@ -115,6 +120,7 @@ public String saveNewTicket(@RequestParam Long costId) {
         return "ticket-edit";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/ticket/edit/{id}")
     public String saveEditedTicket(@PathVariable Long id,
             @RequestParam Long costId) {
@@ -125,6 +131,7 @@ public String saveNewTicket(@RequestParam Long costId) {
         return "redirect:/ticketpage";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/ticket/delete/{id}")
     public String deleteTicket(@PathVariable Long id) {
         tRepository.deleteById(id);

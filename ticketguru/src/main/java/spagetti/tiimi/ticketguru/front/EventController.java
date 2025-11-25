@@ -33,12 +33,14 @@ public class EventController {
         this.cRepository = cRepository;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/eventpage")
     public String getEventList(Model model) {
         model.addAttribute("events", eRepository.findAll());
         return "events";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/event/edit/{id}")
     public String editEvent(@PathVariable Long id, Model model) {
 
@@ -53,6 +55,7 @@ public class EventController {
         return "event-edit";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/event/edit/{id}")
     public String saveEvent(@PathVariable Long id,
             @RequestParam Map<String, String> allParams) {
@@ -74,6 +77,7 @@ public class EventController {
         return "redirect:/eventpage";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/event/delete/{id}")
     public String deleteEvent(@PathVariable Long id) {
         Event event = eRepository.findById(id)
@@ -83,6 +87,7 @@ public class EventController {
         return "redirect:/eventpage";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/event/add")
     public String addEventForm(Model model) {
 
@@ -90,6 +95,7 @@ public class EventController {
         return "event-add";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/event/add")
     public String addEvent(
             @RequestParam String name,
