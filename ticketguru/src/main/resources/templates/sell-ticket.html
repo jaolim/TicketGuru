@@ -15,7 +15,7 @@
         <h1>Sell tickets</h1>
 
         <p sec:authorize="isAuthenticated()">
-            Kirjautuneena sisään:
+            Logged in:
             <span sec:authentication="name"></span>
         </p>
 
@@ -27,22 +27,25 @@
 
         <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
         <div th:each="event : ${events}">
-            <table class="table table-bordered">
-                <td>Event: <span th:text="${event.name}"></span></td>
-                <td>Venue: <span th:text="${event.venue.name}"></span></td>
-                <td>Date: <span th:text="${event.date}"></span></td>
-                <td>Capacity: <span th:text="${event.capacity}"></span></td>
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%">
+                <tr>
+                    <td>Event: <span th:text="${event.name}"></span></td>
+                    <td>Venue: <span th:text="${event.venue.name}"></span></td>
+                    <td>Date: <span th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></span></td>
+                    <td>Capacity: <span th:text="${event.capacity}"></span></td>
 
-                <td th:if="${event.totalTickets}">
-                    Total: <span th:text="${event.totalTickets}"></span>
-                </td>
+                    <td>
+                        Sold: <span th:if="${event.totalTickets != null}" th:text="${event.totalTickets}"></span>
+                    </td>
+                </tr>
             </table>
             <table class="table table-bordered">
-                <th>Type</th>
-                <th>Price</th>
-                <th>ID</th>
-                <th>Quantity</th>
-                <th></th>
+                <tr>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>ID</th>
+                    <th>Quantity</th>
+                    <th></th>
                 </tr>
                 <div th:each="cost : ${costs}" class="table table-bordered">
                     <tr th:if="${cost.event.eventid == event.eventid}">
@@ -58,17 +61,6 @@
             </table>
         </div>
         <a id="saleLink" class="btn btn-primary" href="">Create Sale</a>
-        Test Buttons:
-        <a id="saleLink" class="btn btn-warning" href="?tickets=">Empty param</a>
-        <a id="saleLink" class="btn btn-primary" href="?tickets=">Empty param</a>
-        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,3:2,1:2">Normal Format</a>
-        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,3:2,1">Missing last</a>
-        <a id="saleLink" class="btn btn-primary" href="?tickets=9999:5,asdf:2,1:4">Wrong ID</a>
-        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,asdf:2,1:4">ID String</a>
-        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5,3:4fdsa,1:3">Quantity String</a>
-        <a id="saleLink" class="btn btn-primary" href="?tickets=2:53:2,1:2">Wrong format</a>
-        <a id="saleLink" class="btn btn-primary" href="?tickets=2.1:5,3:2,1:10">ID decimal</a>
-        <a id="saleLink" class="btn btn-primary" href="?tickets=2:5.5,3:2,1:10">Quantity decimal</a>
 
         <div id="addStatus"></div>
         <div id="addResult"></div>
@@ -89,11 +81,6 @@
         <script>
             let tickets = [];
 
-            function test() {
-                let status = document.getElementById("addStatus");
-
-            }
-
             function addTicket(id, number) {
                 let status = document.getElementById("addStatus");
                 let result = document.getElementById("addResult");
@@ -111,10 +98,10 @@
 
                 let formatted = "Tickets: "
                 for (let i = 0; i < tickets.length; i++) {
-                    formatted += `Ticket${i + 1} - id: ${id}, amount: ${number}`;
+                    formatted += `<li>Ticket${i + 1} - id: ${id}, amount: ${number}</li>`;
                 }
                 status.innerHTML = "";
-                result.innerHTML = formatted;
+                result.innerHTML = `<ul>${formatted}</ul>`;
                 link.setAttribute("href", params);
             }
 

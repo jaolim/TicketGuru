@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -90,7 +91,11 @@ public class SellController {
                         return "redirect:" + referer;
                     }
                     total += cost.get().getPrice() * amount;
-                    ticketsMapped.put(costid, amount);
+                    if (ticketsMapped.containsKey(costid)) {
+                        ticketsMapped.put(costid, (ticketsMapped.get(costid) + amount));
+                    } else {
+                        ticketsMapped.put(costid, amount);
+                    }
                 } catch (Exception e) {
                     redirectAttributes.addFlashAttribute("errorMessage", "Error parsing numbers");
                     return "redirect:" + referer;
@@ -114,6 +119,7 @@ public class SellController {
                 redirectAttributes.addFlashAttribute("errorMessage", "Sale has not been created: capacity exceeded");
                 return "redirect:/sell/delete/" + saleid;
             }
+            totalTickets += v;
             for (int i = 0; i < v; i++) {
                 Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
                 Ticket saved = tRepository.save(ticket);
@@ -121,7 +127,12 @@ public class SellController {
                         + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
                 tRepository.save(saved);
             }
+        }
 
+        for (Map.Entry<Long, Integer> entry : ticketsMapped.entrySet()) {
+            Long k = entry.getKey();
+            Event event = cRepository.findById(k).get().getEvent();
+            Long totalTickets = tRepository.countByCost_Event_Eventid(event.getEventid());
             event.setTotalTickets(totalTickets);
             eRepository.save(event);
         }
@@ -144,12 +155,21 @@ public class SellController {
             redirectAttributes.addFlashAttribute("errorMessage", "Referer address not found");
             return "redirect:/sell";
         }
+        List<Event> events = eRepository.findDistinctByCosts_Tickets_Sale_Saleid(id);
         sRepository.deleteById(id);
+
+        events.forEach(event -> {
+            event.setTotalTickets(tRepository.countByCost_Event_Eventid(event.getEventid()));
+            eRepository.save(event);
+        });
+
         if (errorMessage != null && !errorMessage.isBlank()) {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Sale by the id of " + id + " has been deleted");
+            redirectAttributes.addFlashAttribute("errorMessage", "Sale by the id of " +
+                    id + " has been deleted");
         }
+
         return "redirect:" + referer;
     }
 
