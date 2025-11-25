@@ -11,17 +11,28 @@
 <body>
 
     <div class="container">
-        <a th:href="@{/}">Home</a>
+        <div style="display: flex; align-items: center; gap: 20px;">
+
+            <a th:href="@{/}">Home</a>
+
+            <p style="margin: 0;">
+                Logged in:
+                <span sec:authentication="name"></span>
+            </p>
+
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn btn-light">Logout</button>
+            </form>
+
+        </div>
 
         <h1>Events</h1>
-        <p>
-            Logged in:
-            <span sec:authentication="name"></span>
-        </p>
 
-        <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
-            <button type="submit">Logout</button>
-        </form>
+        <div class="mb-3">
+            <a th:href="@{'/event/add'}" class="btn btn-primary">
+                Add New Event
+            </a>
+        </div>
 
         <table class="table table-bordered">
             <thead>
@@ -64,11 +75,7 @@
                 </tr>
             </tbody>
         </table>
-        <div style="margin-top: 10px;">
-            <a th:href="@{'/event/add'}">
-                <button>Add New Event</button>
-            </a>
-        </div>
+
     </div>
 
 </body>

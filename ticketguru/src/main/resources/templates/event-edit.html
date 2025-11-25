@@ -11,33 +11,34 @@
 <body>
     <div class="container">
 
-<h1 th:text="${title}">Edit Event</h1>
+        <h1 th:text="${title}">Edit Event</h1>
 
-<form th:action="${action}" method="post">
+        <form th:action="${action}" method="post">
 
-    <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" th:value="${item.name}" required><br><br>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" th:value="${item.name}" required><br><br>
 
-    <label for="date">Date:</label><br>
-    <input type="datetime-local" id="date" name="date"
-       th:value="${item.date != null ? #temporals.format(item.date, 'yyyy-MM-dd''T''HH:mm') : ''}" required><br><br>
+            <label for="date">Date:</label><br>
+            <input type="datetime-local" id="date" name="date"
+                th:value="${item.date != null ? #temporals.format(item.date, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                required><br><br>
 
-    <label for="venueId">Venue:</label><br>
-    <select id="venueId" name="venueId" required>
-        <option th:each="v : ${venues}" th:value="${v.venueid}" th:text="${v.name}"
-                th:selected="${item.venue != null and v.venueid == item.venue.venueid}"></option>
-    </select><br><br>
+            <label for="venueId">Venue:</label><br>
+            <select id="venueId" name="venueId" required>
+                <option th:each="v : ${venues}" th:value="${v.venueid}" th:text="${v.name}"
+                    th:selected="${item.venue != null and v.venueid == item.venue.venueid}"></option>
+            </select><br><br>
 
-    <label for="capacity">Capacity:</label><br>
-    <input type="number" id="capacity" name="capacity" th:value="${item.capacity}" required><br><br>
+            <label for="capacity">Capacity:</label><br>
+            <input type="number" id="capacity" name="capacity" th:value="${item.capacity}" required><br><br>
 
-    <button type="submit">Save</button>
-</form>
+            <button type="submit" class="btn btn-success">Save</button>
+            <a class="btn btn-outline-secondary" th:href="@{'/eventpage'}">Back</a>
+        </form>
 
-<div style="padding:5px">
-    <a class="btn btn-info" th:href="@{'/eventpage'}">Back</a>
-</div>
-</div>
+
+    </div>
 
 </body>
+
 </html>

@@ -11,20 +11,19 @@
 <body>
     <div class="container">
 
-<h1>Add Ticket type</h1>
+        <h1>Add Ticket type</h1>
 
-<form th:action="@{/tickettype/add}" method="post">
+        <form th:action="@{/tickettype/add}" method="post">
 
-    <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" required><br><br>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
 
-    <button type="submit">Save</button>
-</form>
+            <button type="submit" class="btn btn-success">Save</button>
+            <a class="btn btn-outline-secondary" th:href="@{/tickettypepage}">Back</a>
+        </form>
 
-<div style="padding:5px">
-    <a class="btn btn-info" th:href="@{/tickettypepage}">Back</a>
-</div>
-</div>
+    </div>
 
 </body>
+
 </html>
