@@ -94,7 +94,7 @@ public class TicketRestController {
         Optional<Ticket> saved = trepository.findById(id);
 
         return saved.map(mapped -> {
-            mapped.setTicketCode(Base64.getEncoder().encodeToString((id.toString() + mapped.getCost().getCostid() + mapped.getSale().getSaleid().toString()).getBytes()));
+            mapped.setTicketCode(Base64.getEncoder().encodeToString((id.toString() + mapped.getCost().getCostid()).getBytes()));
             return trepository.save(mapped);
         });
     }
@@ -129,7 +129,7 @@ public class TicketRestController {
                     ticket.setCost(updatedTicket.getCost());
                     ticket.setSale(updatedTicket.getSale());
                     ticket.setRedeemed(updatedTicket.getRedeemed());
-                    ticket.setTicketCode(Base64.getEncoder().encodeToString((id.toString() + updatedTicket.getCost().getCostid() + updatedTicket.getSale().getSaleid().toString()).getBytes()));
+                    ticket.setTicketCode(Base64.getEncoder().encodeToString((id.toString() + updatedTicket.getCost().getCostid()).getBytes()));
                     return trepository.save(ticket);
                 });
     }

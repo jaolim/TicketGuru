@@ -124,7 +124,7 @@ public class SellController {
                 Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
                 Ticket saved = tRepository.save(ticket);
                 saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
-                        + saved.getCost().getCostid() + saved.getSale().getSaleid().toString()).getBytes()));
+                        + saved.getCost().getCostid()).getBytes()));
                 tRepository.save(saved);
             }
         }
