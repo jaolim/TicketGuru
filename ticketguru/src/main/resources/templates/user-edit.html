@@ -10,28 +10,30 @@
 
 <body>
     <div class="container">
-<h1 th:text="${title}"></h1>
+        <h1 th:text="${title}"></h1>
 
-<form th:action="@{${item.userid != null} ? '/user/edit/' + ${item.userid} : '/user/add'}" method="post">
-    <label>Username:</label>
-    <input type="text" name="username" th:value="${item.username}" required><br><br>
+        <form th:action="@{${item.userid != null} ? '/user/edit/' + ${item.userid} : '/user/add'}" method="post">
+            <label>Username:</label>
+            <input type="text" name="username" th:value="${item.username}" required><br><br>
 
-    <label>Firstname:</label>
-    <input type="text" name="firstname" th:value="${item.firstname}" required><br><br>
+            <label>Firstname:</label>
+            <input type="text" name="firstname" th:value="${item.firstname}" required><br><br>
 
-    <label>Lastname:</label>
-    <input type="text" name="lastname" th:value="${item.lastname}" required><br><br>
+            <label>Lastname:</label>
+            <input type="text" name="lastname" th:value="${item.lastname}" required><br><br>
 
-    <label>Role:</label>
-    <input type="text" name="userRole" th:value="${item.userRole}" required><br><br>
+            <label>Role:</label>
+            <input type="text" name="userRole" th:value="${item.userRole}" required><br><br>
 
-    <label>Password:</label>
-    <input type="password" name="passwordHash" th:value="${item.passwordHash}" th:if="${item.userid == null}" required><br><br>
+            <label>Password:</label>
+            <input type="password" name="passwordHash" th:value="${item.passwordHash}" th:if="${item.userid == null}"
+                required><br><br>
 
-    <button type="submit">Save</button>
-</form>
+            <button type="submit" class="btn btn-success">Save</button>
+            <a class="btn btn-outline-secondary" th:href="@{/userpage}">Back</a>
+        </form>
 
-<a th:href="@{/userpage}">Back</a>
-</div>
+    </div>
 </body>
+
 </html>

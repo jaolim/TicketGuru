@@ -11,49 +11,54 @@
 <body>
 
     <div class="container">
-    <a th:href="@{/}">Home</a>
+        <div style="display: flex; align-items: center; gap: 20px;">
 
-<h1>Ticket types</h1>
-<p>
-    Logged in:
-    <span sec:authentication="name"></span>
-</p>
+            <a th:href="@{/}">Home</a>
 
-<form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
-    <button type="submit">Logout</button>
-</form>
+            <p style="margin: 0;">
+                Logged in:
+                <span sec:authentication="name"></span>
+            </p>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn btn-light">Logout</button>
+            </form>
 
-    <tbody>
-        <tr th:each="tickettype : ${tickettypes}">
-            <td th:text="${tickettype.name}"></td>
-            <td>
-                <a th:href="@{'/tickettype/edit/' + ${tickettype.Typeid}}">
-                    <button>Edit</button>
-                </a>
-            </td>
-            <td>
-                <form th:action="@{'/tickettype/delete/' + ${tickettype.Typeid}}" method="post" style="display:inline">
-                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
-                </form>
-            </td>
+        </div>
 
-        </tr>
-    </tbody>
-</table>
-<div style="margin-top: 10px;">
-    <a th:href="@{'/tickettype/add'}">
-        <button>Add Ticket type</button>
-    </a>
-</div>
-</div>
+        <h1>Ticket types</h1>
+        <div class="mb-3">
+            <a class="btn btn-primary" th:href="@{'/tickettype/add'}">
+                Add Ticket type
+            </a>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="tickettype : ${tickettypes}">
+                    <td th:text="${tickettype.name}"></td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary" th:href="@{'/tickettype/edit/' + ${tickettype.Typeid}}">
+                            Edit</a>
+                        <form th:action="@{'/tickettype/delete/' + ${tickettype.Typeid}}" method="post"
+                            style="display:inline-block; margin-left:5px;">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
 </body>
+
 </html>

@@ -9,21 +9,23 @@
 </head>
 
 <body style="margin:5px">
-    <div>
-        <a th:href="@{/}">Home</a>
+    <div class="container">
+        <div style="display: flex; align-items: center; gap: 20px;">
+
+            <a th:href="@{/}">Home</a>
+
+            <p style="margin: 0;" sec:authorize="isAuthenticated()">
+                Logged in:
+                <span sec:authentication="name"></span>
+            </p>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn btn-light">Logout</button>
+            </form>
+
+        </div>
 
         <h1>Sell tickets</h1>
-
-        <p sec:authorize="isAuthenticated()">
-            Logged in:
-            <span sec:authentication="name"></span>
-        </p>
-
-        <div>
-            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
-                <button type="submit">Logout</button>
-            </form>
-        </div>
 
         <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
         <div th:each="event : ${events}">
@@ -39,29 +41,31 @@
                     </td>
                 </tr>
             </table>
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%">
                 <tr>
                     <th>Type</th>
                     <th>Price</th>
                     <th>ID</th>
                     <th>Quantity</th>
-                    <th></th>
                 </tr>
                 <div th:each="cost : ${costs}" class="table table-bordered">
                     <tr th:if="${cost.event.eventid == event.eventid}">
                         <td>Type: <span th:text="${cost.type.name}"></span></td>
                         <td>Price: <span th:text="${cost.price}"></span></td>
                         <td>ID: <span th:text="${cost.costid}"></span></td>
-                        <td><input type="number" th:id="|amount-${cost.costid}" /></td>
-                        <td><button
+                        <td><input type="number" th:id="|amount-${cost.costid}" />
+                            <button style="margin-left: 10px;" class="btn btn-primary"
                                 th:onClick="|addTicket(${cost.costid}, document.getElementById('amount-${cost.costid}').value)|">Add</button>
                         </td>
                     </tr>
                 </div>
             </table>
         </div>
-        <a id="saleLink" class="btn btn-primary" href="">Create Sale</a>
-        <a id="doorSaleLink" class="btn btn-primary" href="">Create Door Sale</a>
+        
+        <div class="mb-3">
+            <a id="saleLink" class="btn btn-primary" href="">Create Sale</a>
+            <a id="doorSaleLink" class="btn btn-primary" href="">Create Door Sale</a>
+        </div>
 
         <div id="addStatus"></div>
         <div id="addResult"></div>
@@ -73,7 +77,8 @@
                     <td>Time: <span th:text="${sale.time}"></span></td>
                     <td>Price: <span th:text="${sale.price}"></span> </td>
                     <td>Seller: <span th:text="${sale.user.username}"></span></td>
-                    <td><a id="doorSaleLink" class="btn btn-warning" th:href="|/sell/delete/${sale.saleid}">Revert sale</a></td>
+                    <td><a id="doorSaleLink" class="btn btn-warning" th:href="|/sell/delete/${sale.saleid}">Revert
+                            sale</a></td>
                 </tr>
             </table>
             <ul th:each="ticket: ${tickets}">

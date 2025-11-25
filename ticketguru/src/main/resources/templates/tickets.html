@@ -11,18 +11,26 @@
 <body>
     <div class="container">
 
-        <a th:href="@{/}">Home</a>
+        <div style="display: flex; align-items: center; gap: 20px;">
+
+            <a th:href="@{/}">Home</a>
+
+            <p style="margin: 0;">
+                Logged in:
+                <span sec:authentication="name"></span>
+            </p>
+
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn btn-light">Logout</button>
+            </form>
+
+        </div>
         <h1>Tickets</h1>
-
-        <p>
-            Logged in:
-            <span sec:authentication="name"></span>
-        </p>
-
-        <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
-            <button type="submit">Logout</button>
-        </form>
-
+        <div class="mb-3">
+            <a class="btn btn-primary" th:href="@{/ticket/add}">
+                Add Ticket
+            </a>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -31,8 +39,7 @@
                     <th>Ticket Type</th>
                     <th>Price</th>
                     <th>Redeemed</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
 
@@ -45,22 +52,20 @@
                     <td th:text="${t.redeemed}"></td>
 
                     <td>
-                        <a th:href="@{'/ticket/edit/' + ${t.ticketid}}">
-                            <button>Edit</button>
+                        <a class="btn btn-sm btn-secondary" th:href="@{'/ticket/edit/' + ${t.ticketid}}">
+                            Edit
                         </a>
-                    </td>
 
-                    <td>
-                        <form th:action="@{'/ticket/delete/' + ${t.ticketid}}" method="post">
-                            <button onclick="return confirm('Are you sure?')">Delete</button>
+                        <form th:action="@{'/ticket/delete/' + ${t.ticketid}}" method="post"
+                            style="display:inline; margin-left:5px;">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <a th:href="@{/ticket/add}">
-            <button>Add Ticket</button>
-        </a>
+
 
 </body>
 
