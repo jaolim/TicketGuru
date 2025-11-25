@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <title th:text="${title}">Edit Sale</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+<div class="container">
+
+    <h1 th:text="${title}">Edit Sale</h1>
+
+    <form th:action="@{'/sales/edit/' + ${sale.saleid}}" method="post">
+
+        <label for="saleid">Sale ID:</label><br>
+        <input type="text" id="saleid" name="saleid" th:value="${sale.saleid}" readonly><br><br>
+
+        <label for="time">Time:</label><br>
+        <input type="text" id="time"
+               th:value="${sale.time != null ? #temporals.format(sale.time, 'yyyy-MM-dd HH:mm') : ''}"
+               readonly><br><br>
+
+        <label for="userId">User:</label><br>
+        <select id="userId" name="userId" required>
+            <option th:each="u : ${users}"
+                    th:value="${u.userid}"
+                    th:text="${u.username}"
+                    th:selected="${sale.user != null and u.userid == sale.user.userid}">
+            </option>
+        </select><br><br>
+
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price"
+               step="0.01"
+               min="0"
+               th:value="${sale.price}"
+               required><br><br>
+
+        <button type="submit">Save</button>
+    </form>
+
+    <div style="padding:5px">
+        <a class="btn btn-info" th:href="@{'/salespage'}">Back</a>
+    </div>
+</div>
+
+</body>
+</html>
