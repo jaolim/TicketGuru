@@ -11,17 +11,28 @@
 <body>
 
     <div class="container">
-        <a th:href="@{/}">Home</a>
+        <div style="display: flex; align-items: center; gap: 20px;">
+
+            <a th:href="@{/}">Home</a>
+
+            <p style="margin: 0;">
+                Logged in:
+                <span sec:authentication="name"></span>
+            </p>
+
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn btn-light">Logout</button>
+            </form>
+
+        </div>
 
         <h1>Events</h1>
-        <p>
-            Logged in:
-            <span sec:authentication="name"></span>
-        </p>
 
-        <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
-            <button type="submit">Logout</button>
-        </form>
+        <div class="mb-3">
+            <a th:href="@{'/event/add'}" class="btn btn-primary">
+                Add New Event
+            </a>
+        </div>
 
         <table class="table table-bordered">
             <thead>
@@ -31,8 +42,7 @@
                     <th>Venue</th>
                     <th>Tickets</th>
                     <th>Capacity</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
 
@@ -51,24 +61,21 @@
                     </td>
                     <td th:text="${event.capacity}"></td>
                     <td>
-                        <a th:href="@{'/event/edit/' + ${event.eventid}}">
-                            <button>Edit</button>
+                        <a class="btn btn-sm btn-secondary" th:href="@{'/event/edit/' + ${event.eventid}}">
+                            Edit
                         </a>
-                    </td>
-                    <td>
-                        <form th:action="@{'/event/delete/' + ${event.eventid}}" method="post" style="display:inline">
-                            <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+
+                        <form th:action="@{'/event/delete/' + ${event.eventid}}" method="post"
+                            style="display:inline; margin-left:5px;">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure?');">Delete</button>
                         </form>
                     </td>
 
                 </tr>
             </tbody>
         </table>
-        <div style="margin-top: 10px;">
-            <a th:href="@{'/event/add'}">
-                <button>Add New Event</button>
-            </a>
-        </div>
+
     </div>
 
 </body>

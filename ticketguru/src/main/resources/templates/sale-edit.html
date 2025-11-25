@@ -39,12 +39,13 @@
                th:value="${sale.price}"
                required><br><br>
 
-        <button type="submit">Save</button>
+        <button type="submit" class="btn btn-success">Save</button>
+        <a class="btn btn-outline-secondary" th:href="@{'/salepage'}">Back</a>
     </form>
 
-    <div style="padding:5px">
-        <a class="btn btn-info" th:href="@{'/salepage'}">Back</a>
-    </div>
+
+        
+
 </div>
 
 </body>
