@@ -9,74 +9,34 @@
   <title>TicketGuru</title>
 </head>
 
-<body style="margin:5px">
+<body class="container">
   <div style="display: flex; align-items: center; gap: 20px;">
-            <p style="margin: 0;" sec:authorize="isAuthenticated()">
-                Logged in:
-                <span sec:authentication="name"></span>
-            </p>
-            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin: 0;">
-                <button type="submit" class="btn btn-light">Logout</button>
-            </form>
-        </div>
+    <p style="margin: 0;" sec:authorize="isAuthenticated()">
+      Logged in:
+      <span sec:authentication="name"></span>
+    </p>
+    <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin: 0;">
+      <button type="submit" class="btn btn-light">Logout</button>
+    </form>
+  </div>
   <h1>TicketGuru</h1>
 
   <p>Tevetuloa TicketGuruun, pääsylippusi pääsylippuihin!</p>
 
   </div>
   <div style="padding:5px">
-      <a class="btn btn-info" th:href="@{/login}">Login</a>
-      <span sec:authorize="isAuthenticated()">
-        <a class="btn btn-info" th:href="@{/sell}">Sell Tickets</a>
-        <a class="btn btn-info" th:href="@{/eventpage}">Events</a>
-        <a class="btn btn-info" th:href="@{/venuepage}">Venues</a>
-        <a class="btn btn-info" th:href="@{/tickettypepage}">Ticket types</a>
-        <a class="btn btn-info" th:href="@{/costpage}">Costs</a>
-        <a class="btn btn-info" th:href="@{/ticketpage}">Tickets</a>
-        <a class="btn btn-info" th:href="@{/salepage}">Sales</a>
-      </span>
-      <span sec:authorize="hasAuthority('ADMIN')">
-        <a class="btn btn-warning" th:href="@{/userpage}">Users</a>
-      </span>
-    </div>
+    <a class="btn btn-info" th:href="@{/login}">Login</a>
+    <span sec:authorize="isAuthenticated()">
+      <a class="btn btn-info" th:href="@{/sell}">Sell Tickets</a>
+      <a class="btn btn-info" th:href="@{/eventpage}">Events</a>
+      <a class="btn btn-info" th:href="@{/venuepage}">Venues</a>
+      <a class="btn btn-info" th:href="@{/tickettypepage}">Ticket types</a>
+      <a class="btn btn-info" th:href="@{/costpage}">Costs</a>
+      <a class="btn btn-info" th:href="@{/ticketpage}">Tickets</a>
+      <a class="btn btn-info" th:href="@{/salepage}">Sales</a>
+    </span>
+    <span sec:authorize="hasAuthority('ADMIN')">
+      <a class="btn btn-warning" th:href="@{/userpage}">Users</a>
+    </span>
 
-  </div>
-
-
-  <div>
-    <h2>Ticket DB list all:</h2>
-    <tr th:each="ticket : ${tickets}">
-      <p>
-        <td th:text="${ticket}"></td>
-      </p>
-    </tr>
-  </div>
-  <div>
-    <h2>Event DB list all:</h2>
-    <tr th:each="event : ${events}">
-      <p>
-        <td th:text="${event}"></td>
-      </p>
-    </tr>
-  </div>
-  <div>
-    <h2>Venue DB list all:</h2>
-    <tr th:each="venue : ${venues}">
-      <p>
-        <td th:text="${venue}"></td>
-      </p>
-    </tr>
-  </div>
-  <div>
-    <h2>Cost DB list all:</h2>
-    <tr th:each="cost : ${costs}">
-      <p>
-        <td th:text="${cost}"></td>
-      </p>
-    </tr>
-  </div>
-  <div>
-    <h2>Version check: update manually to see when a specific version is live on rahti</h2>
-    <p>Selliin lisätty tietyn myyntitapahtuman lippujen haku</p>
-  </div>
 </body>

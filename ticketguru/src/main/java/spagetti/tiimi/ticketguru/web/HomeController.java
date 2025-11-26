@@ -26,12 +26,13 @@ import spagetti.tiimi.ticketguru.domain.VenueRepository;
 @Controller
 public class HomeController {
 
+    /* 
     @Autowired
     private TicketRepository repository;
     @Autowired
     private EventRepository erepository;
-    // @Autowired
-    // private AppUserRepository urepository;
+    @Autowired
+    private AppUserRepository urepository;
     @Autowired
     private CostRepository crepository;
     @Autowired
@@ -40,6 +41,7 @@ public class HomeController {
     private SaleRepository srepository;
     @Autowired
     private VenueRepository vrepository;
+    */
 
     /*
      * public static Event testEvent = new Event("Testitapahtuma", "Testipaikka",
@@ -64,7 +66,7 @@ public class HomeController {
          */
         /*
          * model.addAttribute("cost", testCost);
-         */
+         
         model.addAttribute("tickets", repository.findAll());
         model.addAttribute("events", erepository.findAll());
         model.addAttribute("sales", srepository.findAll());
@@ -73,6 +75,7 @@ public class HomeController {
         model.addAttribute("events", erepository.findAll());
         model.addAttribute("costs", crepository.findAll());
         model.addAttribute("venues", vrepository.findAll());
+        */
         return "index";
     }
 
