@@ -151,10 +151,11 @@ public class TicketRestController {
     public Optional<Ticket> editTicket(@PathVariable Long id, @RequestBody Ticket updatedTicket) {
         Optional<Ticket> oldTicket = trepository.findById(id);
         Optional<Cost> cost = crepository.findById(updatedTicket.getCost().getCostid());
+        Optional<Sale> newSale = srepository.findById(updatedTicket.getSale().getSaleid());
         if (updatedTicket.getCost() == null || !cost.isPresent()) {
             throw new BadRequestException("Incorrect or missing Cost ID");
         } else if (updatedTicket.getSale() == null
-                || !srepository.findById(updatedTicket.getSale().getSaleid()).isPresent()) {
+                || !newSale.isPresent()) {
             throw new BadRequestException("Incorrect or missing Sale ID");
         } else if (!oldTicket.isPresent()) {
             throw new NotFoundException("Ticket does not exist");
@@ -168,6 +169,14 @@ public class TicketRestController {
             newEvent.setTotalTickets(newEvent.getTotalTickets() + 1);
             erepository.save(oldEvent);
             erepository.save(newEvent);
+        }
+
+        Sale oldSale = oldTicket.get().getSale();
+        if (oldSale != null) {
+            oldSale.setPrice(oldSale.getPrice() - oldTicket.get().getPrice());
+        }
+        if (newSale.isPresent()) {
+            newSale.get().setPrice(newSale.get().getPrice() + cost.get().getPrice());
         }
 
         return trepository.findById(id)
