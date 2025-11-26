@@ -165,7 +165,7 @@ public class TicketRestController {
 
         if (oldEvent.getEventid() != newEvent.getEventid()) {
             oldEvent.setTotalTickets(oldEvent.getTotalTickets() - 1);
-            newEvent.setTotalTickets(oldEvent.getTotalTickets() + 1);
+            newEvent.setTotalTickets(newEvent.getTotalTickets() + 1);
             erepository.save(oldEvent);
             erepository.save(newEvent);
         }
