@@ -12,6 +12,8 @@ public interface TicketRepository extends CrudRepository<Ticket, Long> {
 
     List<Ticket> findBySale(Sale sale);
 
+    Long countByCost_Costid(Long costid);
+
     List<Ticket> findAll();
 
     Long countByCost_Event_Eventid(Long eventid);

@@ -44,6 +44,10 @@ public class Ticket {
     @Transient
     private Long selectedEventId;
 
+    @JsonView(Views.Public.class)
+    private double price;
+
+
     public Ticket() {
 
     }
@@ -113,6 +117,14 @@ public class Ticket {
 
     public void setSelectedEventId(Long selectedEventId) {
         this.selectedEventId = selectedEventId;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     @Override

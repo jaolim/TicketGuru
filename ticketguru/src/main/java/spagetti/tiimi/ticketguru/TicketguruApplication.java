@@ -87,12 +87,19 @@ public class TicketguruApplication {
 				Sale sale1 = new Sale(testUser, testTimeNow, (cost1.getPrice() + cost2.getPrice()));
 				Sale sale2 = new Sale(testAdmin, testTimeStatic, cost3.getPrice() * 2 + cost1.getPrice() * 3);
 				Ticket ticket1 = new Ticket(cost1, sale1);
+				ticket1.setPrice(cost1.getPrice());
 				Ticket ticket2 = new Ticket(cost2, sale1);
+				ticket2.setPrice(cost2.getPrice());
 				Ticket ticket3 = new Ticket(cost1, sale2);
+				ticket3.setPrice(cost1.getPrice());
 				Ticket ticket4 = new Ticket(cost3, sale2);
+				ticket4.setPrice(cost3.getPrice());
 				Ticket ticket5 = new Ticket(cost3, sale2);
+				ticket5.setPrice(cost3.getPrice());
 				Ticket ticket6 = new Ticket(cost1, sale2);
+				ticket6.setPrice(cost1.getPrice());
 				Ticket ticket7 = new Ticket(cost1, sale2);
+				ticket7.setPrice(cost1.getPrice());
 
 				trepository.save(type1);
 				trepository.save(type2);
@@ -131,7 +138,7 @@ public class TicketguruApplication {
 				repository.save(ticket3);
 				ticket4 = repository.save(ticket4);
 				ticket4.setTicketCode(Base64.getEncoder().encodeToString((ticket4.getTicketid().toString()
-						+ ticket4.getCost().getCostid() ).getBytes()));
+						+ ticket4.getCost().getCostid()).getBytes()));
 				repository.save(ticket4);
 				ticket5 = repository.save(ticket5);
 				ticket5.setTicketCode(Base64.getEncoder().encodeToString((ticket5.getTicketid().toString()
@@ -139,15 +146,13 @@ public class TicketguruApplication {
 				repository.save(ticket5);
 				ticket6 = repository.save(ticket6);
 				ticket6.setTicketCode(Base64.getEncoder().encodeToString((ticket6.getTicketid().toString()
-						+ ticket6.getCost().getCostid() ).getBytes()));
+						+ ticket6.getCost().getCostid()).getBytes()));
 				repository.save(ticket6);
 				ticket7 = repository.save(ticket7);
 				ticket7.setTicketCode(Base64.getEncoder().encodeToString((ticket7.getTicketid().toString()
 						+ ticket7.getCost().getCostid()).getBytes()));
 				repository.save(ticket7);
 
-				 
-				 
 				Event savedEvent1 = erepository.findById(savedEvent1Id).get();
 				Event savedEvent2 = erepository.findById(savedEvent2Id).get();
 				savedEvent1.setTotalTickets(repository.countByCost_Event_Eventid(savedEvent1.getEventid()));

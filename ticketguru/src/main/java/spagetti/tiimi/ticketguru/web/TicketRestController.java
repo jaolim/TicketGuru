@@ -20,7 +20,11 @@ import spagetti.tiimi.ticketguru.Views;
 import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.Exception.TicketAlreadyRedeemedException;
+import spagetti.tiimi.ticketguru.domain.Cost;
 import spagetti.tiimi.ticketguru.domain.CostRepository;
+import spagetti.tiimi.ticketguru.domain.Event;
+import spagetti.tiimi.ticketguru.domain.EventRepository;
+import spagetti.tiimi.ticketguru.domain.Sale;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
 import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
@@ -38,11 +42,14 @@ public class TicketRestController {
     private TicketRepository trepository;
     private CostRepository crepository;
     private SaleRepository srepository;
+    private EventRepository erepository;
 
-    public TicketRestController(TicketRepository trepository, CostRepository crepository, SaleRepository srepository) {
+    public TicketRestController(TicketRepository trepository, CostRepository crepository, SaleRepository srepository,
+            EventRepository erepository) {
         this.trepository = trepository;
         this.crepository = crepository;
         this.srepository = srepository;
+        this.erepository = erepository;
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -58,7 +65,7 @@ public class TicketRestController {
     @JsonView(Views.Public.class)
     @ResponseStatus(HttpStatus.OK)
     public Ticket getTicketByCode(@RequestParam String code) {
-        if (code.isEmpty()){
+        if (code.isEmpty()) {
             throw new BadRequestException("Include value for code or ");
         } else if (!trepository.existsByTicketCode(code)) {
             throw new NotFoundException("Ticket does not exist");
@@ -92,9 +99,24 @@ public class TicketRestController {
         }
         Long id = trepository.save(ticket).getTicketid();
         Optional<Ticket> saved = trepository.findById(id);
+        Cost cost = crepository.findById(saved.get().getCost().getCostid()).get();
+        saved.get().setPrice(cost.getPrice());
+
+        Optional<Sale> sale = srepository.findById(ticket.getSale().getSaleid());
+        if (sale.isPresent()) {
+            sale.get().setPrice(sale.get().getPrice() + saved.get().getPrice());
+            srepository.save(sale.get());
+        }
+
+        Optional<Event> event = erepository.findById(cost.getEvent().getEventid());
+
+        if (event.isPresent()) {
+            event.get().setTotalTickets(event.get().getTotalTickets() + 1);
+        }
 
         return saved.map(mapped -> {
-            mapped.setTicketCode(Base64.getEncoder().encodeToString((id.toString() + mapped.getCost().getCostid()).getBytes()));
+            mapped.setTicketCode(
+                    Base64.getEncoder().encodeToString((id.toString() + mapped.getCost().getCostid()).getBytes()));
             return trepository.save(mapped);
         });
     }
@@ -104,10 +126,22 @@ public class TicketRestController {
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
     public void deleteTicket(@PathVariable Long id) {
-        if (!trepository.findById(id).isPresent()) {
+        Optional<Ticket> ticket = trepository.findById(id);
+        if (!ticket.isPresent()) {
             throw new NotFoundException("Ticket does not exist");
         }
+        Sale sale = ticket.get().getSale();
+        if (sale != null) {
+            sale.setPrice(sale.getPrice() - ticket.get().getPrice());
+            srepository.save(sale);
+        }
+
+        Event event = ticket.get().getCost().getEvent();
+        event.setTotalTickets(event.getTotalTickets() - 1);
+        erepository.save(event);
+
         trepository.deleteById(id);
+
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -115,13 +149,25 @@ public class TicketRestController {
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Ticket> editTicket(@PathVariable Long id, @RequestBody Ticket updatedTicket) {
-        if (updatedTicket.getCost() == null || !crepository.findById(updatedTicket.getCost().getCostid()).isPresent()) {
+        Optional<Ticket> oldTicket = trepository.findById(id);
+        Optional<Cost> cost = crepository.findById(updatedTicket.getCost().getCostid());
+        if (updatedTicket.getCost() == null || !cost.isPresent()) {
             throw new BadRequestException("Incorrect or missing Cost ID");
         } else if (updatedTicket.getSale() == null
                 || !srepository.findById(updatedTicket.getSale().getSaleid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing Sale ID");
-        } else if (!trepository.findById(id).isPresent()) {
+        } else if (!oldTicket.isPresent()) {
             throw new NotFoundException("Ticket does not exist");
+        }
+
+        Event oldEvent = oldTicket.get().getCost().getEvent();
+        Event newEvent = cost.get().getEvent();
+
+        if (oldEvent.getEventid() != newEvent.getEventid()) {
+            oldEvent.setTotalTickets(oldEvent.getTotalTickets() - 1);
+            newEvent.setTotalTickets(oldEvent.getTotalTickets() + 1);
+            erepository.save(oldEvent);
+            erepository.save(newEvent);
         }
 
         return trepository.findById(id)
@@ -129,7 +175,9 @@ public class TicketRestController {
                     ticket.setCost(updatedTicket.getCost());
                     ticket.setSale(updatedTicket.getSale());
                     ticket.setRedeemed(updatedTicket.getRedeemed());
-                    ticket.setTicketCode(Base64.getEncoder().encodeToString((id.toString() + updatedTicket.getCost().getCostid()).getBytes()));
+                    ticket.setTicketCode(Base64.getEncoder()
+                            .encodeToString((id.toString() + updatedTicket.getCost().getCostid()).getBytes()));
+                    ticket.setPrice(cost.get().getPrice());
                     return trepository.save(ticket);
                 });
     }
