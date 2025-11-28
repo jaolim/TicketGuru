@@ -6,11 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import spagetti.tiimi.ticketguru.domain.Sale;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
 import spagetti.tiimi.ticketguru.domain.AppUser;
 import spagetti.tiimi.ticketguru.domain.AppUserRepository;
+import spagetti.tiimi.ticketguru.domain.Event;
+import spagetti.tiimi.ticketguru.domain.EventRepository;
 import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
@@ -21,10 +24,12 @@ public class SaleController {
     private final SaleRepository sRepository;
     private final AppUserRepository uRepository;
     private final TicketRepository tRepository;
+    private final EventRepository eRepository;
 
     public SaleController(SaleRepository sRepository,
-                          AppUserRepository uRepository,
-                          TicketRepository tRepository) {
+            AppUserRepository uRepository,
+            TicketRepository tRepository, EventRepository eRepository) {
+        this.eRepository = eRepository;
         this.sRepository = sRepository;
         this.uRepository = uRepository;
         this.tRepository = tRepository;
@@ -56,8 +61,8 @@ public class SaleController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sale/edit/{id}")
     public String saveSale(@PathVariable Long id,
-                           @RequestParam Long userId,
-                           @RequestParam Double price) {
+            @RequestParam Long userId,
+            @RequestParam Double price) {
 
         Sale sale = sRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sale not found"));
@@ -78,9 +83,15 @@ public class SaleController {
     public String deleteSale(@PathVariable Long id) {
         Sale sale = sRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sale not found"));
+        List<Event> events = eRepository.findDistinctByCosts_Tickets_Sale_Saleid(id);
+        sRepository.deleteById(id);
+        events.forEach(event -> {
+            event.setTotalTickets(tRepository.countByCost_Event_Eventid(event.getEventid()));
+            eRepository.save(event);
+        });
 
         sRepository.delete(sale);
-        return "redirect:/salespage";
+        return "redirect:/salepage";
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -88,13 +99,13 @@ public class SaleController {
     public String addSaleForm(Model model) {
         model.addAttribute("users", uRepository.findAll());
         model.addAttribute("allTickets", tRepository.findAll());
-        return "sale-add"; 
+        return "sale-add";
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sale/add")
     public String addSale(@RequestParam Long userId,
-                          @RequestParam Double price) {
+            @RequestParam Double price) {
 
         AppUser user = uRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
@@ -103,7 +114,6 @@ public class SaleController {
         sale.setUser(user);
         sale.setPrice(price);
         sale.setTime(LocalDateTime.now());
-
 
         sRepository.save(sale);
 
