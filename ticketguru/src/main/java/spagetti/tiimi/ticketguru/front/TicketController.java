@@ -19,6 +19,7 @@ import spagetti.tiimi.ticketguru.domain.Sale;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
 import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
+import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 
 import java.util.ArrayList;
@@ -81,7 +82,8 @@ public class TicketController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/ticket/add")
-    public String saveNewTicket(@RequestParam Long costId, @RequestParam Long saleId) {
+    public String saveNewTicket(@RequestParam Long costId, @RequestParam Long saleId,
+            RedirectAttributes redirectAttributes) {
 
         Cost cost = cRepository.findById(costId).orElseThrow();
         Sale sale = sRepository.findById(saleId).orElseThrow();
@@ -90,6 +92,7 @@ public class TicketController {
         if (!event.isPresent()) {
             return "redirect:/ticketpage";
         } else if (event.get().getTotalTickets() >= event.get().getCapacity()) {
+                        redirectAttributes.addFlashAttribute("errorMessage", "Capacity exceeded");
             return "redirect:/ticketpage";
         }
 
@@ -149,7 +152,7 @@ public class TicketController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/ticket/edit/{id}")
     public String saveEditedTicket(@PathVariable Long id,
-            @RequestParam Long costId) {
+            @RequestParam Long costId, RedirectAttributes redirectAttributes) {
         Ticket ticket = tRepository.findById(id).orElseThrow();
         Cost cost = cRepository.findById(costId).orElseThrow();
         Event oldEvent = ticket.getCost().getEvent();
@@ -158,6 +161,10 @@ public class TicketController {
         sale.setPrice(sale.getPrice() - ticket.getPrice() + cost.getPrice());
         ticket.setPrice(cost.getPrice());
         if (oldEvent.getEventid() != newEvent.getEventid()) {
+            if (newEvent.getCapacity() <= newEvent.getTotalTickets()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Capacity exceeded");
+                return "redirect:/ticketpage";
+            }
             oldEvent.setTotalTickets(oldEvent.getTotalTickets() - 1);
             newEvent.setTotalTickets(newEvent.getTotalTickets() + 1);
             eRepository.save(oldEvent);

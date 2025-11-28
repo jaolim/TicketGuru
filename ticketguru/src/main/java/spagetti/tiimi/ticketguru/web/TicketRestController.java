@@ -102,6 +102,11 @@ public class TicketRestController {
         Cost cost = crepository.findById(saved.get().getCost().getCostid()).get();
         saved.get().setPrice(cost.getPrice());
 
+        if (cost.getEvent().getCapacity() <= cost.getEvent().getTotalTickets()) {
+            throw new BadRequestException("Capacity for event exceeded");
+        }
+        ;
+
         Optional<Sale> sale = srepository.findById(ticket.getSale().getSaleid());
         if (sale.isPresent()) {
             sale.get().setPrice(sale.get().getPrice() + saved.get().getPrice());
@@ -165,6 +170,9 @@ public class TicketRestController {
         Event newEvent = cost.get().getEvent();
 
         if (oldEvent.getEventid() != newEvent.getEventid()) {
+            if (newEvent.getCapacity() <= newEvent.getTotalTickets()) {
+                throw new BadRequestException("Capacity for event exceeded");
+            }
             oldEvent.setTotalTickets(oldEvent.getTotalTickets() - 1);
             newEvent.setTotalTickets(newEvent.getTotalTickets() + 1);
             erepository.save(oldEvent);
