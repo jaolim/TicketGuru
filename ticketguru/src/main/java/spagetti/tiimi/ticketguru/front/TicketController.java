@@ -111,7 +111,7 @@ public class TicketController {
         sale.setPrice(sale.getPrice() + saved.get().getPrice());
         sRepository.save(sale);
         saved.get().setTicketCode(
-                Base64.getEncoder().encodeToString(((id.toString() + cost.getCostid()).getBytes())));
+                Base64.getEncoder().encodeToString(((id.toString() + costId.toString()).getBytes())));
 
         tRepository.save(saved.get());
         return "redirect:/ticketpage";
@@ -171,7 +171,9 @@ public class TicketController {
             eRepository.save(newEvent);
         }
         ticket.setCost(cost);
+        ticket.setTicketCode(Base64.getEncoder().encodeToString(((id.toString() + costId.toString()).getBytes())));
         tRepository.save(ticket);
+
         return "redirect:/ticketpage";
     }
 
@@ -192,7 +194,6 @@ public class TicketController {
         Event event = ticket.get().getCost().getEvent();
         event.setTotalTickets(event.getTotalTickets() - 1);
         eRepository.save(event);
-
         tRepository.deleteById(id);
         return "redirect:/ticketpage";
     }
