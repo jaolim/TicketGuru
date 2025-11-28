@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
 import spagetti.tiimi.ticketguru.domain.Cost;
@@ -81,8 +82,10 @@ public class TicketController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/ticket/add")
     public String saveNewTicket(@RequestParam Long costId, @RequestParam Long saleId) {
+
         Cost cost = cRepository.findById(costId).orElseThrow();
         Sale sale = sRepository.findById(saleId).orElseThrow();
+
         Optional<Event> event = eRepository.findById(cost.getEvent().getEventid());
         if (!event.isPresent()) {
             return "redirect:/ticketpage";
@@ -109,6 +112,7 @@ public class TicketController {
 
         tRepository.save(saved.get());
         return "redirect:/ticketpage";
+
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -148,6 +152,17 @@ public class TicketController {
             @RequestParam Long costId) {
         Ticket ticket = tRepository.findById(id).orElseThrow();
         Cost cost = cRepository.findById(costId).orElseThrow();
+        Event oldEvent = ticket.getCost().getEvent();
+        Event newEvent = cost.getEvent();
+        Sale sale = ticket.getSale();
+        sale.setPrice(sale.getPrice() - ticket.getPrice() + cost.getPrice());
+        ticket.setPrice(cost.getPrice());
+        if (oldEvent.getEventid() != newEvent.getEventid()) {
+            oldEvent.setTotalTickets(oldEvent.getTotalTickets() - 1);
+            newEvent.setTotalTickets(newEvent.getTotalTickets() + 1);
+            eRepository.save(oldEvent);
+            eRepository.save(newEvent);
+        }
         ticket.setCost(cost);
         tRepository.save(ticket);
         return "redirect:/ticketpage";
@@ -155,7 +170,22 @@ public class TicketController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/ticket/delete/{id}")
-    public String deleteTicket(@PathVariable Long id) {
+    public String deleteTicket(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<Ticket> ticket = tRepository.findById(id);
+        if (!ticket.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ticket by the id of " + id + " does not exist");
+            return "redirect:/ticketpage";
+        }
+        Sale sale = ticket.get().getSale();
+        if (sale != null) {
+            sale.setPrice(sale.getPrice() - ticket.get().getPrice());
+            sRepository.save(sale);
+        }
+
+        Event event = ticket.get().getCost().getEvent();
+        event.setTotalTickets(event.getTotalTickets() - 1);
+        eRepository.save(event);
+
         tRepository.deleteById(id);
         return "redirect:/ticketpage";
     }
