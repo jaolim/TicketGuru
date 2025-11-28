@@ -1,5 +1,6 @@
 package spagetti.tiimi.ticketguru.front;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,9 @@ import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -70,22 +73,41 @@ public class TicketController {
             costs = List.of();
         }
         model.addAttribute("costs", costs);
+        model.addAttribute("sales", sRepository.findAllByOrderByTimeDesc());
 
         return "ticket-add";
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/ticket/add")
-    public String saveNewTicket(@RequestParam Long costId) {
+    public String saveNewTicket(@RequestParam Long costId, @RequestParam Long saleId) {
         Cost cost = cRepository.findById(costId).orElseThrow();
+        Sale sale = sRepository.findById(saleId).orElseThrow();
+        Optional<Event> event = eRepository.findById(cost.getEvent().getEventid());
+        if (!event.isPresent()) {
+            return "redirect:/ticketpage";
+        } else if (event.get().getTotalTickets() >= event.get().getCapacity()) {
+            return "redirect:/ticketpage";
+        }
 
+        event.get().setTotalTickets(event.get().getTotalTickets() + 1);
         Ticket ticket = new Ticket();
+        ticket.setSale(sale);
         ticket.setCost(cost);
         ticket.setRedeemed(false);
         ticket.setRedeemedTime(null);
+        ticket.setPrice(cost.getPrice());
 
         tRepository.save(ticket);
 
+        Long id = tRepository.save(ticket).getTicketid();
+        Optional<Ticket> saved = tRepository.findById(id);
+        sale.setPrice(sale.getPrice() + saved.get().getPrice());
+        sRepository.save(sale);
+        saved.get().setTicketCode(
+                Base64.getEncoder().encodeToString(((id.toString() + cost.getCostid()).getBytes())));
+
+        tRepository.save(saved.get());
         return "redirect:/ticketpage";
     }
 

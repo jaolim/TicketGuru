@@ -95,15 +95,17 @@ public class SaleRestController {
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Sale> editSale(@PathVariable Long id, @RequestBody Sale updatedSale) {
+        Optional<Sale> oldSale = srepository.findById(id);
         if (updatedSale.getUser() == null || !urepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing User");
-        } else if (!srepository.findById(id).isPresent()) {
+        } else if (!oldSale.isPresent()) {
             throw new NotFoundException("Sale does not exist");
         }
 
         return srepository.findById(id)
                 .map(sale -> {
                     sale.setPrice(updatedSale.getPrice());
+                    sale.setTime(updatedSale.getTime());
                     return srepository.save(sale);
                 });
     }

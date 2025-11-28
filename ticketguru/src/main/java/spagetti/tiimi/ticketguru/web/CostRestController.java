@@ -103,7 +103,7 @@ public class CostRestController {
         if (repository.countByCost_Costid(id) > 0
                 && existingCost.getEvent().getEventid() != updatedCost.getEvent().getEventid()) {
             throw new BadRequestException(
-                    "Cost by the id of " + id + " cannot have its event change since it has tickets");
+                    "Cost by the id of " + id + " cannot have its event changed since it has tickets");
         }
 
         if (updatedCost.getPrice() != null) {
