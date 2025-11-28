@@ -96,7 +96,11 @@ public class SaleRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Sale> editSale(@PathVariable Long id, @RequestBody Sale updatedSale) {
         Optional<Sale> oldSale = srepository.findById(id);
-        if (updatedSale.getUser() == null || !urepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
+        if (!updatedSale.getDoorSale() && oldSale.get().getPrice() >= 0) {
+            if (updatedSale.getPrice() <= 0){
+                throw new BadRequestException("Price 0 is only acceptable for Door Sales");
+            }
+        } else if (updatedSale.getUser() == null || !urepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing User");
         } else if (!oldSale.isPresent()) {
             throw new NotFoundException("Sale does not exist");

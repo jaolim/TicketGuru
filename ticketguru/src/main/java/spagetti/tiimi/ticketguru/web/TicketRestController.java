@@ -181,7 +181,12 @@ public class TicketRestController {
 
         Sale oldSale = oldTicket.get().getSale();
         if (oldSale != null) {
-            oldSale.setPrice(oldSale.getPrice() - oldTicket.get().getPrice());
+            double result = oldSale.getPrice() - oldTicket.get().getPrice();
+            if (result < 0) {
+                oldSale.setPrice(0);
+            } else {
+                oldSale.setPrice(result);
+            }
         }
         if (newSale.isPresent()) {
             newSale.get().setPrice(newSale.get().getPrice() + cost.get().getPrice());
