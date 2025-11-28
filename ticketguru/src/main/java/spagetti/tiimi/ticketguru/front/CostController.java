@@ -4,11 +4,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.Cost;
 import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
+import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.TicketType;
@@ -19,11 +22,14 @@ public class CostController {
     private final CostRepository crepository;
     private final EventRepository erepository;
     private final TicketTypeRepository trepository;
+    private final TicketRepository repository;
 
-    public CostController(CostRepository crepository, EventRepository erepository, TicketTypeRepository trepository) {
+    public CostController(CostRepository crepository, EventRepository erepository, TicketTypeRepository trepository,
+            TicketRepository repository) {
         this.crepository = crepository;
         this.erepository = erepository;
         this.trepository = trepository;
+        this.repository = repository;
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -45,8 +51,8 @@ public class CostController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/cost/add")
     public String saveCost(@ModelAttribute Cost cost,
-                           @RequestParam Long eventId,
-                           @RequestParam Long typeId) {
+            @RequestParam Long eventId,
+            @RequestParam Long typeId) {
 
         Event event = erepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
@@ -78,9 +84,10 @@ public class CostController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/cost/edit/{id}")
     public String saveEditedCost(@PathVariable Long id,
-                                 @ModelAttribute Cost updatedCost,
-                                 @RequestParam Long eventId,
-                                 @RequestParam Long typeId) {
+            @ModelAttribute Cost updatedCost,
+            @RequestParam Long eventId,
+            @RequestParam Long typeId,
+            RedirectAttributes redirectAttributes) {
 
         Cost cost = crepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cost not found"));
@@ -93,6 +100,12 @@ public class CostController {
         TicketType type = trepository.findById(typeId)
                 .orElseThrow(() -> new RuntimeException("Ticket type not found"));
 
+        if (cost.getEvent().getEventid() != eventId) {
+            if (repository.countByCost_Costid(id) > 0) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Costs with tickets cannot have their event changed");
+                return "redirect:/costpage";
+            }
+        }
         cost.setEvent(event);
         cost.setType(type);
 
@@ -102,9 +115,13 @@ public class CostController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/cost/delete/{id}")
-    public String deleteCost(@PathVariable Long id) {
+    public String deleteCost(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Cost cost = crepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Cost not found"));
+        if (repository.countByCost_Costid(id) > 0) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Costs with tickets cannot be deleted.");
+            return "redirect:/costpage";
+        }
 
         crepository.delete(cost);
         return "redirect:/costpage";
