@@ -201,6 +201,7 @@ public class TicketController {
         return "redirect:/ticketpage";
     }
 
+    //mark ticket as redeemed based with ticketCode
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/ticket/check")
     public String checkTicket(@RequestParam String code, HttpServletRequest request,

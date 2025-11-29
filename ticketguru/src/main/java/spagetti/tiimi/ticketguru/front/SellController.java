@@ -49,6 +49,7 @@ public class SellController {
         this.auRepository = auRepository;
     }
 
+    //Sell endpoint without tickets parameter
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping(value = { "/sell" }, params = "!tickets")
     public String getSell(Model model) {
@@ -58,6 +59,7 @@ public class SellController {
         return "sell-ticket";
     }
 
+    //parse tickets parameter and create tickets and sales accordingly
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sell")
     public String sellTickets(@RequestParam String tickets, Model model, HttpServletRequest request,
@@ -146,6 +148,7 @@ public class SellController {
         return "redirect:" + referer;
     }
 
+    //Creates a special sale for tickets to be sold at the door
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sell/doorSale")
     public String doorSell(@RequestParam String tickets, Model model, HttpServletRequest request,
@@ -234,6 +237,7 @@ public class SellController {
         return "redirect:" + referer;
     }
 
+    //deletes a sale
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sell/delete/{id}")
     public String deleteSale(@PathVariable Long id, Model model, HttpServletRequest request,
