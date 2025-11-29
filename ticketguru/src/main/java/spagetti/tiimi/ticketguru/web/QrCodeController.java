@@ -28,7 +28,7 @@ public class QrCodeController {
   public ResponseEntity<BufferedImage> generateQr(@PathVariable("ticketCode") String ticketCode)
       throws Exception {
 
-    String url = "https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/ticket/check?code=" + ticketCode;
+    String url = ticketCode;
 
     QRCodeWriter writer = new QRCodeWriter();
     BitMatrix bitMatrix = writer.encode(url, BarcodeFormat.QR_CODE, 300, 300);

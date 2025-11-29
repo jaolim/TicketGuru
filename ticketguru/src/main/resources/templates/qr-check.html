@@ -33,6 +33,17 @@
         <div th:if="${successMessage}" class="alert alert-success" role="alert">
             <span th:text="${successMessage}"></span>
         </div>
+        <div th:if="${redeemedTicket}">
+            <ul>
+                <li>Event: <span th:text="${redeemedTicket.cost.event.name}"></span></li>
+                <li>Type: <span th:text="${redeemedTicket.cost.type.name}"></span></li>
+                <li>Time: <span th:text="${redeemedTicket.cost.event.date}"></span></li>
+                <li>Price: <span th:text="${redeemedTicket.cost.price}"></span></li>
+                <li>Code: <span th:text="${redeemedTicket.ticketCode}"></span></li>
+                <li>Redeemed: <span th:text="${redeemedTicket.redeemed}"></span></li>
+                <img th:src="@{'https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/qr/' + ${redeemedTicket.ticketCode}}">
+            </ul>
+        </div>
     </div>
 
     <script src="https://unpkg.com/html5-qrcode"></script>
