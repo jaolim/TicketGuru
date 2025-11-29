@@ -38,5 +38,6 @@
     <span sec:authorize="hasAuthority('ADMIN')">
       <a class="btn btn-warning" th:href="@{/userpage}">Users</a>
     </span>
+    <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
 
 </body>

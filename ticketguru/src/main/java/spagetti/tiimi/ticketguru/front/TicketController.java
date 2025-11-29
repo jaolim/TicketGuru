@@ -206,6 +206,10 @@ public class TicketController {
     public String checkTicket(@RequestParam String code, HttpServletRequest request,
             RedirectAttributes redirectAttributes, Model model) {
         String referer = request.getHeader("Referer");
+        if (referer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Referer not found: redirected to home");
+            return "redirect:/";
+        }
         if (code.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ticket code missing");
             return "redirect:" + referer;
