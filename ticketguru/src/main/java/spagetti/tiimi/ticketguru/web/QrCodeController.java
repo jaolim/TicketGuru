@@ -24,16 +24,23 @@ import com.google.zxing.qrcode.QRCodeWriter;
 @RequestMapping("/qr")
 public class QrCodeController {
 
- @GetMapping(value = "/{barcode}", produces = MediaType.IMAGE_PNG_VALUE)
- public ResponseEntity<BufferedImage> barbecueEAN13Barcode(@PathVariable("barcode") String barcode)
-   throws Exception {
+  @GetMapping(value = "/{ticketCode}", produces = MediaType.IMAGE_PNG_VALUE)
+  public ResponseEntity<BufferedImage> generateQr(@PathVariable("ticketCode") String ticketCode)
+      throws Exception {
 
-  QRCodeWriter barcodeWriter = new QRCodeWriter();
-     BitMatrix bitMatrix = 
-       barcodeWriter.encode(barcode, BarcodeFormat.QR_CODE, 200, 200);
+    String url = "https://oma-domain.fi/ticket/check?code=" + ticketCode;
 
-  return new ResponseEntity<>(MatrixToImageWriter.toBufferedImage(bitMatrix),HttpStatus.OK);
- }
+    QRCodeWriter writer = new QRCodeWriter();
+    BitMatrix bitMatrix = writer.encode(url, BarcodeFormat.QR_CODE, 300, 300);
+
+    return new ResponseEntity<>(
+        MatrixToImageWriter.toBufferedImage(bitMatrix),
+        HttpStatus.OK);
+  }
+
+  @GetMapping("/qrreader")
+  public String qrReaderPage() {
+    return "qr-check";
+  }
 
 }
-

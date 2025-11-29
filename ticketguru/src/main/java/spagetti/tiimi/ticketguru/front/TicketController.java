@@ -201,7 +201,7 @@ public class TicketController {
         return "redirect:/ticketpage";
     }
 
-    //mark ticket as redeemed based with ticketCode
+    // mark ticket as redeemed based with ticketCode
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/ticket/check")
     public String checkTicket(@RequestParam String code, HttpServletRequest request,
@@ -218,18 +218,26 @@ public class TicketController {
         String trimmed = code.trim();
         Optional<Ticket> ticket = tRepository.findByTicketCode(trimmed);
         if (!ticket.isPresent()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Ticket by the code of " + trimmed + " does not exist");
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Ticket by the code of " + trimmed + " does not exist");
             return "redirect:" + referer;
         } else if (ticket.get().getRedeemed()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Ticket by the code of " + trimmed + " is already redeemed");
-            redirectAttributes.addFlashAttribute("redeemedTicket", ticket);
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Ticket by the code of " + trimmed + " is already redeemed");
+            redirectAttributes.addFlashAttribute("redeemedTicket", ticket.get());
             return "redirect:" + referer;
         }
         ticket.get().setRedeemed(true);
         ticket.get().setRedeemedTime(null);
         tRepository.save(ticket.get());
         redirectAttributes.addFlashAttribute("successMessage", "Ticket " + trimmed + " succesfully redeemed");
-        redirectAttributes.addFlashAttribute("redeemedTicket", ticket);
+        redirectAttributes.addFlashAttribute("redeemedTicket", ticket.get());
         return "redirect:" + referer;
     }
+
+    @GetMapping("/qrreader")
+    public String qrPage() {
+        return "qr-check";
+    }
+
 }
