@@ -53,7 +53,7 @@
                     <td th:text="${t.ticketid}"></td>
                     <td th:text="${t.cost.event.name}"></td>
                     <td th:text="${t.cost.type.name}"></td>
-                    <td th:text="${t.cost.price}"></td>
+                    <td th:text="${t.price}"></td>
                     <td th:text="${t.redeemed}"></td>
                     <td th:text="${t.ticketCode}"></td>
                     <td th:text="|ID: ${t.sale.saleid}, Time: ${#temporals.format(t.sale.time, 'yyyy-MM-dd HH:mm')}, Seller: ${t.sale.user.username}|"></td>

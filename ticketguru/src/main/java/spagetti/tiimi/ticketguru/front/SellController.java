@@ -122,6 +122,7 @@ public class SellController {
             totalTickets += v;
             for (int i = 0; i < v; i++) {
                 Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
+                ticket.setPrice(ticket.getCost().getPrice());
                 Ticket saved = tRepository.save(ticket);
                 saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
                         + saved.getCost().getCostid()).getBytes()));
@@ -209,6 +210,7 @@ public class SellController {
             totalTickets += v;
             for (int i = 0; i < v; i++) {
                 Ticket ticket = new Ticket(cRepository.findById(k).get(), sale);
+                ticket.setPrice(ticket.getCost().getPrice());
                 Ticket saved = tRepository.save(ticket);
                 saved.setTicketCode(Base64.getEncoder().encodeToString((saved.getTicketid().toString()
                         + saved.getCost().getCostid()).getBytes()));
