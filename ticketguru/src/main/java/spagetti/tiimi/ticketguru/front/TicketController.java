@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.ui.Model;
 
 import spagetti.tiimi.ticketguru.domain.Cost;
@@ -92,7 +95,7 @@ public class TicketController {
         if (!event.isPresent()) {
             return "redirect:/ticketpage";
         } else if (event.get().getTotalTickets() >= event.get().getCapacity()) {
-                        redirectAttributes.addFlashAttribute("errorMessage", "Capacity exceeded");
+            redirectAttributes.addFlashAttribute("errorMessage", "Capacity exceeded");
             return "redirect:/ticketpage";
         }
 
@@ -196,5 +199,32 @@ public class TicketController {
         eRepository.save(event);
         tRepository.deleteById(id);
         return "redirect:/ticketpage";
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/ticket/check")
+    public String checkTicket(@RequestParam String code, HttpServletRequest request,
+            RedirectAttributes redirectAttributes, Model model) {
+        String referer = request.getHeader("Referer");
+        if (code.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ticket code missing");
+            return "redirect:" + referer;
+        }
+        String trimmed = code.trim();
+        Optional<Ticket> ticket = tRepository.findByTicketCode(trimmed);
+        if (!ticket.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ticket by the code of " + trimmed + " does not exist");
+            return "redirect:" + referer;
+        } else if (ticket.get().getRedeemed()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ticket by the code of " + trimmed + " is already redeemed");
+            redirectAttributes.addFlashAttribute("redeemedTicket", ticket);
+            return "redirect:" + referer;
+        }
+        ticket.get().setRedeemed(true);
+        ticket.get().setRedeemedTime(null);
+        tRepository.save(ticket.get());
+        redirectAttributes.addFlashAttribute("successMessage", "Ticket " + trimmed + " succesfully redeemed");
+        redirectAttributes.addFlashAttribute("redeemedTicket", ticket);
+        return "redirect:" + referer;
     }
 }

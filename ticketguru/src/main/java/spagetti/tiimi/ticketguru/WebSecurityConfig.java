@@ -58,7 +58,7 @@ public class WebSecurityConfig {
                                 "/userpage", "/user/edit/**", "/user/delete/**", "/user/add", 
                                 "/tickettypepage", "/tickettype/edit/**", "/tickettype/delete/**", "/tickettype/add",
                                 "/costpage", "/cost/edit/**", "/cost/delete/**", "/cost/add", "/ticketpage", "/ticket/edit/**", 
-                                "/ticket/add", "/ticket/delete/**", "/salepage", "/sale/add", "/sale/edit/**", "/sale/delete/**")
+                                "/ticket/add", "/ticket/delete/**", "/salepage", "/sale/add", "/sale/edit/**", "/sale/delete/**", "ticket/check")
                         .permitAll())
                 .formLogin(formlogin -> formlogin
                         .defaultSuccessUrl("/", true)

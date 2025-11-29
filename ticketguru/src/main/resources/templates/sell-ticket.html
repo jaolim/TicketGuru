@@ -61,10 +61,17 @@
                 </div>
             </table>
         </div>
-        
+
         <div class="mb-3">
             <a id="saleLink" class="btn btn-primary" href="">Create Sale</a>
             <a id="doorSaleLink" class="btn btn-primary" href="">Create Door Sale</a>
+        </div>
+        <div>
+            <input type="text" id="codeCheck" />
+            <a class="btn btn-primary" href="#" onClick="this.href='/ticket/check?code=' + encodeURIComponent(document.getElementById('codeCheck').value)">Redeem ticket</a>
+        </div>
+        <div th:if="${redeemedTicket}">
+            <h1>Modelilla redeemedTicket</h1>
         </div>
 
         <div id="addStatus"></div>

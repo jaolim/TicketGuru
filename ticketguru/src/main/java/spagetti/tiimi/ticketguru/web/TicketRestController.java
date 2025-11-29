@@ -70,7 +70,7 @@ public class TicketRestController {
         } else if (!trepository.existsByTicketCode(code)) {
             throw new NotFoundException("Ticket does not exist");
         }
-        return trepository.findByTicketCode(code);
+        return trepository.findByTicketCode(code).get();
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
