@@ -22,14 +22,21 @@
 
         <h1>Scan QR-code</h1>
 
-        <div id="reader" style="width:300px;"></div> 
+        <div id="reader" style="width:300px;"></div>
+        <div>
+            <h2>Read by code</h2>
+            <input type="text" id="codeCheck" />
+            <a class="btn btn-primary" href="#"
+                onClick="this.href='/ticket/check?code=' + encodeURIComponent(document.getElementById('codeCheck').value)">Redeem
+                ticket</a>
+        </div>
 
         <div style="height:30px;"></div>
 
         <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
             <span th:text="${errorMessage}"></span>
         </div>
-        
+
         <div th:if="${successMessage}" class="alert alert-success" role="alert">
             <span th:text="${successMessage}"></span>
         </div>
@@ -41,7 +48,8 @@
                 <li>Price: <span th:text="${redeemedTicket.cost.price}"></span></li>
                 <li>Code: <span th:text="${redeemedTicket.ticketCode}"></span></li>
                 <li>Redeemed: <span th:text="${redeemedTicket.redeemed}"></span></li>
-                <img th:src="@{'https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/qr/' + ${redeemedTicket.ticketCode}}">
+                <img
+                    th:src="@{'https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/qr/' + ${redeemedTicket.ticketCode}}">
             </ul>
         </div>
     </div>
