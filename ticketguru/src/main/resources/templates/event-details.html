@@ -4,7 +4,7 @@
 <head>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
-    <title>Events</title>
+    <title>Event details</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
@@ -26,13 +26,8 @@
 
         </div>
 
-        <h1>Events</h1>
+        <h1>Event details for <span th:text="${event.name}"></span></h1>
 
-        <div class="mb-3">
-            <a th:href="@{'/event/add'}" class="btn btn-primary">
-                Add New Event
-            </a>
-        </div>
         <div>
             <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
         </div>
