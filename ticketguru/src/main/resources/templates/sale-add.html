@@ -25,6 +25,10 @@
             <label for="price">Price:</label><br>
             <input type="number" id="price" name="price" step="0.01" min="0" required>
             <br><br>
+            
+            <div>
+                <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
+            </div>
 
             <button type="submit" class="btn btn-success">Save</button>
             <a class="btn btn-outline-secondary" th:href="@{/salepage}">Back</a>

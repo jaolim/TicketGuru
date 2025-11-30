@@ -31,6 +31,10 @@
             <a class="btn btn-primary" th:href="@{/sale/add}">Add Sale</a>
         </div>
 
+        <div>
+            <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
+        </div>
+
         <table class="table table-bordered">
             <thead>
                 <tr>

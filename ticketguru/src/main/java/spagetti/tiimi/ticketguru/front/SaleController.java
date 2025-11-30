@@ -2,6 +2,7 @@ package spagetti.tiimi.ticketguru.front;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
-import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.AppUser;
 import spagetti.tiimi.ticketguru.domain.AppUserRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
@@ -49,9 +49,13 @@ public class SaleController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sale/edit/{id}")
-    public String editSale(@PathVariable Long id, Model model) {
-        Sale sale = sRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Sale not found"));
+    public String editSale(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<Sale> saleOpt = sRepository.findById(id);
+        if (!saleOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Sale not found with id " + id);
+            return "redirect:/salepage";
+        }
+        Sale sale = saleOpt.get();
 
         model.addAttribute("sale", sale);
         model.addAttribute("users", uRepository.findAll());
@@ -67,15 +71,23 @@ public class SaleController {
     @PostMapping("/sale/edit/{id}")
     public String saveSale(@PathVariable Long id,
             @RequestParam Long userId,
-            @RequestParam Double price) {
+            @RequestParam Double price, RedirectAttributes redirectAttributes) {
 
-        Sale sale = sRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Sale not found"));
+        Optional<Sale> saleOpt = sRepository.findById(id);
+        if (!saleOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Sale not found with id " + id);
+            return "redirect:/salepage";
+        }
+        Sale sale = saleOpt.get();
 
-        AppUser user = uRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        Optional<AppUser> userOpt = uRepository.findById(id);
+        if (!userOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "User not found with id " + id);
+            return "redirect:/salepage";
+        }
 
-        sale.setUser(user);
+        AppUser appUser = userOpt.get();
+        sale.setUser(appUser);
         sale.setPrice(price);
 
         sRepository.save(sale);
@@ -85,9 +97,14 @@ public class SaleController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sale/delete/{id}")
-    public String deleteSale(@PathVariable Long id) {
-        Sale sale = sRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Sale not found"));
+    public String deleteSale(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<Sale> saleOpt = sRepository.findById(id);
+        if (!saleOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Sale not found with id " + id);
+            return "redirect:/salepage";
+        }
+        Sale sale = saleOpt.get();
+
         List<Event> events = eRepository.findDistinctByCosts_Tickets_Sale_Saleid(id);
         sRepository.deleteById(id);
         events.forEach(event -> {
@@ -109,12 +126,15 @@ public class SaleController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sale/add")
-    public String addSale(@RequestParam Long userId,
-            @RequestParam Double price) {
+    public String addSale(@RequestParam Long id,
+            @RequestParam Double price, RedirectAttributes redirectAttributes) {
 
-        AppUser user = uRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
-
+        Optional<AppUser> userOpt = uRepository.findById(id);
+        if (!userOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "User not found with id " + id);
+            return "redirect:/sale/add";
+        }
+        AppUser user = userOpt.get();
         Sale sale = new Sale();
         sale.setUser(user);
         sale.setPrice(price);
