@@ -126,12 +126,12 @@ public class SaleController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/sale/add")
-    public String addSale(@RequestParam Long id,
+    public String addSale(@RequestParam Long userId,
             @RequestParam Double price, RedirectAttributes redirectAttributes) {
 
-        Optional<AppUser> userOpt = uRepository.findById(id);
+        Optional<AppUser> userOpt = uRepository.findById(userId);
         if (!userOpt.isPresent()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "User not found with id " + id);
+            redirectAttributes.addFlashAttribute("errorMessage", "User not found with id " + userId);
             return "redirect:/sale/add";
         }
         AppUser user = userOpt.get();
