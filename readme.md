@@ -64,6 +64,153 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 -	Painike myyntitapahtuman lisäämiseen
 -	Painike ja kenttä tiettyyn myyntiin liittyvien lippujen hakuun ja QR koodien generoimiseen
 
+### Käyttäjät
+
+**Endpoint: ** `/userpage`
+
+-   Lista käyttäjistä
+-   Painike käyttäjien lisäykseen
+-   Painike käyttäjän poistamiseen
+-   Painike käyttäjän tietojen muokkaamiseen
+
+#### Käyttäjän lisääminen
+
+**Endpoint: ** `/user/add`
+
+-   Lomake käyttäjän lisäämiseen
+
+#### Käyttäjän muokkaaminen
+
+**Endpoint: ** `/user/edit/{id}`
+
+-   Lomake käyttäjän tietojen muokkaamiseen
+
+### Tapahtumat
+
+**Endpoint: ** `/eventpage`
+
+-   Lista tapahtumista
+-   Painike tapahtumien lisäykseen
+-   Painike tapahtuman poistamiseen
+-   Painike tapahtuman tietojen muokkaamiseen
+
+#### Tapahtuman lisääminen
+
+**Endpoint: ** `/event/add`
+
+-   Lomake tapahtuman lisäämiseen
+
+#### Tapahtuman muokkaaminen
+
+**Endpoint: ** `/event/edit/{id}`
+
+-   Lomake tapahtuman tietojen muokkaamiseen
+
+### Liput
+
+**Endpoint: ** `/ticketpage`
+
+-   Lista lipuista
+-   Painike lippujen lisäykseen
+-   Painike lipun poistamiseen
+-   Painike lipun tietojen muokkaamiseen
+
+#### Lipun lisääminen
+
+**Endpoint: ** `/ticket/add`
+
+-   Lomake lipun lisäämiseen
+
+#### Lipun muokkaaminen
+
+**Endpoint: ** `/ticket/edit/{id}`
+
+-   Lomake lipun tietojen muokkaamiseen
+
+### Myynnit
+
+**Endpoint: ** `/salespage`
+
+-   Lista myynneistä
+-   Painike myyntien lisäykseen
+-   Painike myynnin poistamiseen
+-   Painike myynnin tietojen muokkaamiseen
+
+#### Myynnin lisääminen
+
+**Endpoint: ** `/sales/add`
+
+-   Lomake myynnin lisäämiseen
+
+#### Myynnin muokkaaminen
+
+**Endpoint: ** `/sales/edit/{id}`
+
+-   Lomake myynnin tietojen muokkaamiseen
+
+### Maksut
+
+**Endpoint: ** `/costpage`
+
+-   Lista maksuista
+-   Painike maksujen lisäykseen
+-   Painike maksun poistamiseen
+-   Painike maksun tietojen muokkaamiseen
+
+#### Maksun lisääminen
+
+**Endpoint: ** `/cost/add`
+
+-   Lomake maksun lisäämiseen
+
+#### Maksun muokkaaminen
+
+**Endpoint: ** `/cost/edit/{id}`
+
+-   Lomake maksun tietojen muokkaamiseen
+
+### Lipputyypit
+
+**Endpoint: ** `/tickettypepage`
+
+-   Lista lipputyypeistä
+-   Painike lipputyypin lisäykseen
+-   Painike lipputyypin poistamiseen
+-   Painike lipputyypin tietojen muokkaamiseen
+
+#### Lipputyypin lisääminen
+
+**Endpoint: ** `/tickettype/add`
+
+-   Lomake lipputyypin lisäämiseen
+
+#### Lipputyypin muokkaaminen
+
+**Endpoint: ** `/tickettype/edit/{id}`
+
+-   Lomake lipputyypin tietojen muokkaamiseen
+
+### Tapahtumapaikat
+
+**Endpoint: ** `/venuepage`
+
+-   Lista tapahtumapaikoista
+-   Painike tapahtumapaikan lisäykseen
+-   Painike tapahtumapaikan poistamiseen
+-   Painike tapahtumapaikan tietojen muokkaamiseen
+
+#### Tapahtumapaikan lisääminen
+
+**Endpoint: ** `/venue/add`
+
+-   Lomake tapahtumapaikan lisäämiseen
+
+#### Tapahtumapaikan muokkaaminen
+
+**Endpoint: ** `/venue/edit/{id}`
+
+-   Lomake tapahtumapaikan tietojen muokkaamiseen
+
 ## Tietokanta
 
 ### Relaatiomalli
@@ -174,9 +321,7 @@ käyttäjätunnus, salasana, tietokannan luonti yms.).
 
 ## Käynnistys- ja käyttöohje
 
-Tyypillisesti tässä riittää kertoa ohjelman käynnistykseen tarvittava URL sekä
-mahdolliset kirjautumiseen tarvittavat tunnukset. Jos järjestelmän
-käynnistämiseen tai käyttöön liittyy joitain muita toimenpiteitä tai toimintajärjestykseen liittyviä asioita, nekin kerrotaan tässä yhteydessä.
+Linkki ohjelmaan:
+https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/
 
-Usko tai älä, tulet tarvitsemaan tätä itsekin, kun tauon jälkeen palaat
-järjestelmän pariin !
+Tunnukset sivustolle tulee moodlen palautuksen yhteydessä.
