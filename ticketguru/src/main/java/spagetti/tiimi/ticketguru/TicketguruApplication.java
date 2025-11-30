@@ -131,8 +131,8 @@ public class TicketguruApplication {
 
 				urepository.save(testUser);
 
-				Long savedEvent1Id = erepository.save(event1).getEventid();
 				Long savedEvent4Id = erepository.save(event4).getEventid();
+				Long savedEvent1Id = erepository.save(event1).getEventid();
 				Long savedEvent2Id = erepository.save(event2).getEventid();
 				Long savedEvent3Id = erepository.save(event3).getEventid();
 
