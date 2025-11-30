@@ -66,6 +66,9 @@
             if (now - scanTriggered < COOLDOWN) {
                 return;
             }
+
+            scanTriggered = now;
+
             const link = document.createElement('a');
             link.href = '/ticket/check?code=' + encodeURIComponent(decodedText);
             link.style.display = 'none';
