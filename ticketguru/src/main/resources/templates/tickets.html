@@ -31,6 +31,9 @@
                 Add Ticket
             </a>
         </div>
+        <div>
+            <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -39,6 +42,8 @@
                     <th>Ticket Type</th>
                     <th>Price</th>
                     <th>Redeemed</th>
+                    <th>Code</th>
+                    <th>Sale</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -48,9 +53,10 @@
                     <td th:text="${t.ticketid}"></td>
                     <td th:text="${t.cost.event.name}"></td>
                     <td th:text="${t.cost.type.name}"></td>
-                    <td th:text="${t.cost.price}"></td>
+                    <td th:text="${t.price}"></td>
                     <td th:text="${t.redeemed}"></td>
-
+                    <td th:text="${t.ticketCode}"></td>
+                    <td th:text="|ID: ${t.sale.saleid}, Time: ${#temporals.format(t.sale.time, 'yyyy-MM-dd HH:mm')}, Seller: ${t.sale.user.username}|"></td>
                     <td>
                         <a class="btn btn-sm btn-secondary" th:href="@{'/ticket/edit/' + ${t.ticketid}}">
                             Edit

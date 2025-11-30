@@ -18,6 +18,7 @@
     <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin: 0;">
       <button type="submit" class="btn btn-light">Logout</button>
     </form>
+    <a class="btn btn-info" th:href="@{/login}">Login</a>
   </div>
   <h1>TicketGuru</h1>
 
@@ -25,11 +26,11 @@
 
   </div>
   <div style="padding:5px">
-    <a class="btn btn-info" th:href="@{/login}">Login</a>
     <span sec:authorize="isAuthenticated()">
-      <a class="btn btn-info" th:href="@{/sell}">Sell Tickets</a>
-      <a class="btn btn-info" th:href="@{/eventpage}">Events</a>
+      <a class="btn btn-success" th:href="@{/sell}">Sell Tickets</a>
+      <a class="btn btn-success" th:href="@{/qrreader}">Ticket Reader</a>
       <a class="btn btn-info" th:href="@{/venuepage}">Venues</a>
+      <a class="btn btn-info" th:href="@{/eventpage}">Events</a>
       <a class="btn btn-info" th:href="@{/tickettypepage}">Ticket types</a>
       <a class="btn btn-info" th:href="@{/costpage}">Costs</a>
       <a class="btn btn-info" th:href="@{/ticketpage}">Tickets</a>
@@ -38,5 +39,6 @@
     <span sec:authorize="hasAuthority('ADMIN')">
       <a class="btn btn-warning" th:href="@{/userpage}">Users</a>
     </span>
+    <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
 
 </body>

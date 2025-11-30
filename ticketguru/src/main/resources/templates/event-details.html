@@ -4,7 +4,7 @@
 <head>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
-    <title>Events</title>
+    <title>Event details</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
@@ -26,13 +26,8 @@
 
         </div>
 
-        <h1>Events</h1>
+        <h1>Event details for <span th:text="${event.name}"></span></h1>
 
-        <div class="mb-3">
-            <a th:href="@{'/event/add'}" class="btn btn-primary">
-                Add New Event
-            </a>
-        </div>
         <div>
             <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
         </div>
@@ -44,41 +39,60 @@
                     <th>Venue</th>
                     <th>Tickets</th>
                     <th>Capacity</th>
-                    <th>Sold</th>
-                    <th>Actions</th>
+                    <th>Sold quantity</th>
+                    <th>Total value</th>
+                    <th>Tickets redeeemed</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr th:each="event : ${events}">
+                <tr>
                     <td th:text="${event.name}"></td>
                     <td th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></td>
                     <td th:utext="${event.venue.name + '<br>' + event.venue.address}"></td>
                     <td>
                         <ul>
-                            <li th:each="cost : ${event.costs}">
-                                <span th:text="${cost.type.name}"></span> -
-                                <span th:text="${cost.price}"></span> €
+                            <li th:each="cost : ${costs}">
+                                <span th:text="${cost}"></span>
                             </li>
                         </ul>
                     </td>
                     <td th:text="${event.capacity}"></td>
                     <td th:text="${event.totalTickets}"></td>
                     <td>
-                        <a class="btn btn-sm btn-info" th:href="@{'/event/' + ${event.eventid}}">
-                            Details
-                        </a>
-                        <a class="btn btn-sm btn-secondary" th:href="@{'/event/edit/' + ${event.eventid}}">
-                            Edit
-                        </a>
-
-                        <form th:action="@{'/event/delete/' + ${event.eventid}}" method="post"
-                            style="display:inline; margin-left:5px;">
-                            <button type="submit" class="btn btn-sm btn-danger"
-                                onclick="return confirm('Are you sure?');">Delete</button>
-                        </form>
+                        <span th:text="${totalPrice}"></span>€
                     </td>
+                    <td th:text="${redeemedCount}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
+        <h2>All Tickets</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ticket Type</th>
+                    <th>Price</th>
+                    <th>Redeemed</th>
+                    <th>Code</th>
+                    <th>Sale</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="t : ${tickets}">
+                    <td th:text="${t.ticketid}"></td>
+                    <td th:text="${t.cost.type.name}"></td>
+                    <td th:text="${t.price}"></td>
+                    <td th:text="${t.redeemed}"></td>
+                    <td th:text="${t.ticketCode}"></td>
+                    <td>
+                        <span th:text="|ID: ${t.sale.saleid}, Time: ${#temporals.format(t.sale.time, 'yyyy-MM-dd HH:mm')}, Seller: ${t.sale.user.username}, Type: |"></span>
+                        <span th:if="${t.sale.doorSale}">Door</span>
+                        <span th:if="${!t.sale.doorSale}">Normal</span>
+                    </td>
                 </tr>
             </tbody>
         </table>

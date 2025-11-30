@@ -1,18 +1,19 @@
 package spagetti.tiimi.ticketguru.front;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.ui.Model;
-import java.util.Map;
-import java.util.List;
 
-import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.Venue;
 import spagetti.tiimi.ticketguru.domain.VenueRepository;
@@ -36,11 +37,14 @@ public class VenueController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/venue/edit/{id}")
-    public String editVenue(@PathVariable Long id, Model model) {
+    public String editVenue(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<Venue> venueOpt = vRepository.findById(id);
+        if(!venueOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Venue by the id of " + id + " does not exist");
+            return "redirect:/venuepage";
+        }
 
-        Venue venue = vRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Venue not found"));
-
+        Venue venue = venueOpt.get();
         model.addAttribute("item", venue);
         model.addAttribute("title", "Edit Venue");
         model.addAttribute("entity", "venue");
@@ -51,11 +55,14 @@ public class VenueController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/venue/edit/{id}")
     public String saveVenue(@PathVariable Long id,
-            @RequestParam Map<String, String> allParams) {
-
-        Venue venue = vRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Venue not found"));
-
+            @RequestParam Map<String, String> allParams, RedirectAttributes redirectAttributes) {
+        Optional<Venue> venueOpt = vRepository.findById(id);
+        if(!venueOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Venue by the id of " + id + " does not exist");
+            return "redirect:/venuepage";
+        }
+        
+        Venue venue = venueOpt.get();
         venue.setName(allParams.get("name"));
         venue.setAddress(allParams.get("address"));
 
@@ -67,10 +74,13 @@ public class VenueController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/venue/delete/{id}")
     public String deleteVenue(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-
-        Venue venue = vRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Venue not found"));
-
+        Optional<Venue> venueOpt = vRepository.findById(id);
+        if(!venueOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Venue by the id of " + id + " does not exist");
+            return "redirect:/venuepage";
+        }
+        
+        Venue venue = venueOpt.get();
         List<Event> events = venue.getEvents();
 
         if (events != null && !events.isEmpty()) {
