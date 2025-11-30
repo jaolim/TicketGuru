@@ -121,7 +121,7 @@ public class EventController {
         Optional<Venue> venueOpt = vRepository.findById(venueId);
         if (!venueOpt.isPresent()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Venue by the id of " + venueId + " does not exist");
-            return "redirect:/eventpage";
+            return "redirect:/event/add";
         }
         event.setVenue(venueOpt.get());
 
