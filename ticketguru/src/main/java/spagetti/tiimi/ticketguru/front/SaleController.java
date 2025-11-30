@@ -80,9 +80,9 @@ public class SaleController {
         }
         Sale sale = saleOpt.get();
 
-        Optional<AppUser> userOpt = uRepository.findById(id);
+        Optional<AppUser> userOpt = uRepository.findById(userId);
         if (!userOpt.isPresent()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "User not found with id " + id);
+            redirectAttributes.addFlashAttribute("errorMessage", "User not found with id " + userId);
             return "redirect:/salepage";
         }
 
