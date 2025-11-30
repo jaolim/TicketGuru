@@ -12,9 +12,9 @@ jobs:
       USERNAME2: ${{ secrets.USERNAME2 }}
       PASSWORD2: ${{ secrets.PASSWORD2 }}
 
-      defaults:
-        run:
-          working-directory: playwright_tests
+    defaults:
+      run:
+        working-directory: playwright_tests
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
