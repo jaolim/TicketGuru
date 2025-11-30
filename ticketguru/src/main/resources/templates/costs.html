@@ -1,62 +1,74 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Costs</title>
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" /> 
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
 </head>
+
 <body>
-<div class="container">
+    <div class="container">
 
-    <a th:href="@{/}">Home</a>
+        <div style="display: flex; align-items: center; gap: 20px;">
 
-    <h1>Costs</h1>
+            <a th:href="@{/}">Home</a>
 
-    <p>
-    Logged in:
-    <span sec:authentication="name"></span>
-    </p>
+            <p style="margin: 0;">
+                Logged in:
+                <span sec:authentication="name"></span>
+            </p>
 
-    <form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
-        <button type="submit">Logout</button>
-    </form>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn btn-light">Logout</button>
+            </form>
 
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Event</th>
-            <th>Ticket Type</th>
-            <th>Price (€)</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+        </div>
 
-        <tbody>
-        <tr th:each="c : ${costs}">
-            <td th:text="${c.costid}"></td>
-            <td th:text="${c.event != null ? c.event.name : 'N/A'}"></td>
-            <td th:text="${c.type != null ? c.type.name : 'N/A'}"></td>
-            <td th:text="${c.price}"></td>
-            <td>
-                <a th:href="@{'/cost/edit/' + ${c.costid}}">
-                    <button>Edit</button>
-                </a>
-            </td>
-            <td>
-                <form th:action="@{'/cost/delete/' + ${c.costid}}" method="post" style="display:inline">
-                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div style="margin-top: 10px;">
-        <a th:href="@{'/cost/add'}">
-            <button>Add New Cost</button>
-        </a>
+        <h1>Costs</h1>
+        <div class="mb-3">
+            <a th:href="@{'/cost/add'}" class="btn btn-primary">
+                Add New Cost
+            </a>
+        </div>
+
+        <div>
+            <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger"></div>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Event</th>
+                    <th>Ticket Type</th>
+                    <th>Price (€)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="c : ${costs}">
+                    <td th:text="${c.costid}"></td>
+                    <td th:text="${c.event != null ? c.event.name : 'N/A'}"></td>
+                    <td th:text="${c.type != null ? c.type.name : 'N/A'}"></td>
+                    <td th:text="${c.price}"></td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary" th:href="@{'/cost/edit/' + ${c.costid}}">
+                            Edit
+                        </a>
+                        <form th:action="@{'/cost/delete/' + ${c.costid}}" method="post"
+                            style="display:inline; margin-left:5px;">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
     </div>
-
-</div>
 </body>
+
 </html>

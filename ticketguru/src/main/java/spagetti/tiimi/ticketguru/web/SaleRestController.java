@@ -21,8 +21,11 @@ import spagetti.tiimi.ticketguru.Views;
 import spagetti.tiimi.ticketguru.Exception.BadRequestException;
 import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.AppUserRepository;
+import spagetti.tiimi.ticketguru.domain.Event;
+import spagetti.tiimi.ticketguru.domain.EventRepository;
 import spagetti.tiimi.ticketguru.domain.Sale;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
+import spagetti.tiimi.ticketguru.domain.TicketRepository;
 
 @CrossOrigin(originPatterns = "*")
 @RestController
@@ -30,12 +33,16 @@ public class SaleRestController {
 
     private SaleRepository srepository;
     private AppUserRepository urepository;
+    private EventRepository erepository;
+    private TicketRepository trepository;
 
-    public SaleRestController (SaleRepository srepository, AppUserRepository urepository) {
+    public SaleRestController(SaleRepository srepository, AppUserRepository urepository, EventRepository erepository, TicketRepository trepository) {
         this.srepository = srepository;
         this.urepository = urepository;
+        this.erepository = erepository;
+        this.trepository = trepository;
     }
-    
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sales")
     @JsonView(Views.Public.class)
@@ -69,31 +76,42 @@ public class SaleRestController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/sales/{id}")
-   @JsonView(Views.Internal.class)
+    @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
     public void deleteSale(@PathVariable Long id) {
         if (!srepository.findById(id).isPresent()) {
             throw new NotFoundException("Sale does not exist");
         }
+        List<Event> events = erepository.findDistinctByCosts_Tickets_Sale_Saleid(id);
         srepository.deleteById(id);
+        events.forEach(event -> {
+            event.setTotalTickets(trepository.countByCost_Event_Eventid(event.getEventid()));
+            erepository.save(event);
+        });
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("/sales/{id}")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional <Sale> editSale(@PathVariable Long id, @RequestBody Sale updatedSale) {
-        if (updatedSale.getUser() == null || !urepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
+    public Optional<Sale> editSale(@PathVariable Long id, @RequestBody Sale updatedSale) {
+        Optional<Sale> oldSale = srepository.findById(id);
+        if (!updatedSale.getDoorSale() && oldSale.get().getPrice() >= 0) {
+            if (updatedSale.getPrice() <= 0){
+                throw new BadRequestException("Price 0 is only acceptable for Door Sales");
+            }
+        } else if (updatedSale.getUser() == null || !urepository.findById(updatedSale.getUser().getUserid()).isPresent()) {
             throw new BadRequestException("Incorrect or missing User");
-        } else if (!srepository.findById(id).isPresent()) {
+        } else if (!oldSale.isPresent()) {
             throw new NotFoundException("Sale does not exist");
         }
 
         return srepository.findById(id)
-            .map(sale -> {
-                sale.setPrice(updatedSale.getPrice());
-                return srepository.save(sale);
-            });
+                .map(sale -> {
+                    sale.setPrice(updatedSale.getPrice());
+                    sale.setTime(updatedSale.getTime());
+                    return srepository.save(sale);
+                });
     }
 
 }

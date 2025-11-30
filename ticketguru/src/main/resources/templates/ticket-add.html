@@ -10,7 +10,6 @@
 <body>
     <div class="container">
 
-        <a th:href="@{/ticketpage}">Back</a>
         <h1>Add New Ticket</h1>
 
         <form th:action="@{/ticket/add}" method="post">
@@ -27,10 +26,16 @@
                     th:text="${c.type.name} + ' (' + ${c.price} + '€)'">
                 </option>
             </select> <br><br>
+            <label>Sale:</label>
+            <select name="saleId">
+                <option th:each="sale : ${sales}" th:value="${sale.saleid}"
+                    th:text="${#temporals.format(sale.time, 'yyyy-MM-dd HH:mm:ss') + ' - '+ sale.user.username} + ' (' + ${sale.price} + '€)'">
+                </option>
+            </select> <br><br>
 
-            <button type="submit">Save</button>
+            <button type="submit" class="btn btn-success">Save</button>
+            <a class="btn btn-outline-secondary" th:href="@{/ticketpage}">Back</a>
         </form>
-        <a th:href="@{/venuepage}">Back</a>
 
     </div>
 </body>

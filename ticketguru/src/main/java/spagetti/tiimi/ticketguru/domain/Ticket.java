@@ -11,7 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import spagetti.tiimi.ticketguru.Views;
 import jakarta.persistence.Transient;
 
@@ -43,6 +43,10 @@ public class Ticket {
 
     @Transient
     private Long selectedEventId;
+
+    @JsonView(Views.Public.class)
+    private double price;
+
 
     public Ticket() {
 
@@ -113,6 +117,14 @@ public class Ticket {
 
     public void setSelectedEventId(Long selectedEventId) {
         this.selectedEventId = selectedEventId;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     @Override

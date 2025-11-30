@@ -65,6 +65,22 @@ public class Cost {
         this.event = event;
     }
 
+    public TicketType getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(TicketType ticketType) {
+        this.ticketType = ticketType;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
     public void setType(TicketType ticketType) {
         this.ticketType = ticketType;
     }

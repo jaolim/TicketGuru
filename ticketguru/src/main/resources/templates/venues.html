@@ -4,63 +4,63 @@
 <head>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <meta charset="UTF-8">
-    <title>Events</title>
+    <title>Venues</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
 <body>
     <div class="container">
-    <a th:href="@{/}">Home</a>
-<h1>Venues</h1>
-<p>
-    Logged in:
-    <span sec:authentication="name"></span>
-</p>
+        <div style="display: flex; align-items: center; gap: 20px;">
 
-<form th:action="@{/logout}" method="post" style="margin-bottom: 20px">
-    <button type="submit">Logout</button>
-</form>
+            <a th:href="@{/}">Home</a>
 
-<div th:if="${errorMessage}" 
-     th:text="${errorMessage}" 
-     style="color: white; background: #d9534f; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
-</div>
+            <p style="margin: 0;">
+                Logged in:
+                <span sec:authentication="name"></span>
+            </p>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn btn-light">Logout</button>
+            </form>
 
-    <tbody>
-        <tr th:each="venue : ${venues}">
-            <td th:text="${venue.name}"></td>
-            <td th:text="${venue.address}"></td>
-            <td>
-                <a th:href="@{'/venue/edit/' + ${venue.venueid}}">
-                    <button>Edit</button>
-                </a>
-            </td>
-            <td>
-                <form th:action="@{'/venue/delete/' + ${venue.venueid}}" 
-                      method="post" 
-                      style="display:inline">
-                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
-                </form>
-            </td>
-        </tr>
-    </tbody>
-</table>
+        </div>
+        <h1>Venues</h1>
+        <div class="mb-3">
+            <a class="btn btn-primary" th:href="@{'/venue/add'}">
+                Add New Venue
+            </a>
+        </div>
+        <div th:if="${errorMessage}" th:text="${errorMessage}"
+            style="color: white; background: #d9534f; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+        </div>
 
-<div style="margin-top: 10px;">
-    <a th:href="@{'/venue/add'}">
-        <button>Add New Venue</button>
-    </a>
-</div>
-</div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="venue : ${venues}">
+                    <td th:text="${venue.name}"></td>
+                    <td th:text="${venue.address}"></td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary" th:href="@{'/venue/edit/' + ${venue.venueid}}">Edit</a>
+                        <form th:action="@{'/venue/delete/' + ${venue.venueid}}" method="post"
+                            style="display:inline-block; margin-left:5px;">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
 </body>
+
 </html>

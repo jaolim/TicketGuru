@@ -2,36 +2,37 @@ package spagetti.tiimi.ticketguru.web;
 
 //import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 
-import spagetti.tiimi.ticketguru.domain.EventRepository;
+//import spagetti.tiimi.ticketguru.domain.EventRepository;
 //import spagetti.tiimi.ticketguru.domain.Sale;
-import spagetti.tiimi.ticketguru.domain.SaleRepository;
+//import spagetti.tiimi.ticketguru.domain.SaleRepository;
 //import spagetti.tiimi.ticketguru.domain.Ticket;
 //import spagetti.tiimi.ticketguru.domain.Cost;
-import spagetti.tiimi.ticketguru.domain.CostRepository;
+//import spagetti.tiimi.ticketguru.domain.CostRepository;
 //import spagetti.tiimi.ticketguru.domain.Event;
 //import spagetti.tiimi.ticketguru.domain.AppUser;
-import spagetti.tiimi.ticketguru.domain.TicketRepository;
+//import spagetti.tiimi.ticketguru.domain.TicketRepository;
 //import spagetti.tiimi.ticketguru.domain.TicketType;
-import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
+//import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
 //import spagetti.tiimi.ticketguru.domain.AppUserRepository;
-import spagetti.tiimi.ticketguru.domain.VenueRepository;
+//import spagetti.tiimi.ticketguru.domain.VenueRepository;
 
 @CrossOrigin(originPatterns = "*")
 @Controller
 public class HomeController {
 
+    /* 
     @Autowired
     private TicketRepository repository;
     @Autowired
     private EventRepository erepository;
-    // @Autowired
-    // private AppUserRepository urepository;
+    @Autowired
+    private AppUserRepository urepository;
     @Autowired
     private CostRepository crepository;
     @Autowired
@@ -40,6 +41,7 @@ public class HomeController {
     private SaleRepository srepository;
     @Autowired
     private VenueRepository vrepository;
+    */
 
     /*
      * public static Event testEvent = new Event("Testitapahtuma", "Testipaikka",
@@ -64,7 +66,7 @@ public class HomeController {
          */
         /*
          * model.addAttribute("cost", testCost);
-         */
+         
         model.addAttribute("tickets", repository.findAll());
         model.addAttribute("events", erepository.findAll());
         model.addAttribute("sales", srepository.findAll());
@@ -73,6 +75,7 @@ public class HomeController {
         model.addAttribute("events", erepository.findAll());
         model.addAttribute("costs", crepository.findAll());
         model.addAttribute("venues", vrepository.findAll());
+        */
         return "index";
     }
 

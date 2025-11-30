@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <title>QR-code check</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+    <div class="container">
+        <a th:href="@{/}">Home</a>
+        <p style="margin: 0;">
+            Logged in:
+            <span sec:authentication="name"></span>
+        </p>
+
+        <form th:action="@{/logout}" method="post" style="margin: 0;">
+            <button type="submit" class="btn btn-light">Logout</button>
+        </form>
+
+        <h1>Scan QR-code</h1>
+
+        <div id="reader" style="width:300px;"></div>
+        <div>
+            <h2>Read by code</h2>
+            <input type="text" id="codeCheck" />
+            <a class="btn btn-primary" href="#"
+                onClick="this.href='/ticket/check?code=' + encodeURIComponent(document.getElementById('codeCheck').value)">Redeem
+                ticket</a>
+        </div>
+
+        <div style="height:30px;"></div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${redeemedTicket}">
+            <ul>
+                <li>Event: <span th:text="${redeemedTicket.cost.event.name}"></span></li>
+                <li>Type: <span th:text="${redeemedTicket.cost.type.name}"></span></li>
+                <li>Time: <span th:text="${redeemedTicket.cost.event.date}"></span></li>
+                <li>Price: <span th:text="${redeemedTicket.cost.price}"></span></li>
+                <li>Code: <span th:text="${redeemedTicket.ticketCode}"></span></li>
+                <li>Redeemed: <span th:text="${redeemedTicket.redeemed}"></span></li>
+                <img
+                    th:src="@{'https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/qr/' + ${redeemedTicket.ticketCode}}">
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script>
+        const qr = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+
+        qr.render(function (decodedText) {
+            const link = document.createElement('a');
+            link.href = '/ticket/check?code=' + encodeURIComponent(decodedText);
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+        });
+    </script>
+</body>
+
+</html>
