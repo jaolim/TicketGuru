@@ -184,7 +184,7 @@ public class TicketguruApplication {
 				Event savedEvent1 = erepository.findById(savedEvent1Id).get();
 				Event savedEvent2 = erepository.findById(savedEvent2Id).get();
 				Event savedEvent3 = erepository.findById(savedEvent3Id).get();
-				Event savedEvent4 = erepository.findById(savedEvent3Id).get();
+				Event savedEvent4 = erepository.findById(savedEvent4Id).get();
 				savedEvent1.setTotalTickets(repository.countByCost_Event_Eventid(savedEvent1.getEventid()));
 				savedEvent2.setTotalTickets(repository.countByCost_Event_Eventid(savedEvent2.getEventid()));
 				savedEvent3.setTotalTickets(repository.countByCost_Event_Eventid(savedEvent3.getEventid()));
