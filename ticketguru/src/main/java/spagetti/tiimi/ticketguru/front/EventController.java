@@ -1,36 +1,32 @@
 package spagetti.tiimi.ticketguru.front;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
-import java.util.Map;
-
-import spagetti.tiimi.ticketguru.domain.CostRepository;
+import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
 import spagetti.tiimi.ticketguru.domain.Venue;
 import spagetti.tiimi.ticketguru.domain.VenueRepository;
-import spagetti.tiimi.ticketguru.Exception.NotFoundException;
 
 @Controller
 public class EventController {
     private final EventRepository eRepository;
     private final VenueRepository vRepository;
-    private final CostRepository cRepository;
 
-    public EventController(EventRepository eRepository, VenueRepository vRepository, CostRepository cRepository) {
+
+    public EventController(EventRepository eRepository, VenueRepository vRepository) {
         this.eRepository = eRepository;
         this.vRepository = vRepository;
-        this.cRepository = cRepository;
+
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")

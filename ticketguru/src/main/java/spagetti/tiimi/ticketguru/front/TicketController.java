@@ -1,19 +1,20 @@
 package spagetti.tiimi.ticketguru.front;
 
-import org.springframework.data.domain.Sort;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import org.springframework.ui.Model;
-
 import spagetti.tiimi.ticketguru.domain.Cost;
 import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
@@ -22,15 +23,6 @@ import spagetti.tiimi.ticketguru.domain.Sale;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
 import spagetti.tiimi.ticketguru.domain.Ticket;
 import spagetti.tiimi.ticketguru.domain.TicketRepository;
-import spagetti.tiimi.ticketguru.Exception.BadRequestException;
-import spagetti.tiimi.ticketguru.Exception.NotFoundException;
-
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Controller
 public class TicketController {
