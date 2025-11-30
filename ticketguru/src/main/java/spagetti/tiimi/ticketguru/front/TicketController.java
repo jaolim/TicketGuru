@@ -1,5 +1,6 @@
 package spagetti.tiimi.ticketguru.front;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -220,7 +221,7 @@ public class TicketController {
             return "redirect:" + referer;
         }
         ticket.get().setRedeemed(true);
-        ticket.get().setRedeemedTime(null);
+        ticket.get().setRedeemedTime(LocalDateTime.now());
         tRepository.save(ticket.get());
         redirectAttributes.addFlashAttribute("successMessage", "Ticket " + trimmed + " succesfully redeemed");
         redirectAttributes.addFlashAttribute("redeemedTicket", ticket.get());
