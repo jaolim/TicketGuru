@@ -57,8 +57,15 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script>
         const qr = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+        let scanTriggered = 0;
+        const COOLDOWN = 3000;
 
         qr.render(function (decodedText) {
+            const now = Date.now();
+
+            if (now - scanTriggered < COOLDOWN) {
+                return;
+            }
             const link = document.createElement('a');
             link.href = '/ticket/check?code=' + encodeURIComponent(decodedText);
             link.style.display = 'none';
