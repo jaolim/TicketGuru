@@ -52,7 +52,7 @@ public class WebSecurityConfig {
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/home", "/css/**", "/login", "/costs/**", "/events/**", "/sales/**",
                                 "/tickets/**", "/tickettypes/**", "/users/**", "/venues/**", "/qr/**", "/client",
-                                "/sell", "/sell/delete/**", "/sell/doorSale", "/eventpage",
+                                "/sell", "/sell/delete/**", "/sell/doorSale", "/eventpage", "/event/**",
                                 "/event/edit/**", "/event/delete/**", "/event/add",
                                 "/venuepage", "/venue/edit/**", "/venue/delete/**", "/venue/add",
                                 "/userpage", "/user/edit/**", "/user/delete/**", "/user/add",

@@ -1,6 +1,9 @@
 package spagetti.tiimi.ticketguru.front;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,8 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
+import spagetti.tiimi.ticketguru.domain.Cost;
+import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
+import spagetti.tiimi.ticketguru.domain.Ticket;
+import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.domain.Venue;
 import spagetti.tiimi.ticketguru.domain.VenueRepository;
 
@@ -22,11 +30,15 @@ import spagetti.tiimi.ticketguru.domain.VenueRepository;
 public class EventController {
     private final EventRepository eRepository;
     private final VenueRepository vRepository;
+    private final TicketRepository tRepository;
+    private final CostRepository cRepository;
 
-    public EventController(EventRepository eRepository, VenueRepository vRepository) {
+    public EventController(EventRepository eRepository, VenueRepository vRepository, TicketRepository tRepository,
+            CostRepository cRepository) {
         this.eRepository = eRepository;
         this.vRepository = vRepository;
-
+        this.tRepository = tRepository;
+        this.cRepository = cRepository;
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -34,6 +46,51 @@ public class EventController {
     public String getEventList(Model model) {
         model.addAttribute("events", eRepository.findAll());
         return "events";
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/event/{id}")
+    public String getEventDetails(@PathVariable String id, Model model, RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+        if (referer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Referer not found: redirecting to home");
+            return "redirect:/";
+        }
+        try {
+            Long eventid = Long.valueOf(id);
+            Optional<Event> event = eRepository.findById(eventid);
+            if (!event.isPresent()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Event by the id of " + id + " does not exist");
+                return "redirect:" + referer;
+            }
+            List<Ticket> tickets = tRepository.findByCost_Event_Eventid(eventid);
+            List<Cost> costs = cRepository.findByEvent(event.get());
+            List<String> costsTotal = new ArrayList<>();
+            costs.forEach(cost -> {
+                Long count = tRepository.countByCost_Costid(cost.getCostid());
+                costsTotal.add(cost.getTicketType().getName() + " - " + cost.getPrice() + "€ - " + count + " units");
+            });
+            model.addAttribute("tickets", tickets);
+            model.addAttribute("event", event.get());
+            int redeemedCount = 0;
+            double totalPrice = 0;
+            for (int i = 0; i < tickets.size(); i++) {
+                Ticket ticket = tickets.get(i);
+                if (ticket.getRedeemed()) {
+                    redeemedCount++;
+                }
+                String costName = ticket.getCost().getTicketType().getName();
+                totalPrice += ticket.getPrice();
+            }
+            model.addAttribute("costs", costsTotal);
+            model.addAttribute("redeemedCount", redeemedCount);
+            model.addAttribute("totalPrice", totalPrice);
+            return "event-details";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error parsing ID");
+            return "redirect:/eventpage";
+        }
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
