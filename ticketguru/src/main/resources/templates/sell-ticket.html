@@ -67,6 +67,14 @@
             <a id="doorSaleLink" class="btn btn-primary" href="">Create Door Sale</a>
         </div>
         <div style="margin:5px">
+            <input type="text" id="saleId" />
+            <a class="btn btn-primary" href="#"
+                onClick="this.href='/sell/sale?id=' + encodeURIComponent(document.getElementById('saleId').value)">Get Sale</a>
+            <div style="margin:5px" th:if="${checkedSale}">
+                <h1>Sivulla on checkedSale</h1>
+            </div>
+        </div>
+        <div style="margin:5px">
             <input type="text" id="doorCheck" />
             <a class="btn btn-primary" href="#"
                 onClick="this.href='/sale/check/door?saleid=' + encodeURIComponent(document.getElementById('doorCheck').value)">Check
@@ -81,7 +89,7 @@
                 onClick="this.href='/ticket/check?code=' + encodeURIComponent(document.getElementById('codeCheck').value)">Redeem
                 ticket</a>
             <div style="margin:5px" th:if="${redeemedTicket}">
-                <h1>Sivulla on  redeemedTicket</h1>
+                <h1>Sivulla on redeemedTicket</h1>
             </div>
         </div>
 
@@ -95,8 +103,8 @@
                     <td>Time: <span th:text="${sale.time}"></span></td>
                     <td>Price: <span th:text="${sale.price}"></span> </td>
                     <td>Seller: <span th:text="${sale.user.username}"></span></td>
-                    <td><a id="doorSaleLink" class="btn btn-warning" th:href="|/sell/delete/${sale.saleid}">Revert
-                            sale</a></td>
+                    <td><a id="doorSaleLink" class="btn btn-warning" th:href="|/sell/delete/${sale.saleid}">Delete</a></td>
+                    <td th:if="${sale.doorSale}"><a id="doorSaleLink" class="btn btn-warning" th:href="|/sale/check/door?saleid=${sale.saleid}">Check Doorsale</a></td>
                 </tr>
             </table>
             <ul th:each="ticket: ${tickets}">

@@ -49,17 +49,46 @@ public class SellController {
         this.auRepository = auRepository;
     }
 
-    //Sell endpoint without tickets parameter
+    // Sell endpoint without tickets parameter
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping(value = { "/sell" }, params = "!tickets")
     public String getSell(Model model) {
         model.addAttribute("events", eRepository.findAll());
         model.addAttribute("costs", cRepository.findAll());
-        model.addAttribute("test", tRepository.countByCost_Event_Eventid(Long.valueOf(1)));
         return "sell-ticket";
     }
 
-    //parse tickets parameter and create tickets and sales accordingly
+    // Get specific sale by id
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping(value = { "/sell/sale" }, params = "id")
+    public String getSale(@RequestParam String id, Model model, RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+        if (referer == null) {
+            return "redirect:" + referer;
+        }
+        try {
+            Long saleid = Long.valueOf(id);
+            model.addAttribute("events", eRepository.findAll());
+            model.addAttribute("costs", cRepository.findAll());
+            model.addAttribute("events", eRepository.findAll());
+            model.addAttribute("costs", cRepository.findAll());
+            Optional<Sale> sale = sRepository.findById(saleid);
+            if (!sale.isPresent()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Sale id " + saleid + " does not exist");
+                return "redirect:" + referer;
+            }
+            redirectAttributes.addFlashAttribute("sale", sale.get());
+            redirectAttributes.addFlashAttribute("tickets", tRepository.findBySale(sRepository.findById(saleid).get()));
+            redirectAttributes.addFlashAttribute("successMessage", "Sale id " + saleid + " fetched");
+            return "redirect:" + referer;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error parsing ID");
+            return "redirect:" + referer;
+        }
+    }
+
+    // parse tickets parameter and create tickets and sales accordingly
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sell")
     public String sellTickets(@RequestParam String tickets, Model model, HttpServletRequest request,
@@ -148,7 +177,7 @@ public class SellController {
         return "redirect:" + referer;
     }
 
-    //Creates a special sale for tickets to be sold at the door
+    // Creates a special sale for tickets to be sold at the door
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sell/doorSale")
     public String doorSell(@RequestParam String tickets, Model model, HttpServletRequest request,
@@ -237,7 +266,7 @@ public class SellController {
         return "redirect:" + referer;
     }
 
-    //deletes a sale
+    // deletes a sale
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/sell/delete/{id}")
     public String deleteSale(@PathVariable Long id, Model model, HttpServletRequest request,

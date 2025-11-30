@@ -167,6 +167,7 @@ public class SaleController {
                 return "redirect:" + referer;
             }
             List<Ticket> tickets = tRepository.findBySale(sale);
+            List<Event> events = eRepository.findDistinctByCosts_Tickets_Sale_Saleid(id);
             Double total = 0.0;
             for (int i = 0; i < tickets.size(); i++) {
                 Ticket ticket = tickets.get(i);
@@ -177,7 +178,6 @@ public class SaleController {
                 }
             }
             sale.setPrice(total);
-            List<Event> events = eRepository.findDistinctByCosts_Tickets_Sale_Saleid(id);
             sRepository.save(sale);
             events.forEach(event -> {
                 event.setTotalTickets(tRepository.countByCost_Event_Eventid(event.getEventid()));
