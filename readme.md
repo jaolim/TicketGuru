@@ -292,7 +292,7 @@ DB_PASSWORD
 DDL_TYPE #suositeltu update, create valinnalla voi pakottaa tietokantamuutokset, mutta tämä nollaa tietokannan
 ```
 
-**Playwright projekin muuttujat**
+**Playwright projektin muuttujat**
 
 Playwright testit ovat joko ajettavissa lokaalisti tai GitHub Actionsin kautta.
 
