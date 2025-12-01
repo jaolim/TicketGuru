@@ -148,9 +148,6 @@ test('Events CRUD', async () => {
     await expect(del).toHaveCount(1);
 
     //Delete works
-    page.once('dialog', async dialog => {
-        await dialog.accept();
-    });
     await del.click();
     await expect(page.getByText('Playwright')).toHaveCount(0);
     await expect(page.getByText('Qwerty321')).toHaveCount(0);
@@ -264,9 +261,6 @@ test('Costs CRUD', async () => {
     await expect(del).toHaveCount(1);
 
     //Delete works
-    page.once('dialog', async dialog => {
-        await dialog.accept();
-    });
     await del.click();
     await expect(page.getByText('123.45')).toHaveCount(0);
     await expect(page.getByText('543.21')).toHaveCount(0);
