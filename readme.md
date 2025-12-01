@@ -56,17 +56,20 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 ### Lipunmyynti
 
-**Endpoint: ** `/sell`
+**Endpoint:** `/sell`
 
--	Kentät basic auth tunnistaumiselle ja base url:lle(oletuksena main julkaisu)
--	Painike tapahtumien hakuun ja listaukseen
--	Kentät ja painike lippujen lisäykseen
--	Painike myyntitapahtuman lisäämiseen
--	Painike ja kenttä tiettyyn myyntiin liittyvien lippujen hakuun ja QR koodien generoimiseen
+Sell endpoint sisältää useita myyntiin ja lippujen tulostukseen liittyviä toimintoja.
+
+-	Luo myyntitapahtuma joko normaalimyyntiä tai oveltamyyntiä lippujen kera.
+-	Hae myyntitapahtuma lippuineen automaattisesti luonnin jälkeen tai manuaalisesti ID:n perusteella.
+-	Päivitä Ovimyynnin lippujen tila tarkastusten perusteella.
+-	Poista haettu myyntitapahtuma.
+
+Toimintojen lisäksi sivulla näkyy tapahtumien tiedon mukaanluettuna kapasiteetti ja myydyt liput. Uusien lippujen luonti ei onnistu, jos kapasiteetti ei riitä niihin.
 
 ### Käyttäjät
 
-**Endpoint: ** `/userpage`
+**Endpoint:** `/userpage`
 
 -   Lista käyttäjistä
 -   Painike käyttäjien lisäykseen
@@ -75,19 +78,19 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 #### Käyttäjän lisääminen
 
-**Endpoint: ** `/user/add`
+**Endpoint:** `/user/add`
 
 -   Lomake käyttäjän lisäämiseen
 
 #### Käyttäjän muokkaaminen
 
-**Endpoint: ** `/user/edit/{id}`
+**Endpoint:** `/user/edit/{id}`
 
 -   Lomake käyttäjän tietojen muokkaamiseen
 
 ### Tapahtumat
 
-**Endpoint: ** `/eventpage`
+**Endpoint:** `/eventpage`
 
 -   Lista tapahtumista
 -   Painike tapahtumien lisäykseen
@@ -96,19 +99,19 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 #### Tapahtuman lisääminen
 
-**Endpoint: ** `/event/add`
+**Endpoint:** `/event/add`
 
 -   Lomake tapahtuman lisäämiseen
 
 #### Tapahtuman muokkaaminen
 
-**Endpoint: ** `/event/edit/{id}`
+**Endpoint:** `/event/edit/{id}`
 
 -   Lomake tapahtuman tietojen muokkaamiseen
 
 ### Liput
 
-**Endpoint: ** `/ticketpage`
+**Endpoint:** `/ticketpage`
 
 -   Lista lipuista
 -   Painike lippujen lisäykseen
@@ -217,67 +220,6 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 ![Tietokannan relaatiomalli](/resources/DB_TicketGuru.png)
 
-#### Selvitys
-
-Pakolliset kentät merkitty tähdellä (*)
-
-**Ticket**: Yksittäinen lippu tiettyyn tapahtumaan
-- PK: ticket_id
-- FK: sale_id *
-- FK: cost_id *
-- time
-- redeemed: onko lippu vielä voimassa
-- price: snapshot hinnasta **Price** taulusta
-
-**Cost**: Tietyn tapahtuman lippuhinnnat
-- PK: cost_id *
-- FK: event_id *
-- FK: type_id *
-- price
-
-**Type**: Lipun tyyppi (Aikuinen, Lapsi etc...)
-- PK: type_id *
-- name * : lipputyypin nimi
-- note: mahdollinen lisätieto
-
-**Sale**: Myyntitapahtuma
-- PK: sale_id *
-- FK: user_id *
-- price *
-- time *
-
-**Event**: Tietty tapahtuma
-- PK: event_id *
-- FK: venue_id *
-- name *
-- date *
-
-**User**: Viittaa lipputoimiston henkilökuntaan (Laajennettavissa sisältämään muita käyttäjätyyppeja)
-- PK: user_id *
-- username *
-- password *
-- firstname *
-- lastname *
-
-**Venue**: Tietty tapahtumapaikka
-- PK: venue_id
-- FK: address_id
-- name
-- note
-
-#### Mahdolliset laajennukset
-
-**Address**: Tapahtumapaikan osoite
-- PK: address_id
-- FK: postalcode
-- street
-- number
-- note
-
-**Postalcode(PK: postalcode, FK: city_id)**: Postiosoitteet
-
-**City(PK: city_id, name, note)**: Kaupungit
-
 ## Tekninen kuvaus
 
 TicketGuru-lipunmyyntijärjestelmä on toteutettu Spring Boot -sovelluskehyksellä ja se suoritetaan Rahti-palvelussa. 
@@ -300,6 +242,7 @@ Projektin oikea toiminta on varmistettu useilla testausmenetelmillä:
 - **JUnit-yksikkötestit**: Testataan yksittäisten luokkien ja metodien toiminta.
 - **Integraatiotestit**: Varmistetaan eri komponenttien ja tietokantayhteyksien yhteensopivuus.
 - **End-to-end (E2E) testit**: Tarkastetaan koko sovelluksen toiminnallisuus front-endin ja back-endin välillä.
+- **Playwright selain testit**: Web-käyttöliittymän kautta testataan login, navigointi ja CRUD toiminnot.
 
 Tarkemmat testaustiedot: [katso dokumentti](testplan.md)
 
