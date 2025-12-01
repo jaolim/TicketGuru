@@ -247,7 +247,7 @@ test('Costs CRUD', async () => {
     await button.click()
     await expect(page).toHaveURL(`${url}/costpage`);
     await expect(page.getByText('123.45')).toBeVisible();
-    
+
     //Edit works
     await page
         .locator('tr', { has: page.getByText('123.45') })
@@ -270,5 +270,72 @@ test('Costs CRUD', async () => {
     await del.click();
     await expect(page.getByText('123.45')).toHaveCount(0);
     await expect(page.getByText('543.21')).toHaveCount(0);
-    
+
+})
+
+//Sale and ticket add, edit delete
+test('Sales and tickets CRUD', async () => {
+    const url = String(process.env.URL);
+
+    //homepage
+    await page.goto(url);
+
+    //Salepage
+    await page.getByRole('link', { name: 'Sales' }).click();
+    await expect(page).toHaveURL(`${url}/salepage`);
+
+    //Clearing leftovers
+    page.once('dialog', async dialog => {
+        await dialog.accept();
+    });
+
+    const saleRowsStart = await page.locator('tbody tr').count();
+
+    //Add sale page
+    await page.getByRole('link', { name: 'Add Sale' }).click();
+    await expect(page).toHaveURL(`${url}/sale/add`);
+
+    //Add sale works
+    await page.locator('#userId').selectOption({ label: 'admin' });
+    await page.getByRole('button', { name: 'save' }).click();
+    let saleRowsNew = await page.locator('tbody tr').count();
+    expect(saleRowsNew).toBeGreaterThan(saleRowsStart);
+
+    //homepage
+    await page.goto(url);
+
+    //Ticketpage
+    await page.getByRole('link', { name: 'Tickets', exact: true }).click();
+    await expect(page).toHaveURL(`${url}/ticketpage`);
+    const ticketRowsStart = await page.locator('tbody tr').count();
+
+    //Add ticket page
+    await page.getByRole('link', { name: 'Add Ticket' }).click();
+    await expect(page).toHaveURL(`${url}/ticket/add`);
+
+    //Add ticket works
+    await page.locator('select[name="selectedEventId"]').selectOption({ label: 'Joulukonsertti' });
+    await page.getByRole('button', { name: 'save' }).click();
+    let ticketRowsNew = await page.locator('tbody tr').count();
+    expect(ticketRowsNew).toBeGreaterThan(ticketRowsStart);
+
+    //Sales page
+    await page.goto(`${url}/salepage`)
+
+    //Newest sale has ticket
+    const saleRowLast = page.locator('tbody tr').last();
+    await expect(saleRowLast).toContainText('Ticket ID:');
+
+    //Delete works
+    await saleRowLast.getByRole('button', { name: 'Delete' }).click();
+    saleRowsNew = await page.locator('tbody tr').count();
+    expect(saleRowsStart).toBe(saleRowsNew);
+
+
+    //Ticket page
+    await page.goto(`${url}/ticketpage`)
+
+    //Ticket has also been deleted
+    ticketRowsNew = await page.locator('tbody tr').count();
+    expect(ticketRowsStart).toBe(ticketRowsNew);
 })
