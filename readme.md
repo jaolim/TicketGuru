@@ -262,6 +262,60 @@ Asennusohjeesta tulisi ainakin käydä ilmi, miten käytettävä tietokanta ja
 käyttäjät tulee ohjelmistoa asentaessa määritellä (käytettävä tietokanta,
 käyttäjätunnus, salasana, tietokannan luonti yms.).
 
+## Ympäristömuuttujat
+
+Projekti sisältää useita ympäristömuuttujien kautta määriteltäviä attribuutteja.
+
+**Spring Boot projektin muuttujat:**
+
+Lokaalisti muuttujat tallennetaan .env tiedostoon samaan hakemistoon pom.xml kanssa.
+
+Rahdissa ne määritellään erikseen.
+
+.env tiedot ilman salaisuuksia (salaisuudet Moodle palautuksen mukana):
+
+```
+#käytetty application.properties
+ENV_MODE= #dev tai prod tai rahti, dev käyttää h2 tietokantaa, prod paikallista postgresql:ää ja rahti rahdin postgresql:ää
+#postgres tiedot, jos prod on käytössä
+DB_USER=
+DB_PASSWORD=
+DB_URL=
+```
+
+Rahdissa salaisuudet:
+```
+ENV_MODE
+DB_NAME
+DB_USER
+DB_PASSWORD
+DDL_TYPE #suositeltu update, create valinnalla voi pakottaa tietokantamuutokset, mutta tämä nollaa tietokannan
+```
+
+**Playwright projekin muuttujat**
+
+Playwright testit ovat joko ajettavissa lokaalisti tai GitHub Actionsin kautta.
+
+Lokaalisti käytettään .env tiedostoa playwright_tests hakemistossa.
+
+.env:
+
+```
+#Julkaisun osoite
+URL=
+
+#user ja admin tiedot
+USERNAME1=
+PASSWORD1=
+USERNAME2=
+PASSWORD2=
+```
+
+Githubissa testit ovat ajettevissa manuaalisesti käynnistettävänä workflowna ja siellä ympäristömuuttujat määritellään GitHub repository secretteinä kohdassa:
+
+Settings -> Secrets and variables -> Actions -> New repository secret
+
+
 ## Käynnistys- ja käyttöohje
 
 Linkki ohjelmaan:
