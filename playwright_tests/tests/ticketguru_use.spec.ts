@@ -84,7 +84,7 @@ test('Venues CRUD', async () => {
 
 })
 
-//Events add, edit and deletion
+//Events details, add, edit and deletion
 test('Events CRUD', async () => {
     const url = String(process.env.URL);
 
@@ -206,10 +206,69 @@ test('TicketTypes CRUD', async () => {
     await expect(del).toHaveCount(1);
 
     //Delete works
+    await del.click();
+    await expect(page.getByText('Playwright')).toHaveCount(0);
+    await expect(page.getByText('Qwerty321')).toHaveCount(0);
+})
+
+//Costs add, edit and deletion
+test('Costs CRUD', async () => {
+    const url = String(process.env.URL);
+
+    //homepage
+    await page.goto(url);
+
+    //Costs page
+    await page.getByRole('link', { name: 'Costs' }).click();
+    await expect(page).toHaveURL(`${url}/costpage`);
+
+    //Clearing leftovers
+    page.once('dialog', async dialog => {
+        await dialog.accept();
+    });
+    await trClickButtonIfExists(page, '123.45', 'Delete');
+    await trClickButtonIfExists(page, 'Qwerty321', 'Delete');
+
+    //Add cost
+    await page.getByRole('link', { name: 'Add New Cost' }).click();
+    await expect(page).toHaveURL(`${url}/cost/add`);
+
+    //Partial fill not accepted
+    const button = page.getByRole('button', { name: 'save' });
+    await page.locator('#eventId').selectOption({ label: 'Joulukonsertti' });
+    await button.click()
+    await expect(page).toHaveURL(`${url}/cost/add`);
+    await page.locator('#typeId').selectOption({ label: 'Aikuinen' });
+    await button.click()
+    await expect(page).toHaveURL(`${url}/cost/add`);
+
+    //Add works
+    await page.getByLabel('price').fill('123.45');
+    await button.click()
+    await expect(page).toHaveURL(`${url}/costpage`);
+    await expect(page.getByText('123.45')).toBeVisible();
+    
+    //Edit works
+    await page
+        .locator('tr', { has: page.getByText('123.45') })
+        .getByRole('link', { name: 'Edit' })
+        .click();
+    await page.getByLabel('price').fill('543.21');
+    await page.getByRole('button', { name: 'save' }).click();
+    await expect(page.getByText('543.21')).toBeVisible();
+
+    //Delete element
+    const del = page
+        .locator('tr', { has: page.getByText('543.21') })
+        .getByRole('button', { name: 'Delete' })
+    await expect(del).toHaveCount(1);
+
+    //Delete works
     page.once('dialog', async dialog => {
         await dialog.accept();
     });
     await del.click();
-    await expect(page.getByText('Playwright')).toHaveCount(0);
-    await expect(page.getByText('Qwerty321')).toHaveCount(0);
+    await expect(page.getByText('123.45')).toHaveCount(0);
+    await expect(page.getByText('543.21')).toHaveCount(0);
+    
 })
