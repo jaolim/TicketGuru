@@ -155,3 +155,61 @@ test('Events CRUD', async () => {
     await expect(page.getByText('Playwright')).toHaveCount(0);
     await expect(page.getByText('Qwerty321')).toHaveCount(0);
 })
+
+//TicketTypes add, edit and deletion
+test('TicketTypes CRUD', async () => {
+    const url = String(process.env.URL);
+
+    //homepage
+    await page.goto(url);
+
+    //Tickettypes page
+    await page.getByRole('link', { name: 'Ticket types' }).click();
+    await expect(page).toHaveURL(`${url}/tickettypepage`);
+
+    //Clearing leftovers
+    page.once('dialog', async dialog => {
+        await dialog.accept();
+    });
+    await trClickButtonIfExists(page, 'Playwright', 'Delete');
+    await trClickButtonIfExists(page, 'Qwerty321', 'Delete');
+
+    //Add ticket type
+    await page.getByRole('link', { name: 'Add Ticket type' }).click();
+    await expect(page).toHaveURL(`${url}/tickettype/add`);
+
+
+    //Partial fill not accepted
+    const button = page.getByRole('button', { name: 'save' });
+    await button.click()
+    await expect(page).toHaveURL(`${url}/tickettype/add`);
+
+    //Add works
+    await page.getByLabel('name').fill('Playwright');
+    await button.click()
+    await expect(page).toHaveURL(`${url}/tickettypepage`);
+    await expect(page.getByText('Playwright')).toBeVisible();
+
+    //Edit works
+    await page
+        .locator('tr', { has: page.getByText('Playwright') })
+        .getByRole('link', { name: 'Edit' })
+        .click();
+    await page.getByLabel('name').fill('Qwerty321');
+    await page.getByRole('button', { name: 'save' }).click();
+    await expect(page.getByText('Qwerty321')).toBeVisible();
+
+    //Delete element
+    const del = page
+        .locator('tr', { has: page.getByText('Qwerty321') })
+        .getByRole('button', { name: 'Delete' })
+    await expect(del).toHaveCount(1);
+
+    //Delete works
+    page.once('dialog', async dialog => {
+        await dialog.accept();
+    });
+    await del.click();
+    await expect(page.getByText('Playwright')).toHaveCount(0);
+    await expect(page.getByText('Qwerty321')).toHaveCount(0);
+})
