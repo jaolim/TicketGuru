@@ -56,80 +56,169 @@ Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jot
 
 ### Lipunmyynti
 
-**Endpoint: ** `/sell`
+**Endpoint:** `/sell`
 
--	Kentät basic auth tunnistaumiselle ja base url:lle(oletuksena main julkaisu)
--	Painike tapahtumien hakuun ja listaukseen
--	Kentät ja painike lippujen lisäykseen
--	Painike myyntitapahtuman lisäämiseen
--	Painike ja kenttä tiettyyn myyntiin liittyvien lippujen hakuun ja QR koodien generoimiseen
+Sell endpoint sisältää useita myyntiin ja lippujen tulostukseen liittyviä toimintoja.
+
+-	Luo myyntitapahtuma joko normaalimyyntiä tai oveltamyyntiä lippujen kera.
+-	Hae myyntitapahtuma lippuineen automaattisesti luonnin jälkeen tai manuaalisesti ID:n perusteella.
+-	Päivitä Ovimyynnin lippujen tila tarkastusten perusteella.
+-	Poista haettu myyntitapahtuma.
+
+Toimintojen lisäksi sivulla näkyy tapahtumien tiedon mukaanluettuna kapasiteetti ja myydyt liput. Uusien lippujen luonti ei onnistu, jos kapasiteetti ei riitä niihin.
+
+### Käyttäjät
+
+**Endpoint:** `/userpage`
+
+-   Lista käyttäjistä
+-   Painike käyttäjien lisäykseen
+-   Painike käyttäjän poistamiseen
+-   Painike käyttäjän tietojen muokkaamiseen
+
+#### Käyttäjän lisääminen
+
+**Endpoint:** `/user/add`
+
+-   Lomake käyttäjän lisäämiseen
+
+#### Käyttäjän muokkaaminen
+
+**Endpoint:** `/user/edit/{id}`
+
+-   Lomake käyttäjän tietojen muokkaamiseen
+
+### Tapahtumat
+
+**Endpoint:** `/eventpage`
+
+-   Lista tapahtumista
+-   Painike tapahtumien lisäykseen
+-   Painike tapahtuman poistamiseen
+-   Painike tapahtuman tietojen muokkaamiseen
+
+#### Tapahtuman lisääminen
+
+**Endpoint:** `/event/add`
+
+-   Lomake tapahtuman lisäämiseen
+
+#### Tapahtuman muokkaaminen
+
+**Endpoint:** `/event/edit/{id}`
+
+-   Lomake tapahtuman tietojen muokkaamiseen
+
+### Liput
+
+**Endpoint:** `/ticketpage`
+
+-   Lista lipuista
+-   Painike lippujen lisäykseen
+-   Painike lipun poistamiseen
+-   Painike lipun tietojen muokkaamiseen
+
+#### Lipun lisääminen
+
+**Endpoint: ** `/ticket/add`
+
+-   Lomake lipun lisäämiseen
+
+#### Lipun muokkaaminen
+
+**Endpoint: ** `/ticket/edit/{id}`
+
+-   Lomake lipun tietojen muokkaamiseen
+
+### Myynnit
+
+**Endpoint: ** `/salespage`
+
+-   Lista myynneistä
+-   Painike myyntien lisäykseen
+-   Painike myynnin poistamiseen
+-   Painike myynnin tietojen muokkaamiseen
+
+#### Myynnin lisääminen
+
+**Endpoint: ** `/sales/add`
+
+-   Lomake myynnin lisäämiseen
+
+#### Myynnin muokkaaminen
+
+**Endpoint: ** `/sales/edit/{id}`
+
+-   Lomake myynnin tietojen muokkaamiseen
+
+### Maksut
+
+**Endpoint: ** `/costpage`
+
+-   Lista maksuista
+-   Painike maksujen lisäykseen
+-   Painike maksun poistamiseen
+-   Painike maksun tietojen muokkaamiseen
+
+#### Maksun lisääminen
+
+**Endpoint: ** `/cost/add`
+
+-   Lomake maksun lisäämiseen
+
+#### Maksun muokkaaminen
+
+**Endpoint: ** `/cost/edit/{id}`
+
+-   Lomake maksun tietojen muokkaamiseen
+
+### Lipputyypit
+
+**Endpoint: ** `/tickettypepage`
+
+-   Lista lipputyypeistä
+-   Painike lipputyypin lisäykseen
+-   Painike lipputyypin poistamiseen
+-   Painike lipputyypin tietojen muokkaamiseen
+
+#### Lipputyypin lisääminen
+
+**Endpoint: ** `/tickettype/add`
+
+-   Lomake lipputyypin lisäämiseen
+
+#### Lipputyypin muokkaaminen
+
+**Endpoint: ** `/tickettype/edit/{id}`
+
+-   Lomake lipputyypin tietojen muokkaamiseen
+
+### Tapahtumapaikat
+
+**Endpoint: ** `/venuepage`
+
+-   Lista tapahtumapaikoista
+-   Painike tapahtumapaikan lisäykseen
+-   Painike tapahtumapaikan poistamiseen
+-   Painike tapahtumapaikan tietojen muokkaamiseen
+
+#### Tapahtumapaikan lisääminen
+
+**Endpoint: ** `/venue/add`
+
+-   Lomake tapahtumapaikan lisäämiseen
+
+#### Tapahtumapaikan muokkaaminen
+
+**Endpoint: ** `/venue/edit/{id}`
+
+-   Lomake tapahtumapaikan tietojen muokkaamiseen
 
 ## Tietokanta
 
 ### Relaatiomalli
 
 ![Tietokannan relaatiomalli](/resources/DB_TicketGuru.png)
-
-#### Selvitys
-
-Pakolliset kentät merkitty tähdellä (*)
-
-**Ticket**: Yksittäinen lippu tiettyyn tapahtumaan
-- PK: ticket_id
-- FK: sale_id *
-- FK: cost_id *
-- time
-- redeemed: onko lippu vielä voimassa
-- price: snapshot hinnasta **Price** taulusta
-
-**Cost**: Tietyn tapahtuman lippuhinnnat
-- PK: cost_id *
-- FK: event_id *
-- FK: type_id *
-- price
-
-**Type**: Lipun tyyppi (Aikuinen, Lapsi etc...)
-- PK: type_id *
-- name * : lipputyypin nimi
-- note: mahdollinen lisätieto
-
-**Sale**: Myyntitapahtuma
-- PK: sale_id *
-- FK: user_id *
-- price *
-- time *
-
-**Event**: Tietty tapahtuma
-- PK: event_id *
-- FK: venue_id *
-- name *
-- date *
-
-**User**: Viittaa lipputoimiston henkilökuntaan (Laajennettavissa sisältämään muita käyttäjätyyppeja)
-- PK: user_id *
-- username *
-- password *
-- firstname *
-- lastname *
-
-**Venue**: Tietty tapahtumapaikka
-- PK: venue_id
-- FK: address_id
-- name
-- note
-
-#### Mahdolliset laajennukset
-
-**Address**: Tapahtumapaikan osoite
-- PK: address_id
-- FK: postalcode
-- street
-- number
-- note
-
-**Postalcode(PK: postalcode, FK: city_id)**: Postiosoitteet
-
-**City(PK: city_id, name, note)**: Kaupungit
 
 ## Tekninen kuvaus
 
@@ -153,6 +242,7 @@ Projektin oikea toiminta on varmistettu useilla testausmenetelmillä:
 - **JUnit-yksikkötestit**: Testataan yksittäisten luokkien ja metodien toiminta.
 - **Integraatiotestit**: Varmistetaan eri komponenttien ja tietokantayhteyksien yhteensopivuus.
 - **End-to-end (E2E) testit**: Tarkastetaan koko sovelluksen toiminnallisuus front-endin ja back-endin välillä.
+- **Playwright selain testit**: Web-käyttöliittymän kautta testataan login, navigointi ja CRUD toiminnot.
 
 Tarkemmat testaustiedot: [katso dokumentti](testplan.md)
 
@@ -172,11 +262,63 @@ Asennusohjeesta tulisi ainakin käydä ilmi, miten käytettävä tietokanta ja
 käyttäjät tulee ohjelmistoa asentaessa määritellä (käytettävä tietokanta,
 käyttäjätunnus, salasana, tietokannan luonti yms.).
 
+## Ympäristömuuttujat
+
+Projekti sisältää useita ympäristömuuttujien kautta määriteltäviä attribuutteja.
+
+**Spring Boot projektin muuttujat:**
+
+Lokaalisti muuttujat tallennetaan .env tiedostoon samaan hakemistoon pom.xml kanssa.
+
+Rahdissa ne määritellään erikseen.
+
+.env tiedot ilman salaisuuksia (salaisuudet Moodle palautuksen mukana):
+
+```
+#käytetty application.properties
+ENV_MODE= #dev tai prod tai rahti, dev käyttää h2 tietokantaa, prod paikallista postgresql:ää ja rahti rahdin postgresql:ää
+#postgres tiedot, jos prod on käytössä
+DB_USER=
+DB_PASSWORD=
+DB_URL=
+```
+
+Rahdissa salaisuudet:
+```
+ENV_MODE
+DB_NAME
+DB_USER
+DB_PASSWORD
+DDL_TYPE #suositeltu update, create valinnalla voi pakottaa tietokantamuutokset, mutta tämä nollaa tietokannan
+```
+
+**Playwright projektin muuttujat**
+
+Playwright testit ovat joko ajettavissa lokaalisti tai GitHub Actionsin kautta.
+
+Lokaalisti käytettään .env tiedostoa playwright_tests hakemistossa.
+
+.env:
+
+```
+#Julkaisun osoite
+URL=
+
+#user ja admin tiedot
+USERNAME1=
+PASSWORD1=
+USERNAME2=
+PASSWORD2=
+```
+
+Githubissa testit ovat ajettevissa manuaalisesti käynnistettävänä workflowna ja siellä ympäristömuuttujat määritellään GitHub repository secretteinä kohdassa:
+
+Settings -> Secrets and variables -> Actions -> New repository secret
+
+
 ## Käynnistys- ja käyttöohje
 
-Tyypillisesti tässä riittää kertoa ohjelman käynnistykseen tarvittava URL sekä
-mahdolliset kirjautumiseen tarvittavat tunnukset. Jos järjestelmän
-käynnistämiseen tai käyttöön liittyy joitain muita toimenpiteitä tai toimintajärjestykseen liittyviä asioita, nekin kerrotaan tässä yhteydessä.
+Linkki ohjelmaan:
+https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/
 
-Usko tai älä, tulet tarvitsemaan tätä itsekin, kun tauon jälkeen palaat
-järjestelmän pariin !
+Tunnukset sivustolle tulee moodlen palautuksen yhteydessä.

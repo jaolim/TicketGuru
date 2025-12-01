@@ -5,6 +5,7 @@ Tässä dokumentissa käydään läpi projektin testausprosessit. Testauksen tav
 1. [Yksikkötestit](#yksikkötestit)
 2. [Integraatiotestit](#integraatiotestit)
 3. [End-2-end-testit](#end-to-end-testit)
+4. [Playwright testit](#playwright-testit)
 
 ## Yksikkötestit
 Yksikkötestien tarkoituksena on varmistaa että yksittäiset koodikomponentit toimivat oikein. Testataan luokan tai metodin toimintaa erillään muusta järjestelmästä. 
@@ -72,3 +73,44 @@ End-to-end -testit varmistavat koko järjestelmän toiminnan käyttäjän näkö
 - Hakee olemassa olevan myyntitapahtuman `GET /sales` ja poimii `saleid`-arvon.
 - Luo uuden lipun `POST /tickets` käyttäen olemassa olevaa `saleid`- ja `costid`-arvoa.
 - Varmistaa `GET /tickets` -kutsulla, että luotu lippu näkyy järjestelmän listauksessa.
+
+## Playwright-testit
+
+Playwright testit toteuttu TypeScriptiä käyttävänä NPM Playwright projektina ja ne ovat ajettavissa joko lokaalisti tai GitHubissa manuaalisesti käynnistettävänä Workflowna.
+
+Testit on jaettu kahteen tiedostoon, joista toisessa testataan login toimintaja ja toisessa CRUD toimintoja.
+
+### Testit:
+
+#### ticketguru_login.spec.ts
+
+-	**TicketGuru responds**: Sivu latautuu
+-	**Unauthenticated right elements shown**: Tunnistautuman käyttäjä näkee vain Login elementin
+-	**User right elements shown**: `USER` roolilla tunnistautunut käyttäjä ei näe linkkiä käyttäjienhallintaan
+-	**Admin right elements shown**: `ADMIN` roolin käyttäjä näkee kaikki elementit
+
+#### ticketguru_use.spec.ts
+
+*Ennen testejä kirjaudutaan admininä sisään ja testit ajetaan samaa sessiota käyttäen*
+
+-	**Venues CRUD**: Venue listaus, lisääminen, editointi ja deletointi toimii
+-	**Events CRUD**: Event listaus, lisääminen, editointi ja deletointi toimii
+-	**TicketTypes CRUD**: Ticket type listaus, lisääminen, editointi ja deletointi toimii
+-	**Costs CRUD**: Cost type listaus, lisääminen, editointi ja deletointi toimii
+-	**Sales and tickets CRUD**:
+	-	Salen luonti toimii
+	-	Lippujen luonti toimii ja päivittää salea
+	-	Salen tuhoaminen poistaa myös siihen liittyvät liput
+
+
+
+
+### Playwright lähde:
+
+Pohjana käytetty tiimin jäsenen [Playwright testaus seminaarityötä](https://github.com/jaolim/seminaari_testaus) kurssille Ohjelmistokehityksen Teknologioita.
+
+Itse testit on kirjoitettu tällä kurssilla, mutta apufunktiot ja GitHub Workflow määrittely on tehty toisen kurssin puolella.
+
+
+
+
