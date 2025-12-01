@@ -82,6 +82,12 @@ Testit on jaettu kahteen tiedostoon, joista toisessa testataan login toimintaja 
 
 ### Testit:
 
+Playwright testit käyttävät h2 tietokantaa käyttävää [Rahdin kehitysversiota](https://ticketguru-ticketguru-postgres.2.rahtiapp.fi/).
+
+CRUD toiminnoissa luotetaan testattavan sivun itse generoiman datan löytyvän oikeassa muodossa, mutta testien generoima data validoidaan ja tarvittaessa poistetaan, jos se löytyy ennen testien ajoa.
+
+Tällöin keskeytynyt testioja (joka voi johtua vaikka yhteysongelmasta) ei pilaa sivuston dataa tuleville testiajoille.
+
 #### ticketguru_login.spec.ts
 
 -	**TicketGuru responds**: Sivu latautuu
@@ -101,9 +107,6 @@ Testit on jaettu kahteen tiedostoon, joista toisessa testataan login toimintaja 
 	-	Salen luonti toimii
 	-	Lippujen luonti toimii ja päivittää salea
 	-	Salen tuhoaminen poistaa myös siihen liittyvät liput
-
-
-
 
 ### Playwright lähde:
 
