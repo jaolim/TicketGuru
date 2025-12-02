@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.zxing.BarcodeFormat;
@@ -24,6 +22,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 @RequestMapping("/qr")
 public class QrCodeController {
 
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'TICKETCHECK')")
   @GetMapping(value = "/{ticketCode}", produces = MediaType.IMAGE_PNG_VALUE)
   public ResponseEntity<BufferedImage> generateQr(@PathVariable("ticketCode") String ticketCode)
       throws Exception {

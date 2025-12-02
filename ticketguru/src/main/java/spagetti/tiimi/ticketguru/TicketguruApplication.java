@@ -89,6 +89,7 @@ public class TicketguruApplication {
 						"User", "Esimerkki", "USER");
 				AppUser testAdmin = new AppUser("admin", "$2a$10$.BwaemM9KhTg6Ty/UQngsuh9k9hdGsvfAXKxNPX.2rfaxlXa86wDe",
 						"Admin", "Esimerkki", "ADMIN");
+				AppUser testReader = new AppUser("reader", "$2a$10$3yJR3Ld.MGJtswoUOBWSkekUTkauzAVClD.qhdOSGc0Zbki16i6aW", "Lipun", "Lukija", "TICKETCHECK");
 				Cost cost1 = new Cost(type1, 50.00, event1);
 				Cost cost2 = new Cost(type2, 29.90, event1);
 				Cost cost3 = new Cost(type3, 29.90, event1);
@@ -130,6 +131,8 @@ public class TicketguruApplication {
 				urepository.save(testAdmin);
 
 				urepository.save(testUser);
+
+				urepository.save(testReader);
 
 				Long savedEvent4Id = erepository.save(event4).getEventid();
 				Long savedEvent1Id = erepository.save(event1).getEventid();

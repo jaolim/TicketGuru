@@ -74,7 +74,7 @@ public class SaleRestController {
         return srepository.save(sale);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @DeleteMapping("/sales/{id}")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
