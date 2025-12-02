@@ -11,7 +11,7 @@ Projektin valmistuessa järjestelmässä on toiminnallisuudet tapahtumien luomis
 
 ### Toteutus- ja toimintaympäristö
 
-Järjestelmä toteutetaan Spring boot -sovelluskehyksellä, joka tarjoaa REST-rajapinnat lipunmyyntiin, tapahtumatietoihin ja lipuntarkistukseen liittyville toiminnoille. Järjestelmä käyttää PostgreSQL-tietokantaa tietojen tallentamiseen. Palvelin voidaan ajaa paikallisesti kehitysympäristössä ja valmistuessaan se siirretään tuotantoon Rahti-palveluun. 
+Järjestelmä toteutetaan Spring boot -sovelluskehyksellä, joka tarjoaa REST-rajapinnat lipunmyyntiin, tapahtumatietoihin ja lipuntarkistukseen liittyville toiminnoille. Kehitysympäristössä järjestelmä käyttää joko H2 tai PostgreSQL-tietokantaa. Tuotantoympäristössä järjestelmä käyttää PostgreSQL-tietokantaa tietojen tallentamiseen. Palvelin voidaan ajaa paikallisesti kehitysympäristössä ja valmistunut järjestelmä on CSC:n tarjoamassa Rahti-palvelussa. 
 
 Käyttöliittymä toteutetaan Thymeleaf-mallipohjilla, joista luodaan HTML-sivut palvelimella. Käyttö tapahtuu aluksi työpöytäympäristössä lipunmyyjien työasemilla, ja käyttöliittymä toteutetaan selainpohjaisena ratkaisuna. Tämä mahdollistaa järjestelmän laajentamisen myöhemmin myös mobiililaitteille ja verkkokauppaan.
 
@@ -250,17 +250,25 @@ Tällä hetkellä ei ole tunnettuja ongelmia.
 
 ## Asennustiedot
 
-Järjestelmän asennus on syytä dokumentoida kahdesta näkökulmasta:
+### Kehitysympäristön asennus
 
--   järjestelmän kehitysympäristö: miten järjestelmän kehitysympäristön saisi
-    rakennettua johonkin toiseen koneeseen
+Vaatimukset kehitysympäristölle: 
 
--   järjestelmän asentaminen tuotantoympäristöön: miten järjestelmän saisi
-    asennettua johonkin uuteen ympäristöön.
+- Java 17
+- Maven 3.9.11
+- Git
 
-Asennusohjeesta tulisi ainakin käydä ilmi, miten käytettävä tietokanta ja
-käyttäjät tulee ohjelmistoa asentaessa määritellä (käytettävä tietokanta,
-käyttäjätunnus, salasana, tietokannan luonti yms.).
+Projekti sijaitsee Githubissa ja se voidaan kloonata kehitysympäristöön. Git-repositorion osoite on https://github.com/jaolim/TicketGuru.git
+
+Ympäristömuuttujien määrittely on kuvattu alempana omassa [luvussaan](#ympäristömuuttujat). Ympäristömuuttujien avulla määritellään käytettävä tietokanta, jotta kehityksen aikana voidaan käyttää toista tietokantaa kuin mitä tuotannossa käytetään. 
+
+Kehitysympäristössä voidaan käyttää H2-tietokantaa, joka ei vaadi erillisiä asennuksia. Sovelluksen käynnistyksen yhteydessä tietokantaan luodaan testauksessa tarvittavat tiedot tietokantaan: käyttäjät ja esimerkkidata kaikista tietokannan tiedoista. 
+
+### Järjestelmän asennus tuotantoympäristöön
+
+TicketGuru on asennettu CSC:n Rahti-palveluun ja se on rakennettu Dockerfile-tiedoston perusteella konttijulkaisuna. Rahti-palveluun tulee määritellä uusi PostgreSQL-tietokanta ja se tehdään sivuston käyttöliittymän kautta. Järjestelmä käyttää Rahti-palvelussa application-rahti.properties-ympäristömuuttujia, jotka tulee määrittää palveluun. Projekti voidaan tuoda palveluun Git-repositorion linkin avulla. 
+
+Järjestelmän ensimmäisen käynnistyksen yhteydessä PostgreSQL-tietokantaan luodaan pohjatiedot, joka sisältää käyttäjät ja esimerkkidatan kaikista tietokannan tiedoista. 
 
 ## Ympäristömuuttujat
 
