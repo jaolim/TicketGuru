@@ -20,7 +20,7 @@ Käyttöliittymä toteutetaan Thymeleaf-mallipohjilla, joista luodaan HTML-sivut
 ### Käyttötapaukset
 #### Käyttötapauskaavio
 
-![TicketGuru käyttötapauskaavio](/resources/Kayttotapauskaavio_Ticketguru.drawio.png)
+![TicketGuru käyttötapauskaavio](/resources/usercases.drawio.png)
 
 
 ### Käyttäjäroolit
