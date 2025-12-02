@@ -42,25 +42,33 @@ Sama periaate kuin yksikkötesteissä, mutta testaa useamman komponentin yhteist
 - `shouldReturnCostById()` testaa, että tietokannasta haetaan oikea hinta ID:n perusteella.
 - `shouldDeleteCost()` testaa, että hinnan voi poistaa ja sitä ei löydä enää tietokannasta.
 - `shouldUpdatePrice()` testaa, että hinnan päivitys onnsituu ja tallentuu tietokantaan.
+- `shouldThrowExceptionForNegativePrice` testaa, että cost luokan hinta ei saa olla negatiivinen.
 
-### Event-luokan CRUD-toiminnot
+### Event-luokan CRUD-toiminnot, sekä muita
 - `shouldCreateNewEvent()` testaa, että uusi eventti tallentuu tietokantaan.
 - `shouldReturnEventById()` testaa, että tietokannasta haetaan oikea eventti ID:llä.
 - `shouldUpdateEventVenue` testaa, että eventin paikkaa voidaan muuttaa.
 - `shouldDeleteEvent()` testaa, että eventti voidaan poistaa.
 - `shouldNotFindNonExistingEvent` testaa, että tietokannasta ei löydetä eventtejä, joita ei ole.
+- `shouldCreateEventWithVenue`testaa, että venue tallentuu ja event liittyy siihen oikein.
+- `shouldLinkCostToEvent` testaa, että eventin ja costin yhteys toimii.
 
 ### Ticket-luokan CRUD-toiminnot
 - `shouldCreateTicketWithCostOnly` testaa, että Ticket voidaan tallentaa pelkän Costin kanssa ja sen redeemed-arvo on false.
 - `shouldCreateTicketWithCostAndSale` testaa, että Ticket voidaan tallentaa Costin ja Salen kanssa ja linkit tallentuvat oikein.
 - `houldUpdateRedeemed` testaa, että lipun redeemed päivitys tallentuu tietokantaan.
 - `shouldDeleteTicket` testaa, että ticket voidaan poistaa onnistuneesti tietokannasta.
+- `shouldCreateTicketWithCostAndTicketType` testaa, että ticket toimii yhdessä cost ja tickettypen kanssa.
+- `shouldLinkTicketToEventAndSale` testaa, että ticket yhdistyy oikein costiin, saleen ja eventtiin.
+- `shouldCascadeDeleteSaleTickets` testaa, että salen poistettaessa siihen liittyvät ticketit poistuvat automaattisesti.
+- `shouldCascadeDeleteEventCostsTickets` testaa, että eventin poistaminen poistaa siihen liittyvät costit ja ticketit.
 
 ### Sale-luokan CRUD-toiminnot
 - `shouldCreateSale` testaa, että uusi Sale tallentuu onnistuneesti tietokantaan.
 - `shouldReturnSaleById` testaa, että tallennettu Sale voidaan hakea ID:n perusteella.
 - `shouldUpdateSalePrice` testaa, että Salen hinnan päivitys tallentuu tietokantaan.
 - `shouldDeleteSale` testaa, että Sale voidaan poistaa tietokannasta onnistuneesti. 
+- `shouldLinkTicketToSale` testaa, että sale näkyy oikein ticketin kautta.
 
 ## End-2-end-testit
 

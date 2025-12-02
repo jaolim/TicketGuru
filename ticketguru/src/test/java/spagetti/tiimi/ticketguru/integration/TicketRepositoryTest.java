@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+
 import java.util.Optional;
 
 import spagetti.tiimi.ticketguru.domain.Sale;
@@ -125,6 +127,59 @@ public class TicketRepositoryTest {
         ticketRepository.deleteById(ticket.getTicketid());
         Optional<Ticket> found = ticketRepository.findById(ticket.getTicketid());
         assertFalse(found.isPresent());
+    }
+
+    @Test
+    public void shouldCreateTicketWithCostAndTicketType() {
+
+        Cost cost = new Cost();
+        cost.setPrice(35.0);
+        cost.setEvent(event);
+        cost.setTicketType(ticketType);
+        costRepository.save(cost);
+
+        Ticket ticket = new Ticket();
+        ticket.setCost(cost);
+        ticket.setRedeemed(false);
+        ticketRepository.save(ticket);
+
+        Optional<Ticket> found = ticketRepository.findById(ticket.getTicketid());
+        assertTrue(found.isPresent());
+
+        assertEquals(35.0, found.get().getCost().getPrice());
+        assertEquals(ticketType.getName(), found.get().getCost().getTicketType().getName());
+    }
+
+    @Test
+    public void shouldLinkTicketToEventAndSale() {
+        Ticket ticket = new Ticket(cost, sale);
+        ticketRepository.save(ticket);
+
+        Optional<Ticket> found = ticketRepository.findById(ticket.getTicketid());
+        assertTrue(found.isPresent());
+        assertEquals(cost.getCostid(), found.get().getCost().getCostid());
+        assertEquals(event.getEventid(), found.get().getCost().getEvent().getEventid());
+        assertEquals(sale.getSaleid(), found.get().getSale().getSaleid());
+    }
+
+    @Test
+    public void shouldCascadeDeleteSaleTickets() {
+        Ticket ticket = new Ticket(cost, sale);
+        ticketRepository.save(ticket);
+
+        saleRepository.deleteById(sale.getSaleid());
+        Optional<Ticket> found = ticketRepository.findById(ticket.getTicketid());
+        assertFalse(found.isPresent(), "Ticket should be deleted when Sale is deleted (cascade)");
+    }
+
+    @Test
+    public void shouldCascadeDeleteEventCostsTickets() {
+        Ticket ticket = new Ticket(cost);
+        ticketRepository.save(ticket);
+
+        eventRepository.deleteById(event.getEventid());
+        assertFalse(costRepository.findById(cost.getCostid()).isPresent());
+        assertFalse(ticketRepository.findById(ticket.getTicketid()).isPresent());
     }
 
 }
