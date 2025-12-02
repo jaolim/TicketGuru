@@ -37,7 +37,8 @@ Käyttöliittymä toteutetaan Thymeleaf-mallipohjilla, joista luodaan HTML-sivut
 
 **Admin**
 - oikeudet luoda, muokata ja poistaa käyttäjiä
-- näkee kaikki järjestelmän tiedot 
+- näkee kaikki järjestelmän tiedot
+- voi suorittaa kaikki lipunmyyjän ja lipuntarkastajan toiminnot
 
 #### Käyttäjätarinat
 
