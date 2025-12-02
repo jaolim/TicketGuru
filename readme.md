@@ -139,19 +139,19 @@ Toimintojen lisäksi sivulla näkyy tapahtumien tiedon mukaanluettuna kapasiteet
 
 #### Lipun lisääminen
 
-**Endpoint: ** `/ticket/add`
+**Endpoint:** `/ticket/add`
 
 -   Lomake lipun lisäämiseen
 
 #### Lipun muokkaaminen
 
-**Endpoint: ** `/ticket/edit/{id}`
+**Endpoint:** `/ticket/edit/{id}`
 
 -   Lomake lipun tietojen muokkaamiseen
 
 ### Myynnit
 
-**Endpoint: ** `/salespage`
+**Endpoint:** `/salespage`
 
 -   Lista myynneistä
 -   Painike myyntien lisäykseen
@@ -160,19 +160,19 @@ Toimintojen lisäksi sivulla näkyy tapahtumien tiedon mukaanluettuna kapasiteet
 
 #### Myynnin lisääminen
 
-**Endpoint: ** `/sales/add`
+**Endpoint:** `/sales/add`
 
 -   Lomake myynnin lisäämiseen
 
 #### Myynnin muokkaaminen
 
-**Endpoint: ** `/sales/edit/{id}`
+**Endpoint:** `/sales/edit/{id}`
 
 -   Lomake myynnin tietojen muokkaamiseen
 
 ### Maksut
 
-**Endpoint: ** `/costpage`
+**Endpoint:** `/costpage`
 
 -   Lista maksuista
 -   Painike maksujen lisäykseen
@@ -181,19 +181,19 @@ Toimintojen lisäksi sivulla näkyy tapahtumien tiedon mukaanluettuna kapasiteet
 
 #### Maksun lisääminen
 
-**Endpoint: ** `/cost/add`
+**Endpoint:** `/cost/add`
 
 -   Lomake maksun lisäämiseen
 
 #### Maksun muokkaaminen
 
-**Endpoint: ** `/cost/edit/{id}`
+**Endpoint:** `/cost/edit/{id}`
 
 -   Lomake maksun tietojen muokkaamiseen
 
 ### Lipputyypit
 
-**Endpoint: ** `/tickettypepage`
+**Endpoint:** `/tickettypepage`
 
 -   Lista lipputyypeistä
 -   Painike lipputyypin lisäykseen
@@ -202,19 +202,19 @@ Toimintojen lisäksi sivulla näkyy tapahtumien tiedon mukaanluettuna kapasiteet
 
 #### Lipputyypin lisääminen
 
-**Endpoint: ** `/tickettype/add`
+**Endpoint:** `/tickettype/add`
 
 -   Lomake lipputyypin lisäämiseen
 
 #### Lipputyypin muokkaaminen
 
-**Endpoint: ** `/tickettype/edit/{id}`
+**Endpoint:** `/tickettype/edit/{id}`
 
 -   Lomake lipputyypin tietojen muokkaamiseen
 
 ### Tapahtumapaikat
 
-**Endpoint: ** `/venuepage`
+**Endpoint:** `/venuepage`
 
 -   Lista tapahtumapaikoista
 -   Painike tapahtumapaikan lisäykseen
@@ -223,13 +223,13 @@ Toimintojen lisäksi sivulla näkyy tapahtumien tiedon mukaanluettuna kapasiteet
 
 #### Tapahtumapaikan lisääminen
 
-**Endpoint: ** `/venue/add`
+**Endpoint:** `/venue/add`
 
 -   Lomake tapahtumapaikan lisäämiseen
 
 #### Tapahtumapaikan muokkaaminen
 
-**Endpoint: ** `/venue/edit/{id}`
+**Endpoint:** `/venue/edit/{id}`
 
 -   Lomake tapahtumapaikan tietojen muokkaamiseen
 
