@@ -1,4 +1,4 @@
-package spagetti.tiimi.ticketguru.web;
+package spagetti.tiimi.ticketguru.rest;
 
 import java.time.LocalDateTime;
 import java.util.Base64;

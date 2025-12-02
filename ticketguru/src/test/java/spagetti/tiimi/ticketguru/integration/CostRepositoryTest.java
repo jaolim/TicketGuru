@@ -2,6 +2,7 @@ package spagetti.tiimi.ticketguru.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,8 @@ import spagetti.tiimi.ticketguru.domain.Cost;
 import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
+import spagetti.tiimi.ticketguru.domain.Ticket;
+import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.domain.TicketType;
 import spagetti.tiimi.ticketguru.domain.TicketTypeRepository;
 import spagetti.tiimi.ticketguru.domain.Venue;
@@ -32,6 +35,9 @@ public class CostRepositoryTest {
     private EventRepository erepository;
 
     @Autowired
+    private TicketRepository ticketRepository;
+
+    @Autowired
     private TicketTypeRepository ttrepository;
 
     @Autowired
@@ -40,6 +46,7 @@ public class CostRepositoryTest {
     private Event event;
     private Venue venue;
     private TicketType ticketType;
+    private Ticket ticket;
 
     @BeforeEach
     public void setup() {
@@ -100,6 +107,13 @@ public class CostRepositoryTest {
         Optional<Cost> found = crepository.findById(cost.getCostid());
         assertTrue(found.isPresent());
         assertEquals(9.99, found.get().getPrice());
+    }
+
+    @Test
+    public void shouldThrowExceptionForNegativePrice() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Cost(ticketType, -5.0, event);
+        });
     }
 
 }

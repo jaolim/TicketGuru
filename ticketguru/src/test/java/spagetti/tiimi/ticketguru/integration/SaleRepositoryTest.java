@@ -15,6 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import spagetti.tiimi.ticketguru.domain.Sale;
 import spagetti.tiimi.ticketguru.domain.SaleRepository;
+import spagetti.tiimi.ticketguru.domain.Ticket;
+import spagetti.tiimi.ticketguru.domain.TicketRepository;
+import spagetti.tiimi.ticketguru.domain.Cost;
+import spagetti.tiimi.ticketguru.domain.CostRepository;
 
 @SpringBootTest
 public class SaleRepositoryTest {
@@ -22,7 +26,15 @@ public class SaleRepositoryTest {
     @Autowired
     private SaleRepository saleRepository;
 
+    @Autowired
+    private TicketRepository tRepository;
+
+    @Autowired
+    private CostRepository cRepository;
+
     private Sale sale;
+    private Ticket ticket;
+    private Cost cost;
 
     @BeforeEach
     public void setup() {
@@ -72,6 +84,16 @@ public class SaleRepositoryTest {
         Optional<Sale> found = saleRepository.findById(sale.getSaleid());
         assertFalse(found.isPresent());
     }
+
+    @Test
+public void shouldLinkTicketToSale() {
+    Ticket ticket = new Ticket(cost, sale);
+    tRepository.save(ticket);
+
+    Optional<Ticket> found = tRepository.findById(ticket.getTicketid());
+    assertTrue(found.isPresent());
+    assertEquals(sale.getSaleid(), found.get().getSale().getSaleid());
+}
 
     
 }

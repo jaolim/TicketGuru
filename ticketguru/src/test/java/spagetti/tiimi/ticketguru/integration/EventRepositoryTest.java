@@ -11,8 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import spagetti.tiimi.ticketguru.domain.Cost;
+import spagetti.tiimi.ticketguru.domain.CostRepository;
 import spagetti.tiimi.ticketguru.domain.Event;
 import spagetti.tiimi.ticketguru.domain.EventRepository;
+import spagetti.tiimi.ticketguru.domain.Ticket;
+import spagetti.tiimi.ticketguru.domain.TicketRepository;
 import spagetti.tiimi.ticketguru.domain.Venue;
 import spagetti.tiimi.ticketguru.domain.VenueRepository;
 
@@ -20,41 +24,49 @@ import spagetti.tiimi.ticketguru.domain.VenueRepository;
 public class EventRepositoryTest {
 
     @Autowired
-    private EventRepository ereporitory;
+    private EventRepository eRepository;
 
     @Autowired
-    private VenueRepository vrepository;
+    private VenueRepository vRepository;
+
+    @Autowired
+    private CostRepository cRepository;
+
+    @Autowired
+    private TicketRepository tRepository;
 
     private Event event;
     private Venue venue;
+    private Cost cost;
+    private Ticket ticket;
 
     @BeforeEach
     public void setup() {
         venue = new Venue("name", "address");
-        vrepository.save(venue);
+        vRepository.save(venue);
         event = new Event("Event", venue, LocalDateTime.now(), 10);
-        ereporitory.save(event);
+        eRepository.save(event);
     }
 
     @AfterEach
     public void cleanup() {
-        ereporitory.deleteAll();
-        vrepository.deleteAll();
+        eRepository.deleteAll();
+        vRepository.deleteAll();
     }
 
     @Test
     public void shouldCreateNewEvent() {
         Event newEvent = new Event("Concert", venue, LocalDateTime.now().plusDays(1), 10);
-        ereporitory.save(newEvent);
+        eRepository.save(newEvent);
 
-        Optional<Event> found = ereporitory.findById(newEvent.getEventid());
+        Optional<Event> found = eRepository.findById(newEvent.getEventid());
         assertTrue(found.isPresent());
         assertEquals("Concert", found.get().getName());
     }
 
     @Test
     public void shouldReturnEventById() {
-        Optional<Event> found = ereporitory.findById(event.getEventid());
+        Optional<Event> found = eRepository.findById(event.getEventid());
         assertTrue(found.isPresent());
         assertEquals(event.getName(), found.get().getName());
     }
@@ -62,24 +74,58 @@ public class EventRepositoryTest {
     @Test
     public void shouldUpdateEventVenue() {
         Venue newVenue = new Venue("Updated Venue", "address");
-        vrepository.save(newVenue);
+        vRepository.save(newVenue);
         event.setVenue(newVenue);
-        ereporitory.save(event);
-        Optional<Event> found = ereporitory.findById(event.getEventid());
+        eRepository.save(event);
+        Optional<Event> found = eRepository.findById(event.getEventid());
         assertTrue(found.isPresent());
         assertEquals(newVenue.getName(), found.get().getVenue().getName());
     }
 
     @Test
     public void shouldDeleteEvent() {
-        ereporitory.deleteById(event.getEventid());
-        Optional<Event> found = ereporitory.findById(event.getEventid());
+        eRepository.deleteById(event.getEventid());
+        Optional<Event> found = eRepository.findById(event.getEventid());
         assertFalse(found.isPresent());
     }
 
     @Test
     public void shouldNotFindNonExistingEvent() {
-        Optional<Event> found = ereporitory.findById(9999L);
+        Optional<Event> found = eRepository.findById(9999L);
         assertFalse(found.isPresent());
     }
+
+    @Test
+    public void shouldCreateEventWithVenue() {
+        Venue v = new Venue("Test Venue", "Test Address");
+        vRepository.save(v);
+
+        Event ev = new Event("Test Event", v, LocalDateTime.now().plusDays(3), 50);
+        eRepository.save(ev);
+
+        Optional<Event> found = eRepository.findById(ev.getEventid());
+        assertTrue(found.isPresent());
+        assertEquals("Test Event", found.get().getName());
+        assertEquals("Test Venue", found.get().getVenue().getName());
+    }
+
+    @Test
+    public void shouldLinkCostToEvent() {
+        Venue v = new Venue("Venue X", "Address X");
+        vRepository.save(v);
+
+        Event ev = new Event("Link Cost Event", v, LocalDateTime.now().plusDays(5), 100);
+        eRepository.save(ev);
+
+        Cost cost = new Cost();
+        cost.setPrice(25.0);
+        cost.setEvent(ev);
+        cRepository.save(cost);
+
+        Optional<Cost> found = cRepository.findById(cost.getCostid());
+        assertTrue(found.isPresent());
+        assertEquals(25.0, found.get().getPrice());
+        assertEquals(ev.getEventid(), found.get().getEvent().getEventid());
+    }
+
 }

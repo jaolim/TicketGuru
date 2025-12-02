@@ -1,4 +1,4 @@
-package spagetti.tiimi.ticketguru.web;
+package spagetti.tiimi.ticketguru.rest;
 
 import java.util.List;
 import java.util.Optional;
@@ -74,7 +74,7 @@ public class SaleRestController {
         return srepository.save(sale);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @DeleteMapping("/sales/{id}")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)

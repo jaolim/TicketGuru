@@ -1,4 +1,4 @@
-package spagetti.tiimi.ticketguru.web;
+package spagetti.tiimi.ticketguru.rest;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +48,7 @@ public class EventRestController {
                 .orElseThrow(() -> new NotFoundException("Event not found"));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/events")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
@@ -56,7 +56,7 @@ public class EventRestController {
         return erepository.save(event);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @DeleteMapping("events/{id}")
     @JsonView(Views.Internal.class)
     public void deleteEvent(@PathVariable Long id) {
@@ -66,7 +66,7 @@ public class EventRestController {
         erepository.deleteById(id);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("events/{id}")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)

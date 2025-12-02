@@ -1,4 +1,4 @@
-package spagetti.tiimi.ticketguru.web;
+package spagetti.tiimi.ticketguru.rest;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class TicketTypeRestController {
         return trepository.findById(id);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/tickettypes")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
@@ -66,7 +66,7 @@ public class TicketTypeRestController {
         return trepository.save(ticketType);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @DeleteMapping("tickettypes/{id}")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
@@ -77,7 +77,7 @@ public class TicketTypeRestController {
         trepository.deleteById(id);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("tickettypes/{id}")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)

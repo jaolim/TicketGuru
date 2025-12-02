@@ -195,7 +195,7 @@ public class TicketController {
     }
 
     // mark ticket as redeemed based with ticketCode
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'TICKETCHECK')")
     @GetMapping("/ticket/check")
     public String checkTicket(@RequestParam String code, HttpServletRequest request,
             RedirectAttributes redirectAttributes, Model model) {
@@ -228,6 +228,7 @@ public class TicketController {
         return "redirect:" + referer;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'TICKETCHECK')")
     @GetMapping("/qrreader")
     public String qrPage() {
         return "qr-check";

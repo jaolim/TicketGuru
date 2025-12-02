@@ -1,4 +1,4 @@
-package spagetti.tiimi.ticketguru.web;
+package spagetti.tiimi.ticketguru.rest;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +54,7 @@ public class VenueRestController {
         return vrepository.findById(id);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/venues")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)
@@ -65,7 +65,7 @@ public class VenueRestController {
         return vrepository.save(venue);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @DeleteMapping("venues/{id}")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.OK)
@@ -76,7 +76,7 @@ public class VenueRestController {
         vrepository.deleteById(id);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PutMapping("venues/{id}")
     @JsonView(Views.Internal.class)
     @ResponseStatus(HttpStatus.CREATED)

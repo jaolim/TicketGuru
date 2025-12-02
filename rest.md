@@ -49,15 +49,18 @@ Salasana ja käyttäjätunnus luodaan pyynnöstä käyttäen *HTTP basic access 
 [
     {
         "eventid": 1,
-        "name": "Event1",
-        "venue": "Venue1",
-        "date": "2025-09-22T17:46:44.847199"
+        "name": "Jytää ja iskelmää itsenäisyyspäivän etkot",
+        "date": "2025-12-05T22:00:00",
+        "capacity": 200,
+        "costs": [...]
     },
     {
         "eventid": 2,
         "name": "Event2",
         "venue": "Venue2",
         "date": "1999-01-31T20:00:00"
+        "capacity": 300,
+        "costs": [...]
     }
 ]
 ```
@@ -81,9 +84,10 @@ Salasana ja käyttäjätunnus luodaan pyynnöstä käyttäen *HTTP basic access 
 
 ```
 {
-    "name": "event name",
-    "venue": "venue name",
-    "date": "YYYY-MM-DDTHH:mm:ss"
+    "name": "testi",
+    "venue": {"venueid": 1},
+    "date": "2005-01-31T20:00:00",
+    "capacity": 300
 }
 ```
 
@@ -108,7 +112,7 @@ Salasana ja käyttäjätunnus luodaan pyynnöstä käyttäen *HTTP basic access 
 ```
 {
     "name": "event name",
-    "venue": "edited venue",
+    "venue": {venueid: 1},
     "date": "YYYY-MM-DDTHH:mm:ss"
 }
 ```
@@ -167,60 +171,23 @@ id = poistettavan tapahtuman tunniste (Long)
     {
         "ticketid": 1,
         "cost": {
-            "costid": 1,
-            "event": {
-                "eventid": 1,
-                "name": "Event1",
-                "venue": "Venue1",
-                "date": "2025-11-04T20:58:43.300956"
-            },
-            "ticketType": {
-                "ticketTypeid": 1,
-                "name": "Aikuinen",
-                "note": null
-            },
-            "price": 20.5
+            ...
         },
         "sale": {
-            "saleid": 1,
-            "user": {
-                "userid": 2,
-                "username": "user",
-                "firstname": "User"
-            },
-            "price": 28.490000000000002,
-            "time": "2025-11-04T20:58:43.300956"
+            ...
         },
         "redeemed": false,
         "redeemedTime": null,
-        "ticketCode": "MTEx"
+        "ticketCode": "MTU=",
+        "price": 50.0
     },
     {
         "ticketid": 2,
         "cost": {
-            "costid": 2,
-            "event": {
-                "eventid": 2,
-                "name": "Event2",
-                "venue": "Venue2",
-                "date": "1999-01-31T20:00:00"
-            },
-            "ticketType": {
-                "ticketTypeid": 2,
-                "name": "Eläkeläinen",
-                "note": "Tarkista eläkeläisyys tarvittaessa"
-            },
-            "price": 7.99
+            ...
         },
         "sale": {
-            "saleid": 1,
-            "user": {
-                "userid": 2,
-                "username": "user",
-                "firstname": "User"
-            },
-            "price": 28.490000000000002,
-            "time": "2025-11-04T20:58:43.300956"
+            ...
         },
         "redeemed": false,
         "redeemedTime": null,
@@ -248,7 +215,6 @@ id = poistettavan tapahtuman tunniste (Long)
 
 ```
 {
-    "name": "ticket name",
     "redeemed": "false",
     "cost": {"costid": 2},
     "sale": {"saleid": 2}
@@ -280,7 +246,6 @@ Sale: ei null ja saleid:tä vastaava Sale löytyy
 
 ```
 {
-    "name": "new name",
     "redeemed": "false",
     "cost": {"costid": 2},
     "sale": {"saleid": 2}
@@ -481,13 +446,19 @@ name: ei tyhjä
 [
     {
         "userid": 1,
-        "firstname": "Testi",
-        "lastname": "Esimerkki"
+        "username": "username1",
+        "firstname": "firstname1",
+        "lastname": "lastname1",
+        "userRole": "role1",
+        "sales": [...]
     },
     {
         "userid": 2,
-        "firstname": "firstname1",
-        "lastname": "lastname1"
+        "username": "username2",
+        "firstname": "firstname2",
+        "lastname": "lastname2",
+        "userRole": "user2",
+        "sales": [...]
     }
 ]
 ```
@@ -504,8 +475,11 @@ name: ei tyhjä
 
 ```
 {
+    "username": "testi",
+    "passwordHash": "25OhPoTesti##",
     "firstname": "Testi",
-    "lastname": "Käyttäjä"
+    "lastname": "Käyttäjä",
+    "userRole": "user"
 }
 ```
 
@@ -571,11 +545,12 @@ id = poistettavan käyttäjän tunniste (Long)
         "saleid": 1,
         "user": {
             "userid": 2,
-            "firstname": "firstname1",
-            "lastname": "lastname1"
+            "username": "user",
+            "firstname": "User"
         },
-        "price": 0,
-        "time": "2025-09-30T18:23:07.018202"
+        "price": 600.0,
+        "time": "2025-12-02T13:01:20.264892",
+        "tickets": [...]
     },
     {
         "saleid": 2,
@@ -585,7 +560,8 @@ id = poistettavan käyttäjän tunniste (Long)
             "lastname": "lastname2"
         },
         "price": 0,
-        "time": "2025-09-30T18:23:07.018202"
+        "time": "2025-09-30T18:23:07.018202",
+        "tickets": [...]
     }
 ]
 ```
@@ -613,7 +589,6 @@ User: ei null ja userid:tä vastaava User löytyy
 
 ```
 {
-    "saleid": 1,
     "user": {
         "userid": 2,
         "firstname": "firstname1",
@@ -649,7 +624,8 @@ User: ei null ja userid:tä vastaava User löytyy
 
 ```
 {
-    "price": 35
+    "price": 35,
+    "time": "2025-09-30T17:06:31.077351"
 }
 ```
 
@@ -702,47 +678,26 @@ User: ei null ja userid:tä vastaava User löytyy
     {
         "costid": 1,
         "event": {
-            "eventid": 1,
-            "name": "Event1",
-            "venue": "Venue1",
-            "date": "2025-11-01T13:21:54.172903"
+            "eventid": 2,
+            "name": "Joulukonsertti",
+            "date": "2025-12-20T20:00:00",
+            "capacity": 500,
+            "venue": {
+                "venueid": 1,
+                "name": "Espoon Kulttuurikeskus",
+                "address": "Kulttuuriaukio 2, 02100 Espoo"
+            },
+            "totalTickets": 5
         },
-        "price": 20.5,
-        "type": {
+        "ticketType": {
+            "ticketTypeid": 1,
             "name": "Aikuinen",
-            "note": null,
-            "typeid": 1
-        }
+            "note": null
+        },
+        "price": 50.0
     },
     {
-        "costid": 2,
-        "event": {
-            "eventid": 2,
-            "name": "Event2",
-            "venue": "Venue2",
-            "date": "1999-01-31T20:00:00"
-        },
-        "price": 7.99,
-        "type": {
-            "name": "Eläkeläinen",
-            "note": "Tarkista eläkeläisyys tarvittaessa",
-            "typeid": 2
-        }
-    },
-    {
-        "costid": 3,
-        "event": {
-            "eventid": 2,
-            "name": "Event2",
-            "venue": "Venue2",
-            "date": "1999-01-31T20:00:00"
-        },
-        "price": 25.5,
-        "type": {
-            "name": "Aikuinen",
-            "note": null,
-            "typeid": 1
-        }
+        ...
     }
 ]
 ```
