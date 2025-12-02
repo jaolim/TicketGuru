@@ -318,7 +318,21 @@ Settings -> Secrets and variables -> Actions -> New repository secret
 
 ## Käynnistys- ja käyttöohje
 
-Linkki ohjelmaan:
+Sovellusta käytetään internetselaimella osoitteesta:
 https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/
 
-Tunnukset sivustolle tulee moodlen palautuksen yhteydessä.
+### Kirjautuminen
+
+Etusivulla on linkki kirjautumiseen, johon käytetään henkilökohtaisia tai admin-tunnuksia. Admin-käyttäjä voi luoda sivustolle kirjautuneena uusia käyttäjiä tarpeen mukaan. 
+
+### Tapahtuman luominen
+
+Uuden tapahtuman luominen sivustolle vaatii sen, että tapahtumalle on luotu järjestelmään tapahtumapaikka (venue). Tämän jälkeen tapahtuma voidaan luoda Events-sivun Add new event -painikkeella. Tämän jälkeen tapahtumalle voidaan luoda lipputyyppejä (ticket types), ellei niitä ole jo olemassa. Seuraavaksi lipuille luodaan aihiot (cost), jotka sisältävät lipputyypin sekä sen hinnan. Näiden vaiheiden jälkeen lippu voidaan myydä Sell tickets -sivulla. 
+
+### Lipun myyminen
+
+Lippu myydään Sell tickets -sivulla. Quantity-kohdassa valitaan kuinka monta lippua halutaan myydä, jonka jälkeen valitaan Add ja liput lisätään myyntiin. Kun kaikki halutut liput on valittu, niin valitaan Create sale, jonka jälkeen uudet liput luodaan järjestelmään ja ne tulostuvat näytölle. 
+
+### Lipun tarkistaminen
+
+Liput tarkistetaan Ticket reader -sivulla. Lippu luetaan kameralla ja tässä yhteydessä se merkitään järjestelmään käytetyksi. Järjestelmä ilmoittaa, jos lippu on jo käytetty. 
