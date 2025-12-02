@@ -20,12 +20,25 @@ Käyttöliittymä toteutetaan Thymeleaf-mallipohjilla, joista luodaan HTML-sivut
 ### Käyttötapaukset
 #### Käyttötapauskaavio
 
-![TicketGuru käyttötapauskaavio](/resources/Kayttotapauskaavio_Ticketguru.drawio.png)
+![TicketGuru käyttötapauskaavio](/resources/usercases.drawio.png)
 
 
 ### Käyttäjäroolit
-- Lipunmyyjä - vastaa tapahtuman määrittelyn järjestelmässä, myy lippuja sekä tarkkailee lippujenmyyntiä.
-- Lipuntarkastaja  - lukee ostetut liput ja voi myydä jäljelle jääneitä lippuja ovilla.
+
+**Lipunmyyjä**
+- luo ja muokkaa tapahtumia
+- määrittelee lipputyypit ja hinnat
+- myy ja tulostaa lippuja
+- lukee tarkistettavat liput QR-koodilla
+- tarkkailee lippujenmyyntiä
+
+**Lipuntarkastaja**  
+- lukee tarkistettavat liput QR-koodilla
+
+**Admin**
+- oikeudet luoda, muokata ja poistaa käyttäjiä
+- näkee kaikki järjestelmän tiedot
+- voi suorittaa kaikki lipunmyyjän ja lipuntarkastajan toiminnot
 
 #### Käyttäjätarinat
 
@@ -48,7 +61,13 @@ Lipunmyyjänä haluan tarkastella myynnin tilannetta, jotta voin seurata tapahtu
 Lipuntarkastajana haluan skannata asiakkaan lipussa olevan koodin, jotta voin merkitä sen käytetyksi.
 
 #### KT7
-Lipuntarkastajana haluan myydä jäljelle jääneet liput tapahtuman ovella, jotta asiakkaat voivat ostaa lipun vielä sisäänpääsyä varten.
+Lipunmyyjänä haluan myydä jäljelle jääneet liput tapahtuman ovella, jotta asiakkaat voivat ostaa lipun vielä sisäänpääsyä varten.
+
+#### KT8
+Lipuntarkastajana haluan nähdä virheilmoituksen, jos lippu on jo käytetty. 
+
+#### KT9
+Admin-käyttäjänä haluan muokata tai poistaa käyttäjän tai lisätä uuden käyttäjän. 
 
 ## Käyttöliittymä
 
