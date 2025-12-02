@@ -1,4 +1,4 @@
-package spagetti.tiimi.ticketguru.web;
+package spagetti.tiimi.ticketguru.front;
 
 import java.awt.image.BufferedImage;
 
