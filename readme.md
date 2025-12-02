@@ -11,7 +11,7 @@ Projektin valmistuessa järjestelmässä on toiminnallisuudet tapahtumien luomis
 
 ### Toteutus- ja toimintaympäristö
 
-Järjestelmä toteutetaan Spring boot -sovelluskehyksellä, joka tarjoaa REST-rajapinnat lipunmyyntiin, tapahtumatietoihin ja lipuntarkistukseen liittyville toiminnoille. Järjestelmä käyttää PostgreSQL-tietokantaa tietojen tallentamiseen. Palvelin voidaan ajaa paikallisesti kehitysympäristössä ja valmistuessaan se siirretään tuotantoon Rahti-palveluun. 
+Järjestelmä toteutetaan Spring boot -sovelluskehyksellä, joka tarjoaa REST-rajapinnat lipunmyyntiin, tapahtumatietoihin ja lipuntarkistukseen liittyville toiminnoille. Kehitysympäristössä järjestelmä käyttää joko H2 tai PostgreSQL-tietokantaa. Tuotantoympäristössä järjestelmä käyttää PostgreSQL-tietokantaa tietojen tallentamiseen. Palvelin voidaan ajaa paikallisesti kehitysympäristössä ja valmistunut järjestelmä on CSC:n tarjoamassa Rahti-palvelussa. 
 
 Käyttöliittymä toteutetaan Thymeleaf-mallipohjilla, joista luodaan HTML-sivut palvelimella. Käyttö tapahtuu aluksi työpöytäympäristössä lipunmyyjien työasemilla, ja käyttöliittymä toteutetaan selainpohjaisena ratkaisuna. Tämä mahdollistaa järjestelmän laajentamisen myöhemmin myös mobiililaitteille ja verkkokauppaan.
 
@@ -250,17 +250,25 @@ Tällä hetkellä ei ole tunnettuja ongelmia.
 
 ## Asennustiedot
 
-Järjestelmän asennus on syytä dokumentoida kahdesta näkökulmasta:
+### Kehitysympäristön asennus
 
--   järjestelmän kehitysympäristö: miten järjestelmän kehitysympäristön saisi
-    rakennettua johonkin toiseen koneeseen
+Vaatimukset kehitysympäristölle: 
 
--   järjestelmän asentaminen tuotantoympäristöön: miten järjestelmän saisi
-    asennettua johonkin uuteen ympäristöön.
+- Java 17
+- Maven 3.9.11
+- Git
 
-Asennusohjeesta tulisi ainakin käydä ilmi, miten käytettävä tietokanta ja
-käyttäjät tulee ohjelmistoa asentaessa määritellä (käytettävä tietokanta,
-käyttäjätunnus, salasana, tietokannan luonti yms.).
+Projekti sijaitsee Githubissa ja se voidaan kloonata kehitysympäristöön. Git-repositorion osoite on https://github.com/jaolim/TicketGuru.git
+
+Ympäristömuuttujien määrittely on kuvattu alempana omassa [luvussaan](#ympäristömuuttujat). Ympäristömuuttujien avulla määritellään käytettävä tietokanta, jotta kehityksen aikana voidaan käyttää toista tietokantaa kuin mitä tuotannossa käytetään. 
+
+Kehitysympäristössä voidaan käyttää H2-tietokantaa, joka ei vaadi erillisiä asennuksia. Sovelluksen käynnistyksen yhteydessä tietokantaan luodaan testauksessa tarvittavat tiedot tietokantaan: käyttäjät ja esimerkkidata kaikista tietokannan tiedoista. 
+
+### Järjestelmän asennus tuotantoympäristöön
+
+TicketGuru on asennettu CSC:n Rahti-palveluun ja se on rakennettu Dockerfile-tiedoston perusteella konttijulkaisuna. Rahti-palveluun tulee määritellä uusi PostgreSQL-tietokanta ja se tehdään sivuston käyttöliittymän kautta. Järjestelmä käyttää Rahti-palvelussa application-rahti.properties-ympäristömuuttujia, jotka tulee määrittää palveluun. Projekti voidaan tuoda palveluun Git-repositorion linkin avulla. 
+
+Järjestelmän ensimmäisen käynnistyksen yhteydessä PostgreSQL-tietokantaan luodaan pohjatiedot, joka sisältää käyttäjät ja esimerkkidatan kaikista tietokannan tiedoista. 
 
 ## Ympäristömuuttujat
 
@@ -318,7 +326,21 @@ Settings -> Secrets and variables -> Actions -> New repository secret
 
 ## Käynnistys- ja käyttöohje
 
-Linkki ohjelmaan:
+Sovellusta käytetään internetselaimella osoitteesta:
 https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/
 
-Tunnukset sivustolle tulee moodlen palautuksen yhteydessä.
+### Kirjautuminen
+
+Etusivulla on linkki kirjautumiseen, johon käytetään henkilökohtaisia tai admin-tunnuksia. Admin-käyttäjä voi luoda sivustolle kirjautuneena uusia käyttäjiä tarpeen mukaan. 
+
+### Tapahtuman luominen
+
+Uuden tapahtuman luominen sivustolle vaatii sen, että tapahtumalle on luotu järjestelmään tapahtumapaikka (venue). Tämän jälkeen tapahtuma voidaan luoda Events-sivun Add new event -painikkeella. Tämän jälkeen tapahtumalle voidaan luoda lipputyyppejä (ticket types), ellei niitä ole jo olemassa. Seuraavaksi lipuille luodaan aihiot (cost), jotka sisältävät lipputyypin sekä sen hinnan. Näiden vaiheiden jälkeen lippu voidaan myydä Sell tickets -sivulla. 
+
+### Lipun myyminen
+
+Lippu myydään Sell tickets -sivulla. Quantity-kohdassa valitaan kuinka monta lippua halutaan myydä, jonka jälkeen valitaan Add ja liput lisätään myyntiin. Kun kaikki halutut liput on valittu, niin valitaan Create sale, jonka jälkeen uudet liput luodaan järjestelmään ja ne tulostuvat näytölle. 
+
+### Lipun tarkistaminen
+
+Liput tarkistetaan Ticket reader -sivulla. Lippu luetaan kameralla ja tässä yhteydessä se merkitään järjestelmään käytetyksi. Järjestelmä ilmoittaa, jos lippu on jo käytetty. 
