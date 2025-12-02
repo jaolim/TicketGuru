@@ -44,7 +44,7 @@ public class EventController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/eventpage")
     public String getEventList(Model model) {
-        model.addAttribute("events", eRepository.findAll());
+        model.addAttribute("events", eRepository.findAllByOrderByDateAsc());
         return "events";
     }
 

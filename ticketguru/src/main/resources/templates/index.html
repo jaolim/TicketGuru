@@ -29,8 +29,7 @@
     <span sec:authorize="isAuthenticated()">
       <a class="btn btn-success" th:href="@{/qrreader}">Ticket Reader</a>
     </span>
-    <span th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-      <a class="btn btn-success" th:href="@{/qrreader}">Ticket Reader</a>
+    <span th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or #authorization.expression('hasAuthority(''USER'')')}">
       <a class="btn btn-success" th:href="@{/sell}">Sell Tickets</a>
       <a class="btn btn-info" th:href="@{/venuepage}">Venues</a>
       <a class="btn btn-info" th:href="@{/eventpage}">Events</a>
@@ -38,9 +37,7 @@
       <a class="btn btn-info" th:href="@{/costpage}">Costs</a>
       <a class="btn btn-info" th:href="@{/ticketpage}">Tickets</a>
       <a class="btn btn-info" th:href="@{/salepage}">Sales</a>
-
     </span>
-
     <span sec:authorize="hasAuthority('ADMIN')">
       <a class="btn btn-warning" th:href="@{/userpage}">Users</a>
     </span>

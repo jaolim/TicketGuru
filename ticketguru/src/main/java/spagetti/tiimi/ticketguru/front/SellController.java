@@ -53,7 +53,7 @@ public class SellController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping(value = { "/sell" }, params = "!tickets")
     public String getSell(Model model) {
-        model.addAttribute("events", eRepository.findAll());
+        model.addAttribute("events", eRepository.findAllByOrderByDateAsc());
         model.addAttribute("costs", cRepository.findAll());
         return "sell-ticket";
     }

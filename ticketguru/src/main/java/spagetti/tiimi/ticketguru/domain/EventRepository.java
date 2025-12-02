@@ -7,5 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface EventRepository extends CrudRepository<Event, Long>{
 
     List<Event> findDistinctByCosts_Tickets_Sale_Saleid(Long saleid);
+    List<Event> findAllByOrderByDateAsc();
 
 }
