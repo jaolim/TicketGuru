@@ -95,7 +95,7 @@
                 <li>Time: <span th:text="${ticket.cost.event.date}"></span></li>
                 <li>Price: <span th:text="${ticket.cost.price}"></span></li>
                 <li>Code: <span th:text="${ticket.ticketCode}"></span></li>
-                <img th:src="@{'https://ticket-guru-ticketguru-postgres.2.rahtiapp.fi/qr/' + ${ticket.ticketCode}}">
+                <img th:src="@{'/qr/' + ${ticket.ticketCode}}">
             </ul>
         </div>
 
